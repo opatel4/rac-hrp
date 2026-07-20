@@ -1,0 +1,23 @@
+{
+  "base_seed": 522618064,
+  "replications": {
+    "A_iid_gaussian": 150,
+    "B_xsec_shuffle": 150,
+    "C_trigger_timing": 150,
+    "D_regime_switch_vol": 200
+  },
+  "materiality_margin": 0.1,
+  "primary_comparators": [
+    "HRP_static",
+    "HRP_periodic_3"
+  ],
+  "null_delta": 0.0,
+  "positive_delta": 0.2,
+  "code_sha256": {
+    "gate_v2_config.py": "bdc419ede78f1abd36da10abdfcdc5ef357b2e2e926f6d54c72c309b0124d9ee",
+    "gate_v2_stats.py": "f7eb807378538d6a5faa4f6d3a64f3c8618b0935845ba016f480af713d284e32",
+    "gate_v2.py": "3cc1a9051bff7464014450a8d014dd0af4ce4110d0ecadc198e84313e05f2f86",
+    "environments.py": "29e3607e11ed672b24ee442499f14715cb510361adeb65169082d96047b8342d"
+  },
+  "config_json": "{\n  \"base_seed\": 522618064,\n  \"bootstrap_resamples\": 10000,\n  \"bootstrap_seed_offset\": 500000,\n  \"confidence\": 0.95,\n  \"materiality_margin\": 0.1,\n  \"min_events_per_rep\": 3,\n  \"min_frac_reps_active\": 0.9,\n  \"min_median_firing_rate\": 0.05,\n  \"null_delta\": 0.0,\n  \"positive_delta\": 0.2,\n  \"primary_comparators\": [\n    \"HRP_static\",\n    \"HRP_periodic_3\"\n  ],\n  \"replications\": {\n    \"A_iid_gaussian\": 150,\n    \"B_xsec_shuffle\": 150,\n    \"C_trigger_timing\": 150,\n    \"D_regime_switch_vol\": 200\n  }\n}"
+}

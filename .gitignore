@@ -1,0 +1,62 @@
+# ==========================================================================
+# LICENSED DATA -- MUST NEVER BE COMMITTED
+# ==========================================================================
+# CRSP/Compustat data is licensed to the institution, not redistributable.
+# Committing it -- even derived panels -- would violate the licence. These
+# patterns are deliberately broad.
+# anchored to repo root so the rac_hrp/data PACKAGE is not excluded
+/data/
+/raw/
+/data/**
+*.parquet
+*.sas7bdat
+*.dta
+dsf*
+msf*
+delist*
+names.parquet
+membership.parquet
+rf.parquet
+crsp_data*
+compustat_data*
+
+# the package's own data module is source code, not data -- keep it
+!rac_hrp/data/
+!rac_hrp/data/**
+
+# WRDS credentials
+.pgpass
+*.pgpass
+wrds_credentials*
+
+# ==========================================================================
+# Environments / build
+# ==========================================================================
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# ==========================================================================
+# Working output (only curated results/ is tracked -- see results/README.md)
+# ==========================================================================
+outputs/
+archive/
+*.log
+
+# ==========================================================================
+# Copyrighted literature
+# ==========================================================================
+# Third-party papers are copyrighted and are not redistributed here.
+# docs/literature/ holds only our own review notes.
+docs/literature/*.pdf
+*.pdf
+!docs/protocol/*.pdf
+
+# OS
+.DS_Store
+Thumbs.db

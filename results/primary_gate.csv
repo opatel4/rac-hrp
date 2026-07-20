@@ -1,0 +1,9 @@
+environment,vs,mean_dSharpe,one_sided_U,one_sided_L,"boot_[L,U]",null_ctrl,pos_ctrl,verdict
+A_iid_gaussian,HRP_static,-0.0002,0.0066,-0.0071,"[-0.007, +0.007]",PASS,FAIL,PASS
+A_iid_gaussian,HRP_periodic_3,-0.0006,0.0054,-0.0067,"[-0.007, +0.005]",PASS,FAIL,PASS
+B_xsec_shuffle,HRP_static,-0.0011,0.0014,-0.0036,"[-0.004, +0.001]",PASS,FAIL,PASS
+B_xsec_shuffle,HRP_periodic_3,-0.0004,0.0015,-0.0022,"[-0.002, +0.001]",PASS,FAIL,PASS
+C_trigger_timing,HRP_static,-0.0016,-0.0005,-0.0027,"[-0.003, -0.001]",PASS,FAIL,PASS
+C_trigger_timing,HRP_periodic_3,0.0046,0.0057,0.0036,"[+0.004, +0.006]",PASS,FAIL,PASS
+D_regime_switch_vol,HRP_static,0.0105,0.0437,-0.0228,"[-0.022, +0.043]",PASS,FAIL,PASS
+D_regime_switch_vol,HRP_periodic_3,0.0132,0.0423,-0.0158,"[-0.016, +0.042]",PASS,FAIL,PASS

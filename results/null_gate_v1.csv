@@ -1,0 +1,12 @@
+environment,vs,mean_dSharpe,95%_CI,P(dSR>0),verdict,why
+A_iid_gaussian,EW,-0.0508,"[-0.084, -0.017]",0.35,PASS,"edge bounded below materiality, with precision"
+A_iid_gaussian,ERC,-0.0206,"[-0.044, +0.003]",0.41,PASS,"edge bounded below materiality, with precision"
+A_iid_gaussian,HRP_static,-0.0018,"[-0.011, +0.008]",0.48,PASS,"edge bounded below materiality, with precision"
+B_xsec_shuffle,EW,0.0044,"[+0.000, +0.009]",0.56,PASS,"edge bounded below materiality, with precision"
+B_xsec_shuffle,ERC,0.0022,"[-0.001, +0.005]",0.56,PASS,"edge bounded below materiality, with precision"
+B_xsec_shuffle,HRP_static,-0.0016,"[-0.005, +0.002]",0.48,PASS,"edge bounded below materiality, with precision"
+C_trigger_timing,HRP_static,-0.0016,"[-0.003, +0.000]",0.44,PASS,"edge bounded below materiality, with precision"
+C_trigger_timing,HRP_periodic_3,0.0046,"[+0.003, +0.006]",0.68,PASS,"edge bounded below materiality, with precision"
+D_regime_switch_vol,EW,-0.0377,"[-0.108, +0.032]",0.45,PASS,"edge bounded below materiality, with precision"
+D_regime_switch_vol,ERC,0.1024,"[+0.038, +0.167]",0.58,FAIL,material systematic edge under a null -- signal is manufactured
+D_regime_switch_vol,HRP_static,-0.0062,"[-0.066, +0.054]",0.48,PASS,"edge bounded below materiality, with precision"

@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+title: "RAC-HRP: Regime-Adaptive Clustering Hierarchical Risk Parity"
+message: "If you use this software or its pre-registered protocol, please cite it."
+type: software
+authors:
+  - family-names: Patel
+    given-names: Om
+abstract: >-
+  A pre-registered empirical study of whether absorption-ratio-triggered
+  re-clustering improves hierarchical risk parity portfolios under changing
+  equity correlation regimes. Includes point-in-time CRSP universe construction
+  with survivorship-bias reconstruction gates and a two-tier synthetic null gate.
+keywords:
+  - hierarchical risk parity
+  - portfolio optimization
+  - regime detection
+  - absorption ratio
+  - pre-registration
+license: MIT
