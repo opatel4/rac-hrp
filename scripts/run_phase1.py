@@ -51,6 +51,7 @@ BASELINES = [
     Strategy("EW", allocator="ew"),
     Strategy("ERC", allocator="erc"),
     Strategy("HRP_static", allocator="hrp", recluster="never"),
+    Strategy("MHRP_EV", allocator="hrp_equalvol", recluster="never"),
     Strategy("MinVar", allocator="minvar"),
 ]
 

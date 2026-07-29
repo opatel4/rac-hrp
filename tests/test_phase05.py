@@ -251,8 +251,11 @@ def test_test_region_is_locked():
         assert False, "test region must be locked by default"
     except PermissionError:
         pass
-    fg.lock.unlock("unit test")
-    assert fg.test_fold().label.startswith("TEST")
+    try:
+        fg.lock.unlock("unit test")
+        assert fg.test_fold().label.startswith("TEST")
+    finally:
+        fg.lock.relock()          # never leave the region open, even on failure
 
 
 def test_purge_is_in_trading_days_not_calendar_days():

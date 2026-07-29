@@ -88,6 +88,13 @@ class TestRegionLock:
                   "once. The single-touch guarantee in the pre-analysis plan is "
                   "broken. Any test-region number you report is contaminated. ***\n")
 
+    def relock(self) -> None:
+        """Re-lock the region. Does NOT decrement the touch counter: the counter
+        records that an unlock occurred, and re-locking must not erase that
+        history. Used for defensive cleanup (e.g. test teardown) so a failure
+        after unlock cannot leave the region open for whatever runs next."""
+        self._unlocked = False
+
     def check(self) -> None:
         if not self._unlocked:
             raise PermissionError(

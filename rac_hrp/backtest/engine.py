@@ -49,7 +49,8 @@ from ..config import Config
 from ..core.covariance import estimate
 from ..core.pca_mp import spectrum, absorption_ratio, pca_features, Spectrum
 from ..core.clustering import build_tree, cluster_labels, n_clusters_from_rule
-from ..core.allocators import hrp_weights, erc_weights, equal_weight, min_variance
+from ..core.allocators import (hrp_weights, hrp_equalvol_weights,
+                              erc_weights, equal_weight, min_variance)
 from ..data.panel import Panels
 from ..data.universe import UniverseBuilder
 
@@ -111,7 +112,7 @@ class Strategy:
     oracle_strength: float = 0.0    # DIAGNOSTIC ONLY -- see below
 
     def needs_tree(self) -> bool:
-        return self.allocator == "hrp"
+        return self.allocator in ("hrp", "hrp_equalvol")
 
 
 # ---------------------------------------------------------------------------
@@ -355,6 +356,8 @@ class WalkForward:
             # ---- weights -------------------------------------------------
             if st.allocator == "hrp":
                 w = hrp_weights(cov, leaf)
+            elif st.allocator == "hrp_equalvol":
+                w = hrp_equalvol_weights(cov, leaf)
             elif st.allocator == "erc":
                 w = erc_weights(cov)
             elif st.allocator == "ew":
