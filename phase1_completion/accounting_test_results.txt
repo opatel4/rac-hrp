@@ -1,0 +1,17 @@
+ACCOUNTING RECONCILIATION -- Phase 1 (development region)
+Independent recomputation of gross portfolio return from stored weight path,
+compared against engine gross_returns. 240 rebalance dates per strategy.
+
+  strategy     n_days_checked  median_abs_diff  max_abs_diff  status
+  EW           240             0.0              1e-6          OK
+  ERC          240             0.0              2e-6          OK
+  HRP_static   240             0.0              2e-6          OK
+  MHRP_EV      240             0.0              2e-6          OK
+  MinVar       240             0.0              5e-6          OK
+
+=> accounting reconciles (recomputed gross == engine gross). Max diffs are
+   floating-point scale. Costs booked on rebalance days compared against gross.
+
+Single-touch test-region lock: VERIFIED intact. Touch counter is per-instance,
+resets per process; unit-test unlock does not accumulate or leak into real runs.
+Test hardened with finally/relock (defensive).

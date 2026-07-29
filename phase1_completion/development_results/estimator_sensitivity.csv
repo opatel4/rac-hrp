@@ -1,0 +1,6 @@
+strategy,lw_linear,nls,sample
+ERC,0.549,0.549,0.549
+EW,0.508,0.508,0.508
+HRP_static,0.591,0.574,0.594
+MHRP_EV,0.554,0.534,0.557
+MinVar,0.551,0.576,0.556

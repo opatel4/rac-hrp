@@ -1,0 +1,25 @@
+{
+  "phase": "1",
+  "status": "COMPLETE WITH ONE DEFERRED ROBUSTNESS COMPONENT",
+  "region": "development only (2003-01-08 to 2022-12-30, 5031 trading days)",
+  "universe_N": 100,
+  "cov_estimator": "nls",
+  "cov_window_D4": 504,
+  "strategies": [
+    "EW",
+    "ERC",
+    "MinVar",
+    "HRP_static",
+    "MHRP_EV"
+  ],
+  "deferred": "EWMA covariance (Molyboga component i) -- pending source spec",
+  "test_region": "untouched; single-touch lock intact",
+  "baseline_consistency": "reproduces Phase 0.5 exactly (HRP_static 0.574, ERC 0.549, EW 0.508)",
+  "key_finding": "Molyboga equal-vol allocation (component ii alone) underperforms inverse-variance HRP on equities, 0.534 vs 0.574, robust across estimators",
+  "code_sha256": {
+    "allocators.py": "ab5bd50fa2e570408e83419f34fce65fbbeb7a7a91b028ab075ad24f5a563b12",
+    "engine.py": "14774900f0dbd44aca8a705e6715068f65ac0486ddf07e73a71e67d32e2034ea",
+    "folds.py": "18cd1a05ee88669ed12c77496d2558c1aaea1811bb80e532c7227469a7475180",
+    "run_phase1.py": "9086912bfc8e50fe7ae2b6be89e2fb47fa4bf90631fd15e739bca1a3d6e8831d"
+  }
+}
