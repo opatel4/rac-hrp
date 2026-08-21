@@ -257,3 +257,44 @@ the count is returned by `circular_block_bootstrap_p`.
 ### NOT yet implemented
 The calibration runner that drives the trigger across γ candidates and applies
 the deterministic selection rule. Requires engine integration.
+
+---
+
+## Phase 2 calibration runner — implemented
+
+`rac_hrp/phase2/calibration.py`. Steps 1-3 of the frozen procedure:
+structural diagnostics for every gamma; deterministic selection applied in code;
+hashed frozen record written. Steps 4-5 (Null Gate v2, then performance) happen
+elsewhere and only after this gate selects.
+
+PERFORMANCE-BLIND BY CONSTRUCTION: the module never calls the engine's return
+path and never touches the risk-free series, so it has no way to produce a
+performance number. Selection cannot be influenced by one even accidentally.
+
+- Counterfactual clusterings recomputed at EVERY eligible rebalance, so D_VI
+  compares triggered against non-triggered structural change on equal footing.
+  VI computed on the INTERSECTION of consecutive permno sets (universe turnover
+  means the asset sets differ between dates).
+- `variation_of_information` added to `core/clustering.py` alongside ARI, and
+  the duplicate definition inside calibration.py was removed — one gating
+  statistic, one implementation. Verified numerically identical before removal.
+- Manifest records everything the advisor asked for: Politis-White integer block
+  length per candidate, the in-repo implementation used, degenerate-replicate
+  counts, code hashes, and — when no candidate passes — an explicit stop_reason
+  plus the failed criteria per gamma.
+
+Smoke test on mock data: runs end to end, no candidate passes, `phase2_stops`
+recorded with reasons. That is the correct behaviour on synthetic data with no
+genuine regime structure; it is NOT predictive of the real-data result.
+
+Fixed while wiring: `cfg.cluster_count_rule`/`min_clusters`/`max_clusters` do not
+exist; the real fields are `n_clusters_rule`/`n_clusters_min`/`n_clusters_max`.
+
+### scripts/run_phase2.py — orchestrator
+Drives the frozen calibration gate. Applies the D4 window rule BEFORE fold
+construction (the Phase 1 bug, not repeated) and raises PermissionError on any
+evaluation position at or after TEST_START. Prints the calibration table, the
+selection outcome, and — when nothing passes — the failed criteria per gamma.
+
+`--quick` reduces Monte Carlo counts for smoke testing and says loudly that the
+results are not the frozen specification and must not be reported.
