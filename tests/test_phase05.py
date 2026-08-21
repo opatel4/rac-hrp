@@ -252,7 +252,7 @@ def test_test_region_is_locked():
     except PermissionError:
         pass
     try:
-        fg.lock.unlock("unit test")
+        fg.lock.unlock_for_selftest("unit test")
         assert fg.test_fold().label.startswith("TEST")
     finally:
         fg.lock.relock()          # never leave the region open, even on failure

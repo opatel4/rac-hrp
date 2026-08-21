@@ -40,6 +40,7 @@ PURGE vs EMBARGO (they are not the same thing)
 """
 
 from __future__ import annotations
+from rac_hrp.backtest.region_lock import TestRegionLock  # noqa: F401
 
 from dataclasses import dataclass
 from typing import List, Optional
@@ -70,40 +71,6 @@ class Fold:
         te = f"{calendar[self.test_pos[0]].date()} -> {calendar[self.test_pos[-1]].date()}"
         return (f"fold {self.fold_id} [{self.label}]  "
                 f"train {tr} ({self.n_train:5d}d)  eval {te} ({self.n_test:4d}d)")
-
-
-class TestRegionLock:
-    """Structural guard on the single-touch test region."""
-
-    def __init__(self) -> None:
-        self._unlocked = False
-        self._touches = 0
-
-    def unlock(self, reason: str) -> None:
-        self._unlocked = True
-        self._touches += 1
-        print(f"\n*** TEST REGION UNLOCKED (touch #{self._touches}): {reason} ***")
-        if self._touches > 1:
-            print("*** WARNING: the test region has now been touched more than "
-                  "once. The single-touch guarantee in the pre-analysis plan is "
-                  "broken. Any test-region number you report is contaminated. ***\n")
-
-    def relock(self) -> None:
-        """Re-lock the region. Does NOT decrement the touch counter: the counter
-        records that an unlock occurred, and re-locking must not erase that
-        history. Used for defensive cleanup (e.g. test teardown) so a failure
-        after unlock cannot leave the region open for whatever runs next."""
-        self._unlocked = False
-
-    def check(self) -> None:
-        if not self._unlocked:
-            raise PermissionError(
-                "Refusing to access the test region (2023-2025).\n"
-                "Phase 0.5 runs on the DEVELOPMENT region only. The test region "
-                "is touched exactly once, in Phase 4, after every rule in the "
-                "pre-analysis plan is frozen.\n"
-                "If you are certain: lock.unlock('reason')."
-            )
 
 
 class FoldGenerator:
