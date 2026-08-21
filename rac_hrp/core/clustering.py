@@ -141,3 +141,43 @@ def adjusted_rand_index(a: np.ndarray, b: np.ndarray) -> float:
     if abs(denom) < 1e-12:
         return 1.0
     return float((sum_ij - expected) / denom)
+
+
+def variation_of_information(a: np.ndarray, b: np.ndarray) -> float:
+    """Variation of information between two clusterings of the SAME items.
+
+        VI(A, B) = H(A) + H(B) - 2 I(A; B)
+
+    in nats. VI is a true metric on the space of partitions: 0 iff the two
+    clusterings are identical, larger when they differ more. This is the
+    statistic behind the frozen D_VI cluster-informativeness gate (Phase 2
+    pre-registration rev.5, section 2), where larger VI at triggered rebalances
+    than at non-triggered ones is the evidence that the trigger fires when the
+    correlation structure has genuinely moved.
+
+    Both inputs must be label arrays over the same, identically ordered items.
+    """
+    a = np.asarray(a).ravel()
+    b = np.asarray(b).ravel()
+    if len(a) != len(b):
+        raise ValueError(f"clusterings cover different item counts: {len(a)} vs {len(b)}")
+    n = len(a)
+    if n == 0:
+        return np.nan
+
+    ua, ia = np.unique(a, return_inverse=True)
+    ub, ib = np.unique(b, return_inverse=True)
+    joint = np.zeros((len(ua), len(ub)), dtype=float)
+    np.add.at(joint, (ia, ib), 1.0)
+    joint /= n
+
+    pa = joint.sum(axis=1)
+    pb = joint.sum(axis=0)
+
+    def _H(p):
+        p = p[p > 0]
+        return float(-(p * np.log(p)).sum())
+
+    nz = joint > 0
+    mi = float((joint[nz] * np.log(joint[nz] / np.outer(pa, pb)[nz])).sum())
+    return max(0.0, _H(pa) + _H(pb) - 2.0 * mi)
