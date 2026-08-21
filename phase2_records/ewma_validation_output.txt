@@ -1,0 +1,24 @@
+==========================================================================
+  MANDATORY VALIDATION SUITE -- EWMA constant-correlation shrinkage
+  (signed amendment rev.4 section 4b; must PASS before any EWMA result)
+==========================================================================
+
+  [PASS] 1. equal-weight limit (alpha->1 == constant-correlation LW)
+         max rel diff 1.61e-05
+  [PASS] 1b. exact alpha=1 == reference
+         max rel diff 5.62e-16
+  [PASS] 2. sum_j w_j == 1 for all frozen alphas
+         worst |err| 0.00e+00
+  [PASS] 3. N_eff == 1/sum w^2 == closed form == amendment table
+         a=0.99: 196.5; a=0.996: 382.1; a=0.997: 425.6
+  [PASS] 4. 0 <= delta <= 1 across seeds and alphas
+         a=0.99: delta=0.1146; a=0.996: delta=0.0605; a=0.997: delta=0.0543
+  [PASS] 5. covariance output symmetric
+         worst asymmetry 0.00e+00
+  [PASS] 6. F_ii == s_ii (target preserves EW variances)
+         max |F_ii - s_ii| 0.00e+00, rbar=-0.0028
+  [PASS] 7. no future return enters; weights decay from the most recent row
+         delta_on_future=0.00e+00, w0=0.004612 > w503=0.000614
+
+  8/8 checks passed
+  => ALL VALIDATION TESTS PASS. EWMA estimator authorized for use.

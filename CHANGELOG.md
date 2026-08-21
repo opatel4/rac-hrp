@@ -204,3 +204,56 @@ Molyboga (2020) sub-cluster covariance variant. Blocked on disambiguation of
 "EW covariance": the literature review records Molyboga as *exponentially
 weighted* covariance + Ledoit-Wolf, not *equal-weighted*. These are different
 estimators and the choice is pre-registered, so it is not being guessed.
+
+---
+
+## Phase 2 + EWMA — implementation against FROZEN specifications
+
+Both specifications countersigned and frozen before any code was written:
+  * "PHASE 2 — PRE-REGISTRATION & CALIBRATION GATE (rev.5)"  [AUTHORIZE AND FREEZE: YES]
+  * "AMENDMENT — EWMA COVARIANCE (rev.4)"                    [ADOPT AND FREEZE]
+
+### New: rac_hrp/core/covariance_ew.py
+Weighted constant-correlation Ledoit-Wolf extension. Truncated/renormalised
+weights w_j = (1−α)α^j/(1−α^504); weighted-mean centring; constant-correlation
+target (F_ii = s_ii, F_ij = r̄√(s_ii s_jj)) — the JPM "Honey" target Molyboga
+cites, NOT the JMVA scaled-identity target used by the existing `lw_linear`.
+Full weighted π̂/ρ̂/γ̂/κ̂/δ. α primary 0.996; sensitivity {0.990, 0.996, 0.997}.
+
+Labelled in-code as a PROSPECTIVELY SPECIFIED EXTENSION, not the Ledoit-Wolf
+analytical estimator: LW assumes i.i.d. observations and exponential weighting
+breaks that, so substituting w_j for 1/T and N_eff for T is not a theorem.
+
+### New: tests/test_covariance_ew.py — MANDATORY, gates EWMA use
+All 7 required checks pass (8/8 including the exact-α=1 variant). Key result:
+at α→1 the weighted estimator converges to an independently written
+constant-correlation LW reference (1.6e-5 relative; 1.7e-15 at exactly α=1),
+which is the transcription check on ρ̂. N_eff reproduces the amendment table
+(196.5 / 382.1 / 425.6) from the ACTUAL truncated weights, not the
+infinite-horizon formula.
+
+### New: rac_hrp/phase2/{config,stats}.py
+Frozen parameters and the exact statistical rules. Phase-adjusted separation
+J* over q ∈ {2..12}, r ∈ {0..q−1}; placebo Monte Carlo (PCG64, seed 20260817,
+B = 100,000, 95th pct, weak inequality), recomputed per candidate; timing
+variation (CV and modal-gap share); circular block bootstrap for D_VI with
+Politis-White block length, joint (VI_t, I_t) resampling, centred one-sided
+p = (1 + #{D*_b − D̂ ≥ D̂})/(B+1); Holm across the four γ.
+σ̂ uses ddof = 1 — AUDITED as-built (pandas default), not chosen.
+
+### New: tests/test_phase2_stats.py — 12/12 pass
+Reproduces the frozen values exactly: placebo 0.3818 at |T|=112 and 0.1714 at
+|T|=12; the adversarial every-2nd-rebalance/odd-phase trigger scores J* = 1.000
+with phase adjustment and only 0.252 without it. Bootstrap null calibration
+P(p≤0.05) = 0.065 over 200 null datasets; Politis-White returns L = 2 on iid
+and L = 17 on AR(1) ρ = 0.85.
+
+### Manifest metadata to record at execution (advisor note, not a spec change)
+Politis-White integer block length per candidate and the implementation used
+(in-repo, no third-party package); count of degenerate bootstrap replicates
+(one I class empty) — these are discarded from numerator and denominator and
+the count is returned by `circular_block_bootstrap_p`.
+
+### NOT yet implemented
+The calibration runner that drives the trigger across γ candidates and applies
+the deterministic selection rule. Requires engine integration.
