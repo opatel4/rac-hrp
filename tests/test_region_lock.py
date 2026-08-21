@@ -103,3 +103,13 @@ def test_relock_does_not_erase_durable_history(lock):
     lock.unlock("real touch")
     lock.relock()
     assert lock.analysis_touches() == 1              # history survives relock
+
+
+def test_lock_implementation_is_not_shadowed():
+    """A full-tree copy restoring the old in-folds TestRegionLock would silently
+    revert the durable audit log; the suite stays green because the reverted
+    state is internally consistent. This makes that revert a red test."""
+    from rac_hrp.backtest.folds import TestRegionLock as Shimmed
+    assert Shimmed.__module__ == "rac_hrp.backtest.region_lock"
+    assert hasattr(Shimmed, "unlock_for_selftest")
+    assert hasattr(Shimmed, "analysis_touches")
