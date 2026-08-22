@@ -1,0 +1,5 @@
+gamma,n_events,n_eligible,firing_rate,min_events_per_fold,cv_gap,modal_gap_share,J_star,J_threshold,D_VI,p_raw,p_holm,block_length,n_degenerate,turnover_annual_DIAGNOSTIC,pass_informativeness,pass_event_sufficiency,pass_timing_variation,pass_separation,pass_cluster_informativeness,PASSES_ALL
+0.5,149,233,0.6395,35,1.1162,0.8243,0.4,0.4457,0.0326,0.27777,0.55554,19,0,0.9907,False,True,False,True,False,False
+1.0,111,233,0.4764,26,1.4579,0.7909,0.3256,0.3818,0.0217,0.35226,0.55554,19,0,0.7386,False,True,False,True,False,False
+1.5,81,233,0.3476,18,1.6763,0.7625,0.2628,0.32,0.0796,0.08459,0.25377,19,0,0.5401,True,True,False,True,False,False
+2.0,58,233,0.2489,11,1.8228,0.7895,0.2083,0.2593,0.0961,0.05519,0.22078,19,0,0.3816,True,True,False,True,False,False

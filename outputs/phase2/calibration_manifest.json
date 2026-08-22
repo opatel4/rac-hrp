@@ -1,0 +1,84 @@
+{
+  "specification": "PHASE 2 PRE-REGISTRATION rev.5 (FROZEN, countersigned)",
+  "selected_gamma": null,
+  "phase2_stops": true,
+  "stop_reason": "No candidate satisfied every hard structural criterion. Per the frozen selection rule, the 'least bad' candidate is NOT selected and Phase 2 STOPS. The recorded conclusion is that the current trigger specification is not sufficiently informative on the development region. Criteria failed by at least one candidate: cluster_informativeness, informativeness, timing_variation.",
+  "failed_criteria_by_gamma": {
+    "0.5": [
+      "cluster_informativeness",
+      "informativeness",
+      "timing_variation"
+    ],
+    "1.0": [
+      "cluster_informativeness",
+      "informativeness",
+      "timing_variation"
+    ],
+    "1.5": [
+      "cluster_informativeness",
+      "timing_variation"
+    ],
+    "2.0": [
+      "cluster_informativeness",
+      "timing_variation"
+    ]
+  },
+  "k_frozen": 15,
+  "n_rebalances": 240,
+  "n_eligible": 233,
+  "config": {
+    "ar_sigma_ddof": 1,
+    "ar_sigma_rebalances": 12,
+    "ar_smooth_rebalances": 5,
+    "bootstrap_kind": "circular_block",
+    "bootstrap_replicates": 10000,
+    "bootstrap_seed_base": 20262817,
+    "cv_gap_min": 0.5,
+    "firing_max": 0.4,
+    "firing_min": 0.05,
+    "gamma_candidates": [
+      0.5,
+      1.0,
+      1.5,
+      2.0
+    ],
+    "gamma_inherited": 1.0,
+    "holm_alpha": 0.05,
+    "min_events_per_fold": 3,
+    "modal_gap_share_max": 0.5,
+    "placebo_draws": 100000,
+    "placebo_percentile": 95.0,
+    "placebo_seed": 20260817,
+    "separation_periods": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  "politis_white_block_lengths": {
+    "0.5": 19,
+    "1.0": 19,
+    "1.5": 19,
+    "2.0": 19
+  },
+  "degenerate_bootstrap_replicates": {
+    "0.5": 0,
+    "1.0": 0,
+    "1.5": 0,
+    "2.0": 0
+  },
+  "bootstrap_implementation": "in-repo circular block bootstrap (rac_hrp.phase2.stats)",
+  "code_sha256": {
+    "config.py": "44e6ef894050db1b3e83a4c7082e9773b6154c8bf7bba40d20b6f0c7e0fe809c",
+    "stats.py": "3f8d29bf908788134d31125d31b354f8d8374b49a98d5a6cbf9771822ab07895",
+    "calibration.py": "4b9e62951ea9f54725e7b89b19d5ac998e0812867730bb481680fdc9362d0339"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "seed": 20260821,
+  "B": 10000,
+  "ceiling": 0.5,
+  "statistic": "rac_hrp.phase2.stats.timing_variation",
+  "source_table": "outputs/phase2/calibration_table.csv",
+  "candidates": [
+    {
+      "gamma": 0.5,
+      "n_events": 149,
+      "n_eligible": 233,
+      "cv_null_mean": 0.5946,
+      "null_p2.5": 0.5946,
+      "null_p50": 0.6419,
+      "null_p97.5": 0.6892,
+      "null_mean": 0.6393,
+      "m_obs": 0.8243,
+      "obs_upper_tail_p": 0.0,
+      "feasibility_floor": 0.4324,
+      "threshold_attainable": true,
+      "verdict": "B: observed more bursty than random (criterion informative; failure is evidence)"
+    },
+    {
+      "gamma": 1.0,
+      "n_events": 111,
+      "n_eligible": 233,
+      "cv_null_mean": 0.7152,
+      "null_p2.5": 0.4091,
+      "null_p50": 0.4727,
+      "null_p97.5": 0.5455,
+      "null_mean": 0.4762,
+      "m_obs": 0.7909,
+      "obs_upper_tail_p": 0.0,
+      "feasibility_floor": 0.0,
+      "threshold_attainable": true,
+      "verdict": "B: observed more bursty than random (criterion informative; failure is evidence)"
+    },
+    {
+      "gamma": 1.5,
+      "n_events": 81,
+      "n_eligible": 233,
+      "cv_null_mean": 0.7957,
+      "null_p2.5": 0.275,
+      "null_p50": 0.35,
+      "null_p97.5": 0.4375,
+      "null_mean": 0.35,
+      "m_obs": 0.7625,
+      "obs_upper_tail_p": 0.0,
+      "feasibility_floor": 0.0,
+      "threshold_attainable": true,
+      "verdict": "B: observed more bursty than random (criterion informative; failure is evidence)"
+    },
+    {
+      "gamma": 2.0,
+      "n_events": 58,
+      "n_eligible": 233,
+      "cv_null_mean": 0.8504,
+      "null_p2.5": 0.193,
+      "null_p50": 0.2632,
+      "null_p97.5": 0.3509,
+      "null_mean": 0.2628,
+      "m_obs": 0.7895,
+      "obs_upper_tail_p": 0.0,
+      "feasibility_floor": 0.0,
+      "threshold_attainable": true,
+      "verdict": "B: observed more bursty than random (criterion informative; failure is evidence)"
+    }
+  ]
+}
