@@ -62,7 +62,14 @@ docs/literature/*.pdf
 Thumbs.db
 phase2_records/
 
-# frozen records are versioned even though outputs/ is ignored
+
+# Frozen records are versioned even though outputs/ is scratch.
+# Re-include the specific dirs (required for the file negations to apply),
+# then un-ignore only the record files. QUICK/ and phase1/ stay ignored.
+!outputs/phase2/
+!outputs/phase2_diagnostics/
+outputs/phase2/*
+outputs/phase2_diagnostics/*
 !outputs/phase2/calibration_manifest.json
 !outputs/phase2/calibration_table.csv
 !outputs/phase2_diagnostics/modal_gap_null.json
