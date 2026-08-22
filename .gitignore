@@ -60,3 +60,9 @@ docs/literature/*.pdf
 # OS
 .DS_Store
 Thumbs.db
+phase2_records/
+
+# frozen records are versioned even though outputs/ is ignored
+!outputs/phase2/calibration_manifest.json
+!outputs/phase2/calibration_table.csv
+!outputs/phase2_diagnostics/modal_gap_null.json
