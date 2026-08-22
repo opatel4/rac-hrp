@@ -107,7 +107,10 @@ At every γ the observed modal share sits far above the random null band, and th
 gap widens as the trigger thins (null mean falls 0.64 → 0.26 while observed holds
 ~0.76–0.82). The 0.50 ceiling is combinatorially attainable at every event count
 (the packing floor, max(0, 2n−E−1)/(n−1), is 0.432 at the densest candidate and
-0 elsewhere), so the failure is **not** a mis-specified or unreachable criterion.
+0 elsewhere), so the failure cannot be attributed to the 0.50 ceiling being
+combinatorially unreachable at the observed event densities. (This does not
+establish that 0.50 was a well-designed threshold in an economic or statistical
+sense — only that it was attainable.)
 
 **What this establishes.** Trigger events are substantially more temporally
 clustered than uniformly random event placements of the same count. The 0.50
