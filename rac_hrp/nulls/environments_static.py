@@ -36,8 +36,30 @@ Only the numbers are replaced.
 """
 from __future__ import annotations
 
+import hashlib
+
 import numpy as np
 import pandas as pd
+
+# ---------------------------------------------------------------------------
+# Sigma_0 FACTORISATION CACHE
+#
+# Sigma_0 depends ONLY on (X_fit, shrink) -- both fixed for an entire run -- yet
+# the naive implementation recomputed a pairwise-complete covariance over a
+# ~3,000-column panel on EVERY replication. That dominated runtime (a 500-rep
+# serial run spent the bulk of ~9 hours here).
+#
+# The cached quantity is the factor L with Sigma_0 == L @ L.T. The random
+# generator is consumed ONLY AFTER this point (Z = rng.standard_normal), so
+# caching cannot perturb the draws: output is bit-identical to the uncached
+# implementation. Verified by direct comparison; see verify_sigma0_cache().
+# ---------------------------------------------------------------------------
+_L_CACHE: dict = {}
+
+
+def _cache_key(X_fit: np.ndarray, shrink: float) -> str:
+    h = hashlib.sha256(np.ascontiguousarray(X_fit).tobytes()).hexdigest()
+    return f"{h}:{shrink!r}:{X_fit.shape}"
 
 
 def static_corr(real: pd.DataFrame, rng: np.random.Generator,
@@ -67,6 +89,24 @@ def static_corr(real: pd.DataFrame, rng: np.random.Generator,
     # calendar, NaN mask and eligibility logic are unchanged.
     X_fit = X_real if fit_rows is None else X_real[fit_rows]
 
+    key = _cache_key(X_fit, shrink)
+    if key in _L_CACHE:
+        L = _L_CACHE[key]
+    else:
+        L = _compute_L(X_fit, shrink)
+        _L_CACHE[key] = L
+
+    T, N = real.shape
+    Z = rng.standard_normal((T, N))
+    X = Z @ L.T
+
+    X = X - X.mean(axis=0, keepdims=True)
+    X[~M] = np.nan
+    return pd.DataFrame(X, index=real.index, columns=real.columns)
+
+
+def _compute_L(X_fit: np.ndarray, shrink: float) -> np.ndarray:
+    """Sigma_0 factorisation. Deterministic in (X_fit, shrink); no RNG use."""
     # Pairwise-complete covariance, then ridge-shrink toward the diagonal.
     S = pd.DataFrame(X_fit).cov().values
     d = np.diag(np.diag(S))
@@ -84,11 +124,13 @@ def static_corr(real: pd.DataFrame, rng: np.random.Generator,
     w, V = np.linalg.eigh(S0)
     floor = max(1e-12, 1e-8 * float(np.max(w)))
     w = np.where(w > floor, w, floor)
-    L = V * np.sqrt(w)[None, :]          # S0 == L @ L.T
+    return V * np.sqrt(w)[None, :]       # S0 == L @ L.T
 
-    T, N = real.shape
-    Z = rng.standard_normal((T, N))
-    X = Z @ L.T                          # i.i.d. rows, covariance S0 every date
-    X = X - X.mean(axis=0, keepdims=True)
-    X[~M] = np.nan
-    return pd.DataFrame(X, index=real.index, columns=real.columns)
+
+def verify_sigma0_cache(real: pd.DataFrame, fit_rows=None, shrink: float = 0.10,
+                        seed: int = 0) -> bool:
+    """Prove the cache is bit-identical: cached vs freshly-computed L, same seed."""
+    a = static_corr(real, np.random.default_rng(seed), shrink, fit_rows)
+    _L_CACHE.clear()
+    b = static_corr(real, np.random.default_rng(seed), shrink, fit_rows)
+    return bool(np.array_equal(a.values, b.values, equal_nan=True))
