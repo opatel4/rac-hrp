@@ -70,7 +70,7 @@ def test_timing_on_perfect_calendar():
 
 def test_bootstrap_null_calibration():
     ps = []
-    for s in range(200):
+    for s in range(2000):
         rng = np.random.default_rng(1000 + s)
         vi = rng.standard_normal(E)
         fired = rng.random(E) < 0.48
@@ -81,7 +81,9 @@ def test_bootstrap_null_calibration():
     ps = np.array(ps)
     rate = float(np.mean(ps <= 0.05))
     check("bootstrap correctly calibrated under the null",
-          abs(rate - 0.05) < 0.04, f"P(p<=0.05) = {rate:.3f} over 200 null datasets")
+          abs(rate - 0.05) < 0.02,
+          f"P(p<=0.05) = {rate:.3f} over 2000 null datasets "
+          f"(B_boot=600; MC SE ~{(rate*(1-rate)/len(ps))**0.5:.4f})")
 
 
 def test_bootstrap_detects_real_effect():
