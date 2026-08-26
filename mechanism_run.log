@@ -1,0 +1,47 @@
+==============================================================================
+  PHASE 2A POST-MORTEM -- MECHANISM NULL (parallel)
+==============================================================================
+  Phase 2A is CLOSED. No outcome here can reopen it.
+  workers=12  reps/env=500
+  real: E=233, g0.5:n=149 B=+0.1824, g1.0:n=111 B=+0.3182, g1.5:n=81 B=+0.4125, g2.0:n=58 B=+0.5263
+       50/1500     1.5 min
+      100/1500     2.3 min
+      150/1500     3.1 min
+      200/1500     3.9 min
+      250/1500     4.7 min
+      300/1500     5.5 min
+      350/1500     6.3 min
+      400/1500     7.1 min
+      450/1500     7.9 min
+      500/1500     8.7 min
+      550/1500    14.9 min
+      600/1500    15.8 min
+      650/1500    16.8 min
+      700/1500    17.7 min
+      750/1500    18.6 min
+      800/1500    19.6 min
+      850/1500    20.5 min
+      900/1500    21.4 min
+      950/1500    22.3 min
+     1000/1500    23.2 min
+     1050/1500    24.1 min
+     1100/1500    24.9 min
+     1150/1500    25.8 min
+     1200/1500    26.6 min
+     1250/1500    27.4 min
+     1300/1500    28.3 min
+     1350/1500    29.2 min
+     1400/1500    30.0 min
+     1450/1500    30.9 min
+     1500/1500    31.7 min
+------------------------------------------------------------------------------
+ gamma   real_B  real_n  A_iid_gaussian_q2.5  A_iid_gaussian_q97.5  A_iid_gaussian_pr_undefined  S_static_corr_q2.5  S_static_corr_q97.5  S_static_corr_pr_undefined  D_regime_switch_vol_q2.5  D_regime_switch_vol_q97.5  D_regime_switch_vol_pr_undefined
+   0.5 0.182432     149             0.061846              0.156596                          0.0            0.032568             0.116525                         0.0                  0.045424                   0.166142                               0.0
+   1.0 0.318182     111             0.122421              0.272308                          0.0            0.100286             0.237049                         0.0                  0.139976                   0.305588                               0.0
+   1.5 0.412500      81             0.140351              0.361192                          0.0            0.095179             0.296296                         0.0                  0.163334                   0.406780                               0.0
+   2.0 0.526316      58             0.107143              0.392120                          0.0            0.000000             0.295261                         0.0                  0.105203                   0.440154                               0.0
+
+  => OUTCOME 2_beyond_regime_free_mechanics
+  PHASE 2A REMAINS CLOSED under every outcome.
+
+  record : outputs/phase2_mechanism/mechanism_null.json
