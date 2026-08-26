@@ -9,7 +9,7 @@ no runner is written until this is signed.*
 | **Experiment** | Post-gate mechanism diagnostic (Phase 2A post-mortem) |
 | **Question** | Does the frozen RAC trigger architecture itself generate temporal burstiness on regime-free input? |
 | **Prepared by** | Om Patel |
-| **Status** | PRE-SPECIFICATION rev.3 — nine advisor fixes applied; awaiting countersignature |
+| **Status** | PRE-SPECIFICATION rev.4 — thirteen advisor fixes applied; awaiting countersignature |
 
 ## 0. Binding constraint on any outcome
 
@@ -47,7 +47,13 @@ whether it bursts anyway.
 
 Data-generating process, frozen:
 
-> r*_t ~ iid N(0, Sigma_0)  for every t, with Sigma_0 IDENTICAL at every date.
+> Raw draws: r*_t ~ iid N(0, Sigma_0) for every t, with Sigma_0 IDENTICAL at every date.
+>
+> **Emitted panel:** the generated series is subsequently recentred by its own
+> simulated per-asset sample mean. This imposes a deterministic zero-sample-mean
+> constraint, so the emitted rows are **not strictly independent**, although no
+> temporal regime and no real-data future information is introduced. The claim
+> frozen here is the DGP plus this recentring, not exact iid output.
 
 Sigma_0 construction, documenting the existing implementation exactly (not an
 idealisation of it):
@@ -57,7 +63,7 @@ idealisation of it):
 | Estimation sample | **DEVELOPMENT-REGION ROWS ONLY** (dates < TEST_START = 2023-01-03), passed as an explicit boolean `fit_rows` mask |
 | Estimator | pandas `DataFrame.cov()` — pairwise-complete sample covariance, mean-removed, ddof = 1 |
 | NaN treatment (fit) | pairwise-complete: each entry uses dates where both assets are observed |
-| Demeaning | yes, by the estimator; output additionally demeaned per asset |
+| Demeaning | yes, by the estimator (fit); the emitted panel is additionally recentred by its own simulated per-asset mean — see the DGP note above |
 | Conditioning | ridge shrink toward the diagonal, `shrink = 0.10`: Sigma_0 = 0.9·S + 0.1·diag(S) |
 | Non-finite repair | non-finite entries set to 0; non-finite/non-positive diagonal entries set to the median variance |
 | Symmetrisation | Sigma_0 <- (Sigma_0 + Sigma_0^T)/2 |
@@ -89,9 +95,9 @@ to environments A and D**, whose per-asset volatility matching (`real.std()`) ha
 the identical exposure: all three environments receive a development-region-only
 fitting sample and emit full-length panels.
 
-**Why S is the adjudicating null.** A has an approximately flat population
-eigenspectrum, so AR has little genuine movement and dAR is close to estimation
-noise. If A bursts, that is decisive evidence of a mechanical artefact — but if A
+**Why S is the adjudicating null.** A has no cross-asset correlation structure, so any covariance concentration comes
+only from cross-sectional variance heterogeneity; AR has little genuine movement and
+dAR is close to estimation noise. If A bursts, that is decisive evidence of a mechanical artefact — but if A
 does *not* burst, the trigger is not thereby cleared, because the suspected
 mechanism is the interaction of ~96%-overlapping estimation windows with
 *persistent* correlation structure, which A never presents. S supplies exactly
@@ -130,10 +136,11 @@ Existing implementation `regime_switch_vol`, parameters frozen as its defaults:
 
 **Regime frequency relative to the estimation window (stated limitation).** Because
 the state advances daily, expected episodes are ~100 and ~33 trading days, i.e.
-~4.8 and ~1.6 rebalance periods. A 504-day covariance window therefore spans roughly
-5 complete state-0 episodes and 15 state-1 episodes, so each window sees a blend of
-states rather than a single regime, and the pipeline's own estimation window
-substantially averages D's regimes away. D is consequently a **high-frequency**
+~4.8 and ~1.6 rebalance periods. At stationarity the chain spends approximately 75%
+of observations in state 0 and 25% in state 1 (pi_0 = p_10/(p_01+p_10) = 0.75), with
+a mean low/high cycle of ~133 days. A 504-day covariance window therefore spans
+roughly **3.8 complete cycles** on average, so the estimator materially averages
+across the designed regimes rather than seeing any single one. D is consequently a **high-frequency**
 positive control: it establishes what the frozen machinery does when covariance
 concentration shifts on a timescale short relative to W, not what it would do under
 slow, persistent regimes. Read the Outcome-2 D-overlap clause with that in mind; a
@@ -143,6 +150,20 @@ The two independent multipliers are what make D a valid positive control: the
 factor/idiosyncratic variance ratio shifts between states, so covariance
 *concentration* changes and AR responds. A common scalar volatility regime
 (Sigma_2 = c·Sigma_1) would cancel in the AR ratio and be useless here.
+
+### Post-generation recentring differs by environment (FIX 10)
+
+Documented as implemented, not idealised:
+
+| Env | Post-draw operations on the generated panel |
+|---|---|
+| **A** | none — raw vol-matched iid draws, no recentring, no rescaling |
+| **S** | recentred by simulated per-asset sample mean |
+| **D** | rescaled by the simulated per-asset `nanstd` to the development-region volatility target, then recentred by simulated per-asset mean |
+
+S and D therefore emit rows that are not strictly independent (zero-sample-mean
+constraint); A does. No environment introduces temporal regime structure or
+real-data future information by these operations.
 
 ## 3. What is held fixed (the machinery under test must be bit-for-bit frozen)
 
@@ -209,6 +230,8 @@ relative to `structural_pass`.
 | `MECH_SEED_BASE` | **20260822** |
 | Placement lookup m(n) | 10,000 draws per distinct n, `default_rng(MECH_SEED_BASE + 500000 + n)`, cached |
 | BLAS | `OPENBLAS_NUM_THREADS=1` |
+| Quantile implementation | `numpy.percentile(..., method="linear")`, computed over `timing_defined = True` replications only |
+| Boundary equality | Outcome 1 interval endpoints **inclusive**; Outcome 2 requires **strictly greater than** the 97.5th percentile |
 
 **Measured runtime.** One `structural_pass` = 6.0s (A) / 5.9s (D) with BLAS pinned
 to one thread; 1,500 passes ≈ **2.5 hours serial**. 500 replications puts ~12–13
@@ -237,11 +260,15 @@ then:
 
 > The observed temporal clustering is compatible with burstiness generated by the
 > frozen trigger architecture under persistent but regime-free covariance
-> structure. It therefore cannot be attributed to regime changes.
+> structure. **Comparable burstiness therefore does not require regime changes and
+> cannot be uniquely attributed to them.** (Compatibility with S does not prove that
+> real-market regimes played no role; it establishes that regimes are not necessary
+> to reproduce comparable burstiness.)
 
 If in addition B_gamma^real lies inside A's central 95% for all four gammas,
-strengthen to: the pipeline generates comparable burstiness even absent
-cross-sectional correlation structure — the clearest architectural diagnosis.
+strengthen to: comparable burstiness can arise even without cross-asset correlation
+structure — the clearest architectural diagnosis. This does not establish that the
+real burstiness definitely arose mechanically.
 
 **Outcome 2 — information beyond regime-free mechanics.** If, for all four gammas,
 
@@ -260,8 +287,9 @@ real episodes are regimes.
 **Outcome 3 — mixed.** Any configuration not satisfying Outcome 1 or Outcome 2 in
 full:
 
-> The mechanism diagnostic is inconclusive; pipeline mechanics explain some but not
-> all of the observed burstiness.
+> The diagnostic does not yield a uniform mechanism classification across the four
+> frozen gamma values. (A mixed result does not identify what proportion of the
+> burstiness is "explained".)
 
 No binary conclusion is forced. Under every outcome, Phase 2A remains failed and
 closed.
