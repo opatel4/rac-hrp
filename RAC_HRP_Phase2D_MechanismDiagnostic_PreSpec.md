@@ -9,7 +9,7 @@ no runner is written until this is signed.*
 | **Experiment** | Post-gate mechanism diagnostic (Phase 2A post-mortem) |
 | **Question** | Does the frozen RAC trigger architecture itself generate temporal burstiness on regime-free input? |
 | **Prepared by** | Om Patel |
-| **Status** | PRE-SPECIFICATION rev.2 — six advisor fixes applied; awaiting countersignature |
+| **Status** | PRE-SPECIFICATION rev.3 — nine advisor fixes applied; awaiting countersignature |
 
 ## 0. Binding constraint on any outcome
 
@@ -40,7 +40,7 @@ whether it bursts anyway.
 | Label | Generator | Role | Status |
 |---|---|---|---|
 | **A** | `iid_gaussian` — vol-matched, zero cross-correlation, no time dependence | **Floor control** | exists |
-| **S** | `static_corr` — one fixed Sigma_0 from the real panel, i.i.d. draws through time | **Primary / adjudicating null** | written, sandbox-verified, registration pending this signature |
+| **S** | `static_corr` — **static covariance structure**: one fixed Sigma_0, i.i.d. draws through time (Sigma_0 is constant in time, NOT an equicorrelation matrix) | **Primary / adjudicating null** | written, sandbox-verified, registration pending this signature |
 | **D** | `regime_switch_vol` — two-state Markov, vol AND factor loadings scale | **Positive control** | exists, verified below |
 
 ### S — complete mathematical specification (FIX 1)
@@ -67,9 +67,17 @@ idealisation of it):
 | Asset volatility | preserved implicitly via Sigma_0's diagonal (no separate vol rescaling) |
 | Universe mapping | fixed Sigma_0 over all panel columns; the real NaN mask is reapplied, so the point-in-time universe selects from it unchanged |
 
-`shrink = 0.10` is numerical conditioning, not a modelling choice, and it slightly
-*reduces* covariance concentration — making S a **conservative** null: any
-burstiness it produces would be at least as large under the unshrunk structure.
+A fixed 10% diagonal shrinkage is applied as a **pre-specified regularisation step**
+before PSD flooring. It is required for the factorisation to be well behaved on the
+indefinite pairwise-complete matrix, but it changes the covariance structure supplied
+to the experiment as well as its conditioning, and is therefore a modelling choice,
+not pure conditioning. **No monotonic effect on downstream trigger burstiness is
+assumed**: burstiness is produced downstream through covariance estimation,
+eigendecomposition, smoothing, differencing and the rolling threshold, and its
+response to off-diagonal shrinkage is not established to be monotonic. The value
+0.10 is frozen here, before any mechanism-diagnostic result exists; no sensitivity
+sweep is performed, as that would convert a narrow mechanism question into a tuning
+exercise.
 
 **Test-region leakage, found during specification and fixed.** The panel runs to
 the CRSP vintage end (2024-12-31) and therefore contains test-region dates. Fitting
@@ -98,7 +106,7 @@ does not have this defect: it applies two separate multipliers, `scale`
 (corr_shift 1.4) to the **factor component only**, so the factor/idiosyncratic
 variance ratio shifts between states. That is a genuine change in covariance
 concentration, which is what AR measures. Noted for the record: D renormalises
-each asset to its real full-sample volatility unconditionally, which damps
+each asset unconditionally to its development-region volatility target, which damps
 absolute vol regimes while leaving the relative concentration shift intact — which
 is the property AR responds to.
 
@@ -110,14 +118,26 @@ Existing implementation `regime_switch_vol`, parameters frozen as its defaults:
 |---|---|
 | States | two, Markov |
 | Transition | P(stay in state 0) = 0.99; P(stay in state 1) = 0.97; equivalently p_01 = 0.01, p_10 = 0.03 |
-| Expected durations | ~100 rebalance-days in state 0, ~33 in state 1 |
+| Expected durations | ~100 **daily return observations** in state 0, ~33 in state 1 (the state advances once per panel row, not per rebalance) |
 | Initial state | state[0] = 0 (low state), deterministic |
 | Factors | `n_factors = 3`, loadings B ~ N(0,1), drawn once per replication |
 | Volatility scaling | `vol_ratio = 2.5` applied to BOTH factor scores F and idiosyncratic E |
 | Concentration shift | `corr_shift = 1.4` applied to the FACTOR COMPONENT ONLY |
 | Generating equation | X = (F·B^T)·load·0.35 + E, with scale on F and E, load on the factor term |
-| Normalisation | per-asset rescale to real full-sample volatility, then per-asset demean (unconditional, not per-state) |
+| Volatility target | per-asset volatility estimated from **development-region rows only** (`fit_rows`); no test-region returns enter the fitted targets |
+| Normalisation | unconditional per-asset rescale to that target, then per-asset demean (unconditional, not per-state) |
 | Conditional means | zero in both states |
+
+**Regime frequency relative to the estimation window (stated limitation).** Because
+the state advances daily, expected episodes are ~100 and ~33 trading days, i.e.
+~4.8 and ~1.6 rebalance periods. A 504-day covariance window therefore spans roughly
+5 complete state-0 episodes and 15 state-1 episodes, so each window sees a blend of
+states rather than a single regime, and the pipeline's own estimation window
+substantially averages D's regimes away. D is consequently a **high-frequency**
+positive control: it establishes what the frozen machinery does when covariance
+concentration shifts on a timescale short relative to W, not what it would do under
+slow, persistent regimes. Read the Outcome-2 D-overlap clause with that in mind; a
+non-overlap does not by itself argue against slower real regimes.
 
 The two independent multipliers are what make D a valid positive control: the
 factor/idiosyncratic variance ratio shifts between states, so covariance
@@ -230,7 +250,7 @@ cross-sectional correlation structure — the clearest architectural diagnosis.
 then:
 
 > The observed burstiness exceeds that generated by the frozen pipeline under both
-> uncorrelated and static-correlated regime-free inputs.
+> uncorrelated and static-covariance regime-free inputs.
 
 If D's central 95% additionally overlaps B_gamma^real for all four gammas, add:
 the observed timing is *consistent with* the pipeline's behaviour under designed
@@ -245,6 +265,14 @@ full:
 
 No binary conclusion is forced. Under every outcome, Phase 2A remains failed and
 closed.
+
+**Reporting requirement.** The all-four-gamma rule is deliberately strict, so
+Outcome 3 may well obtain — particularly if one gamma behaves differently from the
+others. The full four-gamma distributional table (per environment: null quantiles,
+real B_gamma, and Pr(n_gamma < 2)) is reported **regardless of which outcome the
+formal classification returns**. The observed pattern may be scientifically
+informative even when it fails the categorical rule. The rule is not weakened after
+seeing results.
 
 ## 7. Deliverables
 
