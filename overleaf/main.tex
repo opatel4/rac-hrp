@@ -167,13 +167,16 @@ frozen machinery, and show across 1{,}500 replications that neither an uncorrela
 nor a static-covariance environment reproduces the observed burstiness at any
 threshold.
 
-\paragraph{A decomposition of modified HRP.} A frozen estimator sweep separates two
-of \citeauthor{molyboga2020}'s \citeyearpar{molyboga2020} modifications, finding that
-the covariance modification helps in this sample while the allocation modification
-does not.
+\paragraph{A transfer test of modified HRP components.} A frozen estimator sweep
+applies two of \citeauthor{molyboga2020}'s \citeyearpar{molyboga2020} three
+modifications, separately, to a large-cap equity universe. The covariance modification
+transfers; the equal-volatility allocation reverses sign relative to its
+managed-futures result, under every estimator tested.
 
 \paragraph{A hash-pinned reproducibility record}, including a machine-checkable
-assertion that the holdout sample was never opened.
+assertion that the holdout sample was never opened. This is a single-author study, so
+the protocol's commitments rest on hashed specifications and commit timestamps rather
+than on independent review (Section~\ref{sec:no-independent-authorisation}).
 
 \section{Related Work}
 

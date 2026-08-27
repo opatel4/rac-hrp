@@ -152,12 +152,15 @@ null in which regime-free returns are pushed through the identical frozen
 machinery, and show across 1,500 replications that neither an uncorrelated nor a
 static-covariance environment reproduces the observed burstiness at any threshold.
 
-**A decomposition of modified HRP.** A frozen estimator sweep separates two of
-Molyboga's (2020) modifications, finding that the covariance modification helps in
-this sample while the allocation modification does not.
+**A transfer test of modified HRP components.** A frozen estimator sweep applies two
+of Molyboga's (2020) three modifications, separately, to a large-cap equity universe.
+The covariance modification transfers; the equal-volatility allocation reverses sign
+relative to its managed-futures result, under every estimator tested.
 
 **A hash-pinned reproducibility record**, including a machine-checkable assertion
-that the holdout sample was never opened.
+that the holdout sample was never opened. This is a single-author study, so the
+protocol's commitments rest on hashed specifications and commit timestamps rather
+than on independent review (Section 7.6).
 
 ---
 
