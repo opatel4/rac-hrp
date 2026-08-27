@@ -9,7 +9,7 @@ print), extended so that the audit control is durable and honest:
   * `unlock(reason)`            -> ALWAYS an `analysis` touch.  Writes a
                                    durable, hash-chained event to disk.
                                    This is the number that participates in
-                                   single-touch / countersignature reconciliation.
+                                   single-touch / freeze reconciliation.
 
   * `unlock_for_selftest(reason)` -> the ONLY way to produce a `unit_test`
                                    touch.  Guarded: raises unless it is

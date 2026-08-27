@@ -119,8 +119,7 @@ anyway will be uninterpretable — a positive result cannot be distinguished fro
 specification search, and a negative result cannot be distinguished from bad luck.
 
 Concretely, we pre-register a **conjunctive structural gate** with five hard
-criteria evaluated on a development region, freeze it under countersignature
-before any Phase 2 code is written, and implement it so that the selection rule is
+criteria evaluated on a development region, freeze and hash it before any Phase 2 gate code is written, and implement it so that the selection rule is
 applied automatically in code. The implementation never calls the backtest engine's
 return path and never touches the risk-free series; it is *incapable* of producing a
 Sharpe ratio. Performance evaluation is reachable only through the gate.
@@ -217,8 +216,7 @@ what informal specification search leaves unrecorded.
 psychological research, and has been proposed for finance, but published
 applications in empirical portfolio construction remain rare. To our knowledge this
 is the first study in this literature to pre-register a conjunctive structural gate
-whose selection rule is executed in code, to freeze it under countersignature
-before implementation, and to report the resulting negative outcome without
+whose selection rule is executed in code, to hash the specification before writing the implementing code, and to report the resulting negative outcome without
 amendment.
 
 ---
@@ -439,8 +437,7 @@ density: observed modal-gap share exceeds the placement null at every γ. But a
 placement null cannot separate the two mechanisms above, because it never exercises
 the pipeline.
 
-We therefore pre-registered a **pipeline-level null**, countersigned before
-execution, with the decision rule fixed in advance and applied mechanically. Three
+We therefore pre-registered a **pipeline-level null**, frozen and hashed before execution, with the decision rule fixed in advance and applied mechanically. Three
 environments are pushed through the *identical unmodified* frozen machinery,
 preserving the real NaN mask, membership path, market caps, rebalance dates,
 *W*, *k*, smoothing and σ̂:

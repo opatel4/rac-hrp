@@ -1,7 +1,7 @@
 """
 rac_hrp.nulls.gate_v2_stats
 ===========================
-The exact statistical rules from the signed protocol, isolated so they can be
+The exact statistical rules from the frozen protocol, isolated so they can be
 unit-tested against hand-computed values independent of the simulation.
 
 Every formula here is quoted from the amendments. Nothing is improvised.

@@ -1,6 +1,6 @@
 # ERRATUM E1 — Phase 2 Pre-Registration rev.5, Section 1
 
-**Attaches to:** RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.docx (frozen, countersigned)
+**Attaches to:** RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.docx (frozen, hashed)
 **Type:** documentation provenance correction. NOT a methodological amendment.
 **Effect on decision rule or any gate conclusion:** NONE.
 **Issued:** post-gate, on advisor ruling. The frozen document is not edited; this

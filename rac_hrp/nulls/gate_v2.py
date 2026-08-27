@@ -1,7 +1,7 @@
 """
 rac_hrp.nulls.gate_v2
 =====================
-Null Gate v2 -- the frozen, two-tier gate authorized by the signed protocol (rev.2).
+Null Gate v2 -- the frozen, two-tier gate authorized by the frozen protocol (rev.2).
 
 Structure:
   * PRIMARY GATE (gating): RAC-HRP vs same-policy comparators {HRP_static,
@@ -121,7 +121,7 @@ class V2Report:
         } for c in self.diagnostic])
 
     def __str__(self) -> str:
-        L = ["NULL GATE v2  (frozen; signed protocol rev.2)",
+        L = ["NULL GATE v2  (frozen; frozen protocol rev.2)",
              "=" * 60, "",
              "PRIMARY GATE (same-policy; gating):",
              self.primary_table().to_string(index=False), "",

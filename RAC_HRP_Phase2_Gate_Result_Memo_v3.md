@@ -11,7 +11,7 @@ rule, no "least bad" candidate is selected; the recorded conclusion is that the
 current trigger specification is not admissible on the development region. This is
 a reportable finding, not a pipeline failure.
 
-The gate ran on the countersigned specification (PHASE 2 PRE-REGISTRATION rev.5).
+The gate ran on the frozen specification (PHASE 2 PRE-REGISTRATION rev.5).
 Performance was not computed and could not have influenced selection — the
 orchestrator never calls the engine's return path and never touches the
 risk-free series. Everything downstream of the gate (Null Gate v2, performance)

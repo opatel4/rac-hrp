@@ -8,7 +8,7 @@ Three call sites derive environment lists or SEEDS from that dict's contents and
 ordering (gate.py:220; condition2_static_vs_erc.py:102 and
 diagnostic_static_vs_erc.py:69 via list(ENVIRONMENTS.keys()).index(ENV)), and
 gate_v2_config.py:89 keeps a parallel ENVIRONMENT_ORDER tuple. Adding a fifth key
-would perturb the countersigned Phase 0.5 gate. The mechanism runner dispatches
+would perturb the frozen Phase 0.5 gate. The mechanism runner dispatches
 this function directly instead; nothing in rac_hrp/nulls/ is edited.
 
 Named S, not C, because C_trigger_timing already exists.

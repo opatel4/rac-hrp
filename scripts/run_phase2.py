@@ -1,7 +1,7 @@
 """
 Phase 2 -- STRUCTURAL CALIBRATION GATE  (DEVELOPMENT REGION ONLY).
 
-Executes steps 1-3 of the procedure frozen in the countersigned pre-registration
+Executes steps 1-3 of the procedure frozen in the frozen pre-registration
     "PHASE 2 - PRE-REGISTRATION & CALIBRATION GATE (rev.5)"
 
     Step 1  structural diagnostics only, for every gamma candidate
@@ -66,7 +66,7 @@ def main() -> int:
     print("=" * 78)
     print("  PHASE 2 -- STRUCTURAL CALIBRATION GATE   (DEVELOPMENT REGION ONLY)")
     print("=" * 78)
-    print("  Frozen specification: PHASE 2 PRE-REGISTRATION rev.5 (countersigned)")
+    print("  Frozen specification: PHASE 2 PRE-REGISTRATION rev.5 (frozen)")
     print("  Performance is NOT computed at this stage.")
     print("  Test-region evaluation is structurally blocked.")
     print()

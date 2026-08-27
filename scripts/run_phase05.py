@@ -64,7 +64,7 @@ def main() -> int:
     ap.add_argument("--quick", action="store_true",
                     help="short eval window + few reps; smoke test only")
     ap.add_argument("--gate", default="v1", choices=["v1","v2"],
-                    help="v2 = frozen two-tier gate (signed protocol rev.2)")
+                    help="v2 = frozen two-tier gate (frozen protocol rev.2)")
     ap.add_argument("--universe", default="crsp_largecap",
                     choices=["sp500", "crsp_largecap"],
                     help="which T3 validation gate to apply (D1)")
@@ -194,7 +194,7 @@ def main() -> int:
 
     if a.gate == "v2":
         from rac_hrp.nulls.gate_v2 import run_gate_v2
-        print("\n  NULL GATE v2 (frozen; signed protocol rev.2)")
+        print("\n  NULL GATE v2 (frozen; frozen protocol rev.2)")
         v2rep = run_gate_v2(P, cfg, gate_eval, outdir=os.path.join(a.outdir,"null_gate_v2"), verbose=True)
         print(v2rep)
         print("\n  freeze manifest written to", os.path.join(a.outdir,"null_gate_v2","freeze_manifest.json"))

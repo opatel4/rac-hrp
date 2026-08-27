@@ -30,11 +30,11 @@ hard to falsify it.
 Most of the engineering here is not about generating returns. It is about making a
 performance number mean something. Three commitments drive the structure:
 
-**1. Decisions are pre-registered and countersigned before data is seen.**
+**1. Decisions are pre-registered, hashed, and frozen before data is seen.**
 Structural choices (universe, covariance window rule, fold geometry, decision rules) are
 frozen in a pre-analysis plan. Amendments require a documented evidence trail and
 independent approval. `CHANGELOG.md` is the audit trail; `docs/protocol/` holds the
-signed protocols.
+frozen protocols.
 
 **2. The pipeline must fail a null before it is trusted.**
 A synthetic-null gate destroys the signal in the data, keeps the pipeline, and demands
@@ -69,7 +69,7 @@ scripts/
   run_phase1.py        static baselines (development region only)
 tests/                 unit tests
 docs/
-  protocol/            signed protocols and decision memoranda
+  protocol/            frozen protocols and decision memoranda
   literature/          our own review notes (third-party PDFs are not redistributed)
 results/               curated, publishable result artifacts (see results/README.md)
 ```

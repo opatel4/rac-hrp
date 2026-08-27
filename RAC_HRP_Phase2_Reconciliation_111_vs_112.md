@@ -58,7 +58,7 @@ a false reconciliation. It is not done.
 
 If `RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.docx` presents 112 / 48.1% as the
 gamma = 1.0 **firing rate / trigger count**, that is a mislabelled figure in the
-countersigned pre-registration: the value is a Phase 0.5 `refit` count, not a
+frozen pre-registration: the value is a Phase 0.5 `refit` count, not a
 trigger count. The number is real; it is attached to the wrong quantity. This is
 a documentation defect in a frozen artefact, not a code bug. It must be confirmed
 by reading the docx (not yet available in reproducible form) and, if present,

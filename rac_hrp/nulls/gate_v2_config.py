@@ -3,12 +3,12 @@ rac_hrp.nulls.gate_v2_config
 ============================
 FROZEN configuration for Null Gate v2.
 
-This module encodes the parameters fixed in the signed protocol (rev.2) and its
+This module encodes the parameters fixed in the frozen protocol (rev.2) and its
 amendments. Every value here is locked. Changing any of them invalidates the
 freeze and the gate must be re-authorized. The freeze manifest (see
 gate_v2.freeze_manifest) hashes this file so alteration is detectable.
 
-Signed protocol references are given inline as [P§n] / [A-n].
+frozen protocol references are given inline as [P§n] / [A-n].
 """
 
 from __future__ import annotations

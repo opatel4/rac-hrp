@@ -3,7 +3,7 @@
 **Experiment:** RAC-HRP Phase 2A, structural calibration gate for the
 absorption-ratio change trigger (development region only).
 **Outcome:** PHASE 2 CLOSED — NO ADMISSIBLE gamma. Negative result, advisor-approved.
-**Frozen specification:** RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.docx (countersigned).
+**Frozen specification:** RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.docx (frozen and hashed; single-author, no independent authorization).
 
 This index binds the artefacts that constitute the Phase 2A record. Commit hashes
 below are the authoritative pointers; the manifests additionally embed the code
@@ -22,7 +22,7 @@ quantity was ever computed.
 
 | # | Artefact | Path | Role |
 |---|----------|------|------|
-| 1 | Frozen pre-registration | RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.docx | countersigned spec (external) |
+| 1 | Frozen pre-registration | RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.docx | frozen spec, docs/protocol/phase2_prereg/ |
 | 2 | Gate manifest | outputs/phase2/calibration_manifest.json | frozen gate record; embeds code hashes |
 | 3 | Gate table | outputs/phase2/calibration_table.csv | per-gamma criteria + pass/fail |
 | 4 | Erratum E1 | RAC_HRP_Phase2_rev5_ERRATUM_E1.md | corrects §1 112->111 provenance error |
@@ -96,7 +96,7 @@ quarantined, not explained.
 
 | # | Artefact | Path |
 |---|---|---|
-| 1 | Pre-specification rev.4 (countersigned) | RAC_HRP_Phase2D_MechanismDiagnostic_PreSpec.md |
+| 1 | Pre-specification rev.4 (frozen, hashed) | RAC_HRP_Phase2D_MechanismDiagnostic_PreSpec.md |
 | 2 | Result memo (advisor-approved) | RAC_HRP_Phase2D_Mechanism_Result_Memo.md |
 | 3 | Implementation deviation record ID1 | RAC_HRP_Phase2D_ImplementationDeviationRecord_ID1.md |
 | 4 | Run manifest + replications | outputs/phase2_mechanism/mechanism_null.json |
@@ -110,7 +110,7 @@ quarantined, not explained.
 
 | Commit | Scope |
 |--------|-------|
-| 5dd92b4 | pre-specification rev.4 (countersigned) |
+| 5dd92b4 | pre-specification rev.4 (frozen, hashed) |
 | 194bb6d | mechanism runner + environment S (standalone) |
 | 516df25 | Sigma_0 factorisation cache + parallel runner |
 | 703ea97 | mechanism null result + run log |
