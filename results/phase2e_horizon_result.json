@@ -1,0 +1,70 @@
+{
+  "diagnostic": "2E-HORIZON",
+  "specification": "RAC_HRP_Phase2E_PreSpec_rev5.md (frozen, hashed)",
+  "spec_sha256": "6153831fa0da7a52673a48bd24cc208fabd857715d7e3a2e5c61c0162ef88b46",
+  "gating": false,
+  "phase2a_verdict_unchanged": "NO ADMISSIBLE GAMMA",
+  "horizon": 5,
+  "n_eligible": 233,
+  "bootstrap_seed_base": 100756712,
+  "bootstrap_replicates": 10000,
+  "alpha": 0.05,
+  "cov_window": 504,
+  "n_assets": 100,
+  "dev_span": [
+    "2003-01-08",
+    "2022-12-30"
+  ],
+  "outcome": "H",
+  "cells": [
+    {
+      "gamma": 0.5,
+      "n_events": 149,
+      "d_vi_h": 0.06616844604566197,
+      "p_raw": 0.043195680431956804,
+      "p_holm": 0.08639136086391361,
+      "block_length": 13,
+      "degenerate": 0,
+      "median_vi_fired": 0.8225940908740483,
+      "median_vi_not": 0.7564256448283864
+    },
+    {
+      "gamma": 1.0,
+      "n_events": 111,
+      "d_vi_h": 0.059984573150975384,
+      "p_raw": 0.044795520447955206,
+      "p_holm": 0.08639136086391361,
+      "block_length": 13,
+      "degenerate": 0,
+      "median_vi_fired": 0.821547384772765,
+      "median_vi_not": 0.7615628116217896
+    },
+    {
+      "gamma": 1.5,
+      "n_events": 81,
+      "d_vi_h": 0.08144641842008848,
+      "p_raw": 0.0045995400459954,
+      "p_holm": 0.0183981601839816,
+      "block_length": 13,
+      "degenerate": 0,
+      "median_vi_fired": 0.8381551461262675,
+      "median_vi_not": 0.756708727706179
+    },
+    {
+      "gamma": 2.0,
+      "n_events": 58,
+      "d_vi_h": 0.10375790743684843,
+      "p_raw": 0.014098590140985901,
+      "p_holm": 0.04229577042295771,
+      "block_length": 13,
+      "degenerate": 0,
+      "median_vi_fired": 0.8619594701686968,
+      "median_vi_not": 0.7582015627318484
+    }
+  ],
+  "code_sha256": {
+    "horizon.py": "8334a0f923e392a94b45316b8ce1f4b9a37ee4a58c40632da5458ba1c16eb05e",
+    "calibration.py": "4b9e62951ea9f54725e7b89b19d5ac998e0812867730bb481680fdc9362d0339",
+    "stats.py": "88f9fba50a3dc45bd8bd07ff10d78d06d2be52b1d8c17e2809452de0be31684c"
+  }
+}

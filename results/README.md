@@ -18,6 +18,7 @@ licensed CRSP data, only derived summary numbers:
 | `phase1_baselines.csv` | static baseline performance, development region |
 | `phase1_estimator_sensitivity.csv` | estimator sensitivity (diagnostic; selects nothing) |
 | `phase1_accounting.csv` | accounting reconciliation |
+| `phase2e_horizon_result.json` | 2E-HORIZON, post-gate diagnostic (**non-gating**; confers no admissibility) |
 
 ## What must NOT go here
 
@@ -40,3 +41,12 @@ Copy from your archived Phase 0.5 run:
 Then verify nothing licensed slipped in:
 
     grep -l "permno" results/*.csv || echo "clean -- no security-level identifiers"
+
+## Post-gate diagnostics
+
+`phase2e_horizon_result.json` is a **post-gate, non-gating** diagnostic specified in
+`RAC_HRP_Phase2E_PreSpec_rev5.md`, hashed and committed before the implementing code was
+written. It recomputes the cluster-informativeness statistic at a horizon matched to the
+trigger (five rebalances rather than one) and cannot render any gamma admissible. The
+Phase 2A verdict — NO ADMISSIBLE GAMMA — is unchanged. It must be read alongside 2E-POWER,
+which bounds the design's sensitivity.
