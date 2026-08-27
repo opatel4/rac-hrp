@@ -2,7 +2,7 @@
 MANDATORY validation suite for the frozen EWMA covariance estimator.
 
 Required by the signed amendment "EWMA COVARIANCE (rev.4)", section 4b.
-Advisor condition: EWMA implementation is AUTHORIZED ONLY AFTER THESE PASS.
+Precondition: EWMA implementation is AUTHORIZED ONLY AFTER THESE PASS.
 These are automated tests that must all PASS before any EWMA result is produced;
 the output is saved alongside the code hash.
 

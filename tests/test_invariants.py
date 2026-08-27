@@ -115,7 +115,7 @@ def test_phase2_gate_still_selects_nothing():
 def test_test_region_remains_untouched():
     """The single pre-registered touch has not been spent. If this fails, either
     the region was accessed or the durable audit log was reset -- both require
-    explicit advisor sign-off, never a silent change."""
+    an explicit, logged decision, never a silent change."""
     hv = _headline()
     p = ROOT / "audit" / "test_region_touches.jsonl"
     n = 0

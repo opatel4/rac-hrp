@@ -1,11 +1,11 @@
 # RAC-HRP — Phase 2 Structural Calibration Gate: Result and Post-Gate Findings
 
-*Revision 3 — archival record. Incorporates advisor review, the 111-vs-112
+*Revision 3 — archival record. Incorporates a subsequent review pass, the 111-vs-112
 reconciliation (Erratum E1), the completed modal-gap null characterisation, and
-the advisor's narrowing of the §4a interpretation. Phase 2 is CLOSED; the
+a narrowing of the §4a interpretation. Phase 2 is CLOSED; the
 methodology is not further refined within this experiment.*
 
-**Status: PHASE 2 STOPS AT THE GATE — confirmed under advisor review.** No
+**Status: PHASE 2 STOPS AT THE GATE — confirmed under review.** No
 candidate γ satisfies every hard structural criterion. Per the frozen selection
 rule, no "least bad" candidate is selected; the recorded conclusion is that the
 current trigger specification is not admissible on the development region. This is
@@ -89,7 +89,7 @@ the timing question without fully closing it (§4a, §4d).
 *(established against a placement null only; the SOURCE of the burstiness is
 not established — see 4d)*
 
-A pre-specified null characterisation was run (advisor-approved, post-gate,
+A pre-specified null characterisation was run (pre-specified, post-gate,
 non-rescuing): for each candidate's event count over the E = 233 eligible
 rebalances, 10,000 random equal-size trigger placements were scored with the
 **frozen** `timing_variation`, forming the null distribution of modal_gap_share.

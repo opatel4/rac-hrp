@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Condition 2 (advisor ruling, Null Gate v1) -- the decisive diagnostic.
+Condition 2 (Null Gate v1) -- the decisive diagnostic.
 
 QUESTION. Under Environment D (regime-switching volatility, zero return signal),
 RAC-HRP beat ERC by +0.10 Sharpe (a FAIL) but did NOT beat static HRP (-0.006, a

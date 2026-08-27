@@ -2,7 +2,7 @@
 
 **Experiment:** RAC-HRP Phase 2A, structural calibration gate for the
 absorption-ratio change trigger (development region only).
-**Outcome:** PHASE 2 CLOSED — NO ADMISSIBLE gamma. Negative result, advisor-approved.
+**Outcome:** PHASE 2 CLOSED — NO ADMISSIBLE gamma. Negative result.
 **Frozen specification:** RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.docx (frozen and hashed; single-author, no independent authorization).
 
 This index binds the artefacts that constitute the Phase 2A record. Commit hashes
@@ -30,7 +30,7 @@ quantity was ever computed.
 | 6 | Diagnostic record | outputs/phase2_diagnostics/modal_gap_null.json | modal-gap null characterisation |
 | 7 | Diagnostic script | scripts/diagnose_modal_gap_null.py | reproduces #6; seed 20260821, B=10,000 |
 | 8 | Orchestrator | scripts/run_phase2.py | reproduces #2, #3 from ~/rac_hrp_data/raw |
-| 9 | Archival memo | RAC_HRP_Phase2_Gate_Result_Memo_v3.md | advisor-approved result memo |
+| 9 | Archival memo | RAC_HRP_Phase2_Gate_Result_Memo_v3.md | archival result memo |
 
 ## Commit hashes (implementation-control manifest)
 
@@ -97,11 +97,11 @@ quarantined, not explained.
 | # | Artefact | Path |
 |---|---|---|
 | 1 | Pre-specification rev.4 (frozen, hashed) | RAC_HRP_Phase2D_MechanismDiagnostic_PreSpec.md |
-| 2 | Result memo (advisor-approved) | RAC_HRP_Phase2D_Mechanism_Result_Memo.md |
+| 2 | Result memo | RAC_HRP_Phase2D_Mechanism_Result_Memo.md |
 | 3 | Implementation deviation record ID1 | RAC_HRP_Phase2D_ImplementationDeviationRecord_ID1.md |
 | 4 | Run manifest + replications | outputs/phase2_mechanism/mechanism_null.json |
 | 5 | Run log | mechanism_run.log |
-| 6 | Serial runner (countersigned, unmodified) | scripts/run_mechanism_null.py |
+| 6 | Serial runner (frozen, unmodified) | scripts/run_mechanism_null.py |
 | 7 | Parallel runner (executed) | scripts/run_mechanism_null_parallel.py |
 | 8 | Environment S (standalone; NOT registered) | rac_hrp/nulls/environments_static.py |
 | 9 | Timing probe | probe_structural_pass_timing.py |

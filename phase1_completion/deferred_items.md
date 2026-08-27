@@ -14,7 +14,7 @@ Does NOT block: the RAC-HRP contribution, ordinary HRP benchmarks, the
 equal-volatility component, or Phase 2. This is an optional baseline extension, not
 necessary evidence for the central hypothesis.
 
-Resolution paths (advisor to rule when unblocked):
+Resolution paths (to be decided when unblocked):
   (a) implement with the paper's value once obtained;
   (b) cite RiskMetrics (J.P. Morgan 1996) lambda=0.94 daily, as a separately frozen
       spec not attributed to Molyboga;

@@ -1,7 +1,6 @@
 # PRE-SPECIFICATION — Phase 2A Post-Mortem: Pipeline-Level Structureless Null
 
-*Mechanism diagnostic for the memo §4d question. Submitted for advisor
-countersignature BEFORE any replication is run. No environment is registered and
+*Mechanism diagnostic for the memo §4d question. Frozen and hashed BEFORE any replication is run. No environment is registered and
 no runner is written until this is signed.*
 
 | | |
@@ -9,7 +8,7 @@ no runner is written until this is signed.*
 | **Experiment** | Post-gate mechanism diagnostic (Phase 2A post-mortem) |
 | **Question** | Does the frozen RAC trigger architecture itself generate temporal burstiness on regime-free input? |
 | **Prepared by** | Om Patel |
-| **Status** | PRE-SPECIFICATION rev.4 — thirteen advisor fixes applied; awaiting countersignature |
+| **Status** | PRE-SPECIFICATION rev.4 — thirteen review fixes applied; frozen and hashed before execution |
 
 ## 0. Binding constraint on any outcome
 
@@ -313,5 +312,5 @@ control manifest alongside the Phase 2A audit bundle.
 
 AUTHORIZE:      YES      /      NOT YET
 
-| Advisor signature / date | Conditions / notes |
+| Freeze hash / date | Conditions / notes |
 | --- | --- |

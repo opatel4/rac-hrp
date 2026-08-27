@@ -1,9 +1,9 @@
 # Phase 2D — Implementation Deviation Record ID1
 
-**Attaches to:** `RAC_HRP_Phase2D_MechanismDiagnostic_PreSpec.md` rev.4 (countersigned)
+**Attaches to:** `RAC_HRP_Phase2D_MechanismDiagnostic_PreSpec.md` rev.4 (frozen, hashed)
 **Governs:** the single executed mechanism-null run, `outputs/phase2_mechanism/mechanism_null.json`
 **Class:** output-neutral implementation deviations. **NOT methodological amendments.**
-**Advisor disposition:** ACCEPTED — output-neutral implementation deviations.
+**Disposition:** ACCEPTED — output-neutral implementation deviations.
 
 Three deviations from the signed text occurred. None alters a statistic, seed,
 environment definition, threshold, or decision rule. Each is recorded below in the
@@ -23,7 +23,7 @@ dispatched through `draw()`.
 Nothing under `rac_hrp/nulls/` was edited. A and D continue to go through the
 unmodified `draw()`.
 
-**Reason.** Registration would have perturbed the countersigned Phase 0.5 gate.
+**Reason.** Registration would have perturbed the frozen Phase 0.5 gate.
 Three call sites derive behaviour from that dict's contents or ordering:
 - `rac_hrp/nulls/gate.py:220` — `envs = environments or list(ENVIRONMENTS.keys())`.
   A fifth key silently enrols S in the frozen Phase 0.5 null gate whenever
@@ -78,7 +78,7 @@ n = 149/111/81/58.
 fully deterministic", with a serial runtime estimate of ~2.5 h.
 
 **Executed.** `scripts/run_mechanism_null_parallel.py`, 12 worker processes. The
-countersigned serial script `scripts/run_mechanism_null.py` was NOT modified; the
+frozen serial script `scripts/run_mechanism_null.py` was NOT modified; the
 parallel runner is a separate entry point.
 
 **Reason.** The serial run's measured cost was far above the pre-spec estimate

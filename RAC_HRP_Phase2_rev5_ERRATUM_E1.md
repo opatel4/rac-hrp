@@ -3,7 +3,7 @@
 **Attaches to:** RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.docx (frozen, hashed)
 **Type:** documentation provenance correction. NOT a methodological amendment.
 **Effect on decision rule or any gate conclusion:** NONE.
-**Issued:** post-gate, on advisor ruling. The frozen document is not edited; this
+**Issued:** post-gate. The frozen document is not edited; this
 erratum is issued and hashed alongside it and the calibration manifest.
 
 ## The error
@@ -46,7 +46,7 @@ regardless of the informativeness criterion or this correction.
 
 ## Provenance of this erratum
 
-The discrepancy was raised in advisor review of the gate-result memo and
+The discrepancy was raised in review of the gate-result memo and
 reconciled in `RAC_HRP_Phase2_Reconciliation_111_vs_112.md`, which documents four
 independent confirmations that `refit` (Phase 0.5) and the Phase 2 trigger are
 different statistics, and why a date-level diff between them cannot be performed

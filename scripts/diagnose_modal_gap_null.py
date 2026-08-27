@@ -3,7 +3,7 @@ Modal-gap-share NULL CHARACTERISATION -- diagnostic for the Phase 2
 timing_variation criterion.  (Post-gate; NON-RESCUING; cannot alter the frozen
 Phase 2 result.)
 
-Advisor ruling (rev.): APPROVED with a corrected decision rule. The earlier
+Decision (rev.): APPROVED with a corrected decision rule. The earlier
 "null mean > 0.50 => ceiling unreachable" rule was WRONG and has been removed. A
 null mean above 0.50 means a randomly placed trigger of that density typically
 exceeds 0.50 -- it does NOT mean a modal share <= 0.50 is unreachable. Those are
@@ -91,7 +91,7 @@ def classify(m_obs: float, modal_null: np.ndarray, floor: float) -> dict:
 
 
 def audit_one(table: pd.DataFrame, E: int) -> None:
-    """Advisor's hand-check: gaps, frequencies, modal gap, hand share vs the
+    """Hand-check: gaps, frequencies, modal gap, hand share vs the
     function output, so the statistic is verified by eye."""
     n = int(table.iloc[-1].n_events)
     rng = np.random.default_rng(MODAL_NULL_SEED)

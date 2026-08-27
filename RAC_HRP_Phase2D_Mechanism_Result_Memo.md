@@ -1,6 +1,6 @@
 # Phase 2A Post-Mortem — Pipeline-Level Structureless Null: Result
 
-*Executed once against the countersigned pre-specification
+*Executed once against the frozen pre-specification
 `RAC_HRP_Phase2D_MechanismDiagnostic_PreSpec.md` rev.4. Decision rule applied
 mechanically in code; no interpretive step was taken after results existed.*
 
@@ -111,7 +111,7 @@ manifest; listed here for explicit review.
    each), which dominated runtime. The RNG is consumed only after the
    factorisation, so caching cannot perturb the draws; verified bit-identical by
    `verify_sigma0_cache()`.
-3. **A parallel runner was used.** The countersigned serial script is unmodified;
+3. **A parallel runner was used.** The frozen serial script is unmodified;
    `run_mechanism_null_parallel.py` is a separate entry point. Identical output is
    guaranteed by construction, not assumed: seeding is per-replication, m(n) is
    computed in the parent from one shared cache, and results are reordered by

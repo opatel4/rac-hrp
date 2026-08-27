@@ -40,3 +40,23 @@ The commitment devices that do not require a second person remain intact and are
 What is absent is independent authorization of judgement calls. The manuscript states this in
 §7.6 and reports the one decision most affected by it, in §4.5, with both the original and revised
 outcomes so a reader may apply either rule.
+
+## Source strings deliberately left unchanged
+
+Three source files — `rac_hrp/phase2/calibration.py`, `scripts/run_mechanism_null.py`, and
+`scripts/run_mechanism_null_parallel.py` — write the word "countersigned" into
+`calibration_manifest.json` and `mechanism_null.json`. These strings are deliberately left
+unchanged.
+
+The manifests record SHA-256 hashes of those files. Editing the strings changes the hashes and
+breaks the correspondence between the recorded values and the code that produced the frozen
+results. Restoring that correspondence would require re-running the Phase 2A calibration and the
+1,500-replication mechanism null, which would mean the released results came from a later
+execution than the one the audit trail describes — a disproportionate change to correct a comment.
+
+The term is inaccurate wherever it appears, in source and in generated artefacts alike, and is
+superseded by this notice and by §7.6 of the manuscript.
+
+At the time of this notice the recorded hashes were verified against the files on disk and all
+three matched, confirming that the executed code is the code the manifests describe. Should these
+phases be re-run for an unrelated reason, the strings should be corrected in that run.

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-CONDITION 2 (advisor ruling) -- paired static-HRP vs ERC contrast under Env-D.
+CONDITION 2 -- paired static-HRP vs ERC contrast under Env-D.
 
 FROZEN ANALYSIS. This script defines the contrast and the statistics BEFORE it is
 run, per the ruling ("do not rerun or modify the simulation until the contrast

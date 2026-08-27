@@ -137,7 +137,7 @@ def politis_white_block_length(x: np.ndarray) -> int:
     """Politis-White (2004) automatic block length, integer, >= 1.
 
     Implemented in-repo (no third-party dependency) so the value is reproducible
-    and can be recorded in the run manifest, as the advisor requires.
+    and can be recorded in the run manifest, as the frozen specification requires.
     """
     x = np.asarray(x, dtype=float)
     x = x[np.isfinite(x)]

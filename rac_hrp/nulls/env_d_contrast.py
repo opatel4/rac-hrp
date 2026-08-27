@@ -1,7 +1,7 @@
 """
 rac_hrp.nulls.env_d_contrast
 ============================
-Condition 2 of the advisor ruling on Null Gate v1.
+Condition 2 of the Null Gate v1 decision.
 
 FROZEN ANALYSIS SPECIFICATION. This module DEFINES the static-HRP-vs-ERC paired
 contrast under Environment D. It is written to be reviewed and frozen BEFORE it is
@@ -38,7 +38,7 @@ If these do NOT match, the seed handling is not deterministic and the re-run is 
 different experiment -- STOP and diagnose before trusting any contrast.
 
 ------------------------------------------------------------------------------
-WHAT THIS CONTRAST CAN AND CANNOT ESTABLISH  (advisor wording constraint)
+WHAT THIS CONTRAST CAN AND CANNOT ESTABLISH (reporting constraint)
 ------------------------------------------------------------------------------
 A strong result (static-vs-ERC ~ +0.10, CI excluding zero, RAC ~ static) supports
 the ALLOCATOR-FAMILY explanation: the Environment-D difference originates in the
@@ -96,7 +96,7 @@ class PairedContrast:
     seed: int
 
     def verdict(self, margin: float = 0.10) -> str:
-        """Advisor's three-way interpretation rule."""
+        """Frozen three-way interpretation rule."""
         excludes_zero = not (self.ci_lo <= 0.0 <= self.ci_hi)
         material = abs(self.mean) >= margin * 0.8   # "approximately +0.10"
         if excludes_zero and material:

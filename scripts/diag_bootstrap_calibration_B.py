@@ -27,7 +27,7 @@ DESIGN
     the binomial MC SE may understate true uncertainty. This arm quantifies that.
 
 INTERPRETATION IS DEFERRED. No tolerance is changed on the basis of this run;
-the self-test tolerance stays at +/- 0.02 pending advisor review.
+the self-test tolerance stays at +/- 0.02 pending review.
 """
 from __future__ import annotations
 

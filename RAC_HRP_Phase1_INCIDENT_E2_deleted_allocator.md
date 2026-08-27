@@ -1,6 +1,6 @@
 # INCIDENT E2 — Phase 1: silent deletion of the MHRP_EV allocator
 
-**Classification (advisor ruling):** reproducibility / code-integrity INCIDENT.
+**Classification:** reproducibility / code-integrity INCIDENT.
 Distinguished from E1, which is a documentation erratum. E2 temporarily broke
 exact reproducibility of a committed result and is recorded as an incident with a
 full chronology, not as a documentation correction.
@@ -94,7 +94,7 @@ mitigations are in place or proposed:
    have caught E2 immediately.
 3. **Proposed** — migration of the suites to pytest, sequenced AFTER the
    scientific results are hashed so engineering churn does not blur their
-   provenance. Note (advisor ruling): pytest auto-discovery removes the
+   provenance. Note: pytest auto-discovery removes the
    "test defined but never registered" failure mode, but does NOT make production-
    code deletion structurally impossible. Discovery must be paired with explicit
    invariants — registry-completeness tests, import/dispatch tests for every

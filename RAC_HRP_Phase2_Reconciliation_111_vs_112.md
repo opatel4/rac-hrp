@@ -1,6 +1,6 @@
 # Audit Reconciliation: frozen "112" vs gate "111" at gamma = 1.0
 
-**Question raised (advisor review):** the frozen Phase 2 pre-registration records
+**Question raised (review):** the frozen Phase 2 pre-registration records
 112/233 = 48.1% at gamma = 1.0; the gate produced 111/233 = 47.6%. A frozen
 pipeline must reproduce its pre-freeze diagnostic exactly, or document why not.
 
@@ -42,7 +42,7 @@ code that produced them. The near-equality (112 vs 111) is coincidental.
 
 ## What CANNOT be done, and why
 
-The advisor's proposed remedy -- diff the two gamma=1.0 trigger sets and trace
+The proposed remedy -- diff the two gamma=1.0 trigger sets and trace
 the differing date through AR -> AR^s -> dAR -> sigma -- **cannot be executed**:
 
 - there is no second trigger set on disk (the archived file stores `refit`, a
