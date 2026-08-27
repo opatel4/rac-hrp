@@ -124,10 +124,31 @@ def linear_shrinkage(X: np.ndarray) -> np.ndarray:
     return shrink * F + (1.0 - shrink) * S
 
 
+def _ewma_cc(X: np.ndarray) -> np.ndarray:
+    """EWMA + constant-correlation Ledoit-Wolf shrinkage (amendment rev.4).
+
+    ROW ORDER: ew_constant_correlation_shrinkage expects row 0 = MOST RECENT.
+    The pipeline slices forward (returns.iloc[lo:t+1]), so row 0 is the OLDEST
+    observation and X MUST be reversed here. Omitting the reversal inverts the
+    decay -- the oldest observation would receive 7.5x the weight of the newest
+    at alpha=0.996, W=504 -- and produces a well-formed but wrong matrix. No
+    existing check catches it: Kish ESS, sum(w)=1, symmetry and PSD are all
+    order-invariant.
+
+    alpha is bound to the frozen ALPHA_PRIMARY; the sensitivity sweep over
+    {0.990, 0.996, 0.997} is a separate robustness exercise and is not wired
+    into this shared dispatcher.
+    """
+    from .covariance_ew import ew_constant_correlation_shrinkage, ALPHA_PRIMARY
+    return ew_constant_correlation_shrinkage(np.asarray(X)[::-1],
+                                             alpha=ALPHA_PRIMARY)
+
+
 ESTIMATORS = {
     "nls": nonlinear_shrinkage,
     "lw_linear": linear_shrinkage,
     "sample": sample_cov,
+    "ewma_cc": _ewma_cc,
 }
 
 
