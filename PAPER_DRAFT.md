@@ -119,10 +119,17 @@ anyway will be uninterpretable — a positive result cannot be distinguished fro
 specification search, and a negative result cannot be distinguished from bad luck.
 
 Concretely, we pre-register a **conjunctive structural gate** with five hard
-criteria evaluated on a development region, freeze and hash it before any Phase 2 gate code is written, and implement it so that the selection rule is
-applied automatically in code. The implementation never calls the backtest engine's
-return path and never touches the risk-free series; it is *incapable* of producing a
-Sharpe ratio. Performance evaluation is reachable only through the gate.
+criteria evaluated on a development region, freeze and hash it before any Phase 2
+gate code is written, and implement it so that the selection rule is applied
+automatically in code. The freeze is evidenced by the document hash recorded in the
+released manifest together with the commit timestamps of the implementing code, not
+by a countersignature: this is a single-author study and no independent party
+authorised the specification (§7.6). The Phase 2 calibration implementation never
+calls the return-performance path or risk-free series and cannot produce a Sharpe
+ratio. Phase 0.5 did compute Sharpe ratios as part of the falsification audit:
+environments A, B and D used null return environments, while environment C retained
+development-region returns but randomised trigger timing. Performance evaluation is
+reachable only through the gate.
 
 ### 1.3 Contributions
 
@@ -612,12 +619,16 @@ correlation-matrix distance, and tree instability directly.
 
 ## Acknowledgments
 
-The author thanks his advisor for extensive methodological review across multiple
-rounds, including corrections to the null-characterisation decision rule, the
-Markov-process specification of the positive control, and several
-over-general claims in earlier drafts; and for the ruling that the frozen
-pre-registration should be corrected by erratum rather than revision. Any remaining
-errors are the author's own.
+The author thanks [names, if anyone read drafts or discussed the work] for helpful
+discussion. This is a single-author study; no independent party reviewed or authorised
+the methodological decisions described here, and the protocol's commitments rest on
+hashed specifications and commit timestamps rather than on external review (§7.6).
+
+The author used a large language model to assist with drafting, literature review,
+auditing the project's own records, and identifying methodological defects. The author
+reviewed and verified all output and is responsible for the content.
+
+Any remaining errors are the author's own.
 
 ## Data and Code Availability
 
