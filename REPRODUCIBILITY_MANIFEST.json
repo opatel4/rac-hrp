@@ -1,8 +1,8 @@
 {
-  "generated_utc": "2026-08-27T02:29:04.841936+00:00",
+  "generated_utc": "2026-08-27T02:38:54.691148+00:00",
   "purpose": "Pins every reported number to a verifiable state. Generated BEFORE engineering migration so later churn cannot blur provenance.",
   "git": {
-    "commit": "4d5c4f900d5ad9ef0c1c76f461bf0b0b8362420e",
+    "commit": "1d0bd4718646837be5589baf8c035474f4d26d7e",
     "branch": "main",
     "remote": "https://github.com/opatel4/rac-hrp.git",
     "working_tree_clean": true,
@@ -193,6 +193,16 @@
     "tests/test_region_lock.py": {
       "sha256": "a925ea73080ae6eec8c2e88a7e56757316b6c1f704fda1fb46adf34676845a44",
       "bytes": 4548,
+      "present": true
+    },
+    "tests/test_invariants.py": {
+      "sha256": "df64859e3fd16c7906ec3bd2426de48e33a58013eb3c3b60af30f6c93c0adb30",
+      "bytes": 5914,
+      "present": true
+    },
+    "tests/conftest.py": {
+      "sha256": "9945a7cd928df9bbcdfe8d67f58978a10fdef6fcb7c014f529486f0567a4ab12",
+      "bytes": 2454,
       "present": true
     }
   },

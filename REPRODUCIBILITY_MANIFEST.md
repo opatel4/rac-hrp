@@ -1,6 +1,6 @@
 # RAC-HRP — Reproducibility Manifest
 
-Generated 2026-08-27T02:29:04.841936+00:00 at commit `4d5c4f900d5ad9ef0c1c76f461bf0b0b8362420e`
+Generated 2026-08-27T02:38:54.691148+00:00 at commit `1d0bd4718646837be5589baf8c035474f4d26d7e`
 (branch `main`, working tree clean: True).
 
 Pins every reported number to a verifiable state. Generated **before** engineering
@@ -65,6 +65,8 @@ The single pre-registered test-region touch has NOT been used. No adaptive speci
 | `tests/test_phase2_stats.py` | `b26d7e0b6b2ecda9` | 6346 |
 | `tests/test_covariance_ew.py` | `b26e289173bea3d0` | 7724 |
 | `tests/test_region_lock.py` | `a925ea73080ae6ee` | 4548 |
+| `tests/test_invariants.py` | `df64859e3fd16c79` | 5914 |
+| `tests/conftest.py` | `9945a7cd928df9bb` | 2454 |
 
 ### Result artefacts
 
