@@ -279,6 +279,26 @@ def test_sharpe_uses_excess_returns():
     assert sharpe(r, None) > 0    # raw returns would show a "Sharpe". They must not.
 
 
+
+def test_phase1_baselines_have_implemented_allocators():
+    """Every Strategy declared in run_phase1.py must reference an allocator the
+    engine implements. Commit f6e09dc deleted the hrp_equalvol branch while
+    run_phase1.py still declared MHRP_EV, orphaning a committed result for weeks
+    (Erratum E2). This makes that class of deletion a red test."""
+    import importlib.util, pathlib
+    from rac_hrp.backtest.engine import WalkForward  # noqa: F401
+    spec = importlib.util.spec_from_file_location(
+        "_rp1", pathlib.Path(__file__).parent.parent / "scripts" / "run_phase1.py")
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    src = (pathlib.Path(__file__).parent.parent
+           / "rac_hrp" / "backtest" / "engine.py").read_text()
+    for st in m.BASELINES:
+        assert f'st.allocator == "{st.allocator}"' in src, (
+            f"{st.name} declares allocator {st.allocator!r} but engine.py has no "
+            f"branch for it")
+
+
 if __name__ == "__main__":
     fns = [(k, v) for k, v in sorted(globals().items()) if k.startswith("test_")]
     fails = 0
