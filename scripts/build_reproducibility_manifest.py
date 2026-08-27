@@ -49,6 +49,8 @@ CODE = [
     "tests/test_phase2_stats.py",
     "tests/test_covariance_ew.py",
     "tests/test_region_lock.py",
+    "tests/test_invariants.py",
+    "tests/conftest.py",
 ]
 
 RESULTS = [
