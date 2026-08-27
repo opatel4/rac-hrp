@@ -1,0 +1,6 @@
+strategy,n_days_checked,median_abs_diff,max_abs_diff,status
+EW,240,0.0,1e-06,OK
+ERC,240,0.0,1.698e-06,OK
+HRP_static,240,0.0,1.8813e-06,OK
+MHRP_EV,240,0.0,1.7379e-06,OK
+MinVar,240,0.0,5.3495e-06,OK
