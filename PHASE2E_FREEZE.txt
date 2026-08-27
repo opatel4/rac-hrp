@@ -1,6 +1,7 @@
-RAC_HRP_Phase2E_PreSpec_rev6.md
-SHA-256: 0975b0010d1c5b83e8a243195fa4c13e7859bae8e89cfc7fd4491ff3a98f7161
-Supersedes rev.5 (8b5bd90): 2E-POWER base path corrected; the named generator made the specified comparison undefined.
+RAC_HRP_Phase2E_PreSpec_rev7.md
+SHA-256: df7cc9066f786a0ec31671f6f66c836ac28acef44ba6e52786f7110976d1f2e5
+Supersedes rev.6 (601ad64): 2.3 overclaimed what the placement comparison isolates.
+Supersedes rev.5 (8b5bd90): 2E-POWER base path.
 Supersedes rev.4 (78d6e95): eligible-set contraction.
 Supersedes rev.3 (fc4fd84): unfilled seeds.
 2E-HORIZON was run under rev.5 and is unaffected; its result stands at 28d5f92.
