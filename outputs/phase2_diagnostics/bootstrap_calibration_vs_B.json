@@ -1,0 +1,80 @@
+{
+  "purpose": "one-off; diagnoses B-dependence of bootstrap null calibration",
+  "gates_nothing": true,
+  "nominal": 0.05,
+  "E": 233,
+  "firing": 0.48,
+  "boot_seed_fixed": 20262817,
+  "datasets": 2000,
+  "sweep": [
+    {
+      "replicates": 600,
+      "n_datasets": 2000,
+      "n_finite": 2000,
+      "vary_seed": false,
+      "rate": 0.0655,
+      "mc_se": 0.00553,
+      "ci95": [
+        0.05466,
+        0.07634
+      ],
+      "excludes_nominal_0.05": true,
+      "rate_at_0.10": 0.1175,
+      "rate_at_0.01": 0.023,
+      "median_p": 0.48752,
+      "secs": 38.7
+    },
+    {
+      "replicates": 2000,
+      "n_datasets": 2000,
+      "n_finite": 2000,
+      "vary_seed": false,
+      "rate": 0.066,
+      "mc_se": 0.00555,
+      "ci95": [
+        0.05512,
+        0.07688
+      ],
+      "excludes_nominal_0.05": true,
+      "rate_at_0.10": 0.1165,
+      "rate_at_0.01": 0.022,
+      "median_p": 0.48701,
+      "secs": 128.8
+    },
+    {
+      "replicates": 10000,
+      "n_datasets": 2000,
+      "n_finite": 2000,
+      "vary_seed": false,
+      "rate": 0.0655,
+      "mc_se": 0.00553,
+      "ci95": [
+        0.05466,
+        0.07634
+      ],
+      "excludes_nominal_0.05": true,
+      "rate_at_0.10": 0.1175,
+      "rate_at_0.01": 0.0215,
+      "median_p": 0.48895,
+      "secs": 638.0
+    }
+  ],
+  "varying_seed_arm": {
+    "replicates": 10000,
+    "n_datasets": 2000,
+    "n_finite": 2000,
+    "vary_seed": true,
+    "rate": 0.0665,
+    "mc_se": 0.00557,
+    "ci95": [
+      0.05558,
+      0.07742
+    ],
+    "excludes_nominal_0.05": true,
+    "rate_at_0.10": 0.116,
+    "rate_at_0.01": 0.0215,
+    "median_p": 0.4875,
+    "secs": null
+  },
+  "total_min": 23.9
+}
