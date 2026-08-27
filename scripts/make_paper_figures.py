@@ -91,7 +91,14 @@ def fig1_ar_series(raw, n_assets, outdir):
     fired = elig[np.abs(sp.d_ar[elig]) > 2.0 * sp.sigma[elig]]
     ax[1].plot(dates[fired], z[fired], "o", ms=3.2, color=ACC,
                label=r"fires at $\gamma$ = 2.0")
-    ax[1].set_ylabel("standardised |change|")
+    # A single ~12.5 spike (2020) otherwise compresses all four thresholds into
+    # the bottom sixth of the panel. Log scale keeps them separable while
+    # retaining the outliers.
+    ax[1].set_yscale("log")
+    ax[1].set_ylim(0.08, 20)
+    ax[1].set_yticks([0.1, 0.5, 1, 2, 5, 10])
+    ax[1].set_yticklabels(["0.1", "0.5", "1", "2", "5", "10"])
+    ax[1].set_ylabel("standardised |change|  (log)")
     ax[1].set_xlabel("")
     ax[1].legend(ncol=3, fontsize=7.5, loc="upper left")
     ax[1].set_title("Standardised absorption-ratio change and trigger thresholds",
@@ -109,9 +116,10 @@ def fig2_dvi(outdir):
     ax[0].axhline(0, color=MUT, lw=0.8)
     for _, r in t.iterrows():
         ax[0].annotate(f"n={int(r.n_events)}", (r.gamma, r.D_VI),
-                       textcoords="offset points", xytext=(0, 8),
+                       textcoords="offset points", xytext=(0, 9),
                        ha="center", fontsize=7, color=MUT)
     ax[0].set_xlabel(r"$\gamma$"); ax[0].set_ylabel(r"$D_{VI}$")
+    ax[0].set_ylim(-0.008, t.D_VI.max() * 1.30)   # room for the n= annotations
     ax[0].set_title(r"Clustering-change effect (point estimates)", loc="left")
 
     ax[1].plot(t.gamma, t.p_holm, "o-", color=INK, ms=5, lw=1.2,
@@ -142,8 +150,16 @@ def fig3_mechanism(outdir):
                         patch_artist=True, medianprops=dict(color=INK, lw=1.2))
         for patch in bp["boxes"]:
             patch.set(facecolor="#e9ecef", edgecolor=INK, lw=0.8)
-        ax.axhline(real[g], color=ACC, lw=1.4)
-        ax.plot([1, 2, 3], [real[g]] * 3, "none")
+        ax.axhline(real[g], color=ACC, lw=1.5, zorder=3)
+        ax.annotate("real", (3.42, real[g]), color=ACC, fontsize=7.5,
+                    va="center", annotation_clip=False)
+        # Headroom: the real value must sit clearly INSIDE the axes, not on the
+        # frame, or the gap between it and the nulls reads as zero.
+        lo = min(min(d) for d in data)
+        hi = max(max(max(d) for d in data), real[g])
+        pad = 0.14 * (hi - lo)
+        ax.set_ylim(lo - pad, hi + pad)
+        ax.set_xlim(0.4, 3.6)
         ax.set_xticks([1, 2, 3]); ax.set_xticklabels(["A", "S", "D"])
         ax.set_title(rf"$\gamma$ = {g}", loc="left", fontsize=9)
         if ax is axes[0]:

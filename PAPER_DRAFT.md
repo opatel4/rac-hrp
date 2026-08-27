@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Admissibility Before Performance: A Performance-Blind Structural Gate for Regime-Adaptive Hierarchical Risk Parity
 
 **Om Patel**
@@ -666,7 +671,7 @@ López de Prado, M. (2018). *Advances in Financial Machine Learning*. Wiley. ISB
 
 Molyboga, M. (2020). A modified hierarchical risk parity framework for portfolio management. *Journal of Financial Data Science*, 2(3), 128–139.
 
-Nikolopoulos, S. D. (2026). Spurious predictability in financial machine learning. Department of Accounting and Finance, University of Peloponnese. [VERIFY venue and year before submission.]
+Nikolopoulos, S. D. (2026). Spurious predictability in financial machine learning. arXiv:2604.15531 [preprint], University of Peloponnese.
 
 Pafka, S., Potters, M., & Kondor, I. (2004). Exponential weighting and random-matrix-theory-based filtering of financial covariance matrices. arXiv:cond-mat/0402573.
 

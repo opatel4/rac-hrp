@@ -1,0 +1,757 @@
+\documentclass[12pt,letterpaper]{article}
+
+% ---------- packages ----------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}                 % Times-like text and math
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{setspace}
+\usepackage[round,authoryear]{natbib}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue}
+\usepackage{microtype}
+
+\setlength{\parskip}{0pt}
+\onehalfspacing
+
+% ---------- title ----------
+\title{\bfseries Admissibility Before Performance:\\
+A Performance-Blind Structural Gate for\\
+Regime-Adaptive Hierarchical Risk Parity}
+\author{Om Patel\\[2pt]
+\small Stevens Institute of Technology, Hoboken, NJ\\
+\small \texttt{opatel4@stevens.edu}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent Adaptive portfolio construction methods are conventionally evaluated by
+out-of-sample performance. This creates a well-documented inferential problem: the
+specification of the adaptive mechanism---thresholds, smoothing, event
+definitions---is typically fixed after the researcher has observed how those
+choices affect returns. We propose and apply an alternative protocol in which an
+adaptive mechanism must first demonstrate \emph{structural informativeness} against
+a prospectively frozen, performance-blind admissibility gate, and only then becomes
+eligible for performance evaluation.
+
+We instantiate this protocol for Regime-Adaptive Clustered Hierarchical Risk Parity
+(RAC-HRP), in which re-clustering of the HRP dendrogram is triggered by changes in
+the absorption ratio \citep{kritzman2011}. The gate evaluates four pre-registered
+trigger thresholds against five hard structural criteria, none of which references
+any return quantity. On a CRSP-native large-cap universe over a development region
+of 2003--2022, \textbf{no threshold is admissible}. Triggered rebalances exhibit
+greater clustering change than non-triggered rebalances at every threshold, and the
+effect grows with selectivity, but no candidate attains statistical significance
+after pre-registered multiplicity control (Holm-adjusted $p \in [0.221, 0.556]$).
+Because the gate is conjunctive and performance-blind, the experiment terminates
+without a portfolio ever being constructed and without the holdout sample being
+opened.
+
+A pre-registered post-mortem then asks whether the trigger's unusually bursty
+timing is an artefact of the estimation pipeline. Across 1{,}500 replications of the
+frozen machinery on regime-free inputs, real-data excess burstiness exceeds the
+$97.5$th percentile of both an uncorrelated and a static-covariance null at all four
+thresholds, so the tested regime-free architectural explanations are not supported.
+
+Separately, a frozen estimator sensitivity sweep decomposes two components of
+the modified HRP framework of \citet{molyboga2020}: within the development region, exponentially
+weighted constant-correlation covariance improves every covariance-dependent
+strategy examined, whereas the equal-volatility allocation modification remains
+below static HRP under every covariance estimator.
+
+We argue the resulting negative result is more informative than a comparable
+performance-based null, precisely because no performance quantity was available at
+the decision point. All code, frozen specifications, decision records, and a
+hash-pinned reproducibility manifest are released.
+
+\vspace{6pt}
+\noindent\textbf{Keywords:} hierarchical risk parity; absorption ratio; regime
+detection; pre-registration; multiple testing; reproducible research
+
+\vspace{4pt}
+\noindent\textbf{JEL classification:} G11, G17, C58, C52
+\end{abstract}
+
+\section{Introduction}
+
+Hierarchical Risk Parity \citep{lopezdeprado2016} allocates capital using a
+correlation-derived dendrogram rather than a matrix inversion, which makes it robust
+in the high-dimensional regime where sample covariance is poorly conditioned. A
+natural extension is to make the dendrogram \emph{adaptive}: rather than
+re-clustering on a fixed calendar, re-cluster when the market's correlation
+structure actually changes. The absorption ratio---the share of total variance
+captured by the leading eigenvectors---is an appealing trigger because it is a
+direct, model-free measure of covariance concentration and is known to move around
+episodes of systemic fragility \citep{kritzman2011}.
+
+This paper is about what happened when we tried to test that idea honestly.
+
+\subsection{The inferential problem}
+
+An adaptive mechanism of this kind is a \emph{specification family}, not a single
+specification. The researcher must choose a smoothing window, a scale for
+normalising changes, a firing threshold, and a re-clustering rule. Each choice
+changes both the number of trigger events and, downstream, the portfolio's returns.
+If the choices are made while performance is observable---even informally, even in
+good faith---the resulting out-of-sample statistic is conditioned on the outcome it
+purports to test.
+
+The magnitude of this problem is not hypothetical. \citet{nikolopoulos2026} shows
+that adaptive specification search generates statistically significant backtests
+even under martingale-difference nulls, and proposes falsifying complete predictive
+workflows against synthetic reference classes---including zero-predictability
+environments---rather than auditing individual results. \citet{sheppert2026}
+documents the corresponding degradation in reported strategy performance under
+realistic search intensity, and \citet{bailey2014} give the general account of how
+backtest overfitting propagates into out-of-sample claims. The concern is structural
+rather than a matter of researcher discipline: \citet{demiguel2009} found that none
+of fourteen optimisation methods they tested consistently beat naive $1/N$
+out-of-sample, a result frequently attributed to estimation error but equally
+consistent with specification search in the methods being compared.
+
+\subsection{Admissibility before performance}
+
+Our response is to separate two questions that are usually answered together:
+\begin{enumerate}
+\item \textbf{Is the adaptive mechanism structurally informative?} Do its trigger
+      events identify moments when the dependence structure actually changes?
+\item \textbf{Does acting on it improve performance?}
+\end{enumerate}
+
+We argue (1) should be settled first, using statistics that do not reference
+returns, and that failure at (1) should terminate the investigation. A mechanism
+that cannot demonstrate it is detecting the thing it claims to detect has no
+principled basis for a performance claim, and a performance evaluation conducted
+anyway will be uninterpretable---a positive result cannot be distinguished from
+specification search, and a negative result cannot be distinguished from bad luck.
+
+Concretely, we pre-register a \textbf{conjunctive structural gate} with five hard
+criteria evaluated on a development region, freeze it under countersignature before
+any Phase~2 code is written, and implement it so that the selection rule is applied
+automatically in code. The implementation never calls the backtest engine's return
+path and never touches the risk-free series; it is \emph{incapable} of producing a
+Sharpe ratio. Performance evaluation is reachable only through the gate.
+
+\subsection{Contributions}
+
+\paragraph{A performance-blind admissibility protocol.} We give a complete,
+executable specification of a structural gate for adaptive re-clustering
+mechanisms---informativeness, event sufficiency, timing variation, calendar
+separation, and cluster informativeness---with frozen inference, pre-registered
+multiplicity control, and a stopping rule that forbids selecting a ``least bad''
+candidate.
+
+\paragraph{A clean negative result for an absorption-ratio trigger.} No threshold in
+the pre-registered grid is admissible. The binding failure is cluster
+informativeness: the clustering-change effect is positive in direction at every
+threshold and increases with selectivity, but is statistically unresolved under the
+frozen inference procedure. Because the gate is performance-blind, this conclusion is
+not conditioned on any return outcome.
+
+\paragraph{A mechanism post-mortem that rules out two architectural explanations.}
+The trigger fires in unusually tight temporal bursts. We pre-register a
+pipeline-level null in which regime-free returns are pushed through the identical
+frozen machinery, and show across 1{,}500 replications that neither an uncorrelated
+nor a static-covariance environment reproduces the observed burstiness at any
+threshold.
+
+\paragraph{A decomposition of modified HRP.} A frozen estimator sweep separates two
+of \citeauthor{molyboga2020}'s \citeyearpar{molyboga2020} modifications, finding that
+the covariance modification helps in this sample while the allocation modification
+does not.
+
+\paragraph{A hash-pinned reproducibility record}, including a machine-checkable
+assertion that the holdout sample was never opened.
+
+\section{Related Work}
+
+\paragraph{Hierarchical allocation.} \citet{lopezdeprado2016} introduced HRP,
+motivated by the instability of quadratic optimisers under estimation error; the
+mechanism is avoidance of covariance inversion. Subsequent work extends the tree
+construction \citep{avellaneda2019,pergher2026} or the risk-budgeting rule
+\citep{molyboga2020}. Earlier work established clustering as a preprocessing step
+for allocation more generally \citep{leon2017}. Empirical replications are mixed:
+\citet{dekovic2025} report $1/N$ dominating HRP on risk-adjusted return over
+2005--2023 on S\&P~500 constituents (Sharpe 0.868 versus 0.534 on the full index)
+while confirming HRP's volatility reduction of roughly one percentage point. We note
+that their universe is the constituent set as of March 2023---the authors state the
+limitation explicitly---so their backtest is subject to survivorship bias. Our
+universe is constructed point-in-time from CRSP membership, which removes that
+channel.
+
+The general pattern---HRP reduces risk but underweights the high-volatility names
+that drive trending markets---motivates adaptivity.
+
+\paragraph{Regime detection and the absorption ratio.} \citet{kritzman2011}
+introduced the absorption ratio as a systemic-risk measure and documented that
+increases precede market drawdowns. Regime-switching approaches
+\citep{hamilton1989,kimnelson1998,angtimmermann2012} establish that volatility and
+correlation regimes are persistent and economically costly to ignore.
+\citet{akioyamen2020} apply PCA to 48 macroeconomic series and recover a two-regime
+crisis/non-crisis split by $k$-means with the regime count inferred from silhouette
+width rather than assumed; \citet{horvathissa2023} detect regimes online through a
+path-signature two-sample test; \citet{zhang2025} and \citet{kriuk2026} build
+regime-aware allocation systems on sectoral and correlation-network structure
+respectively.
+
+Our trigger sits in this family but is deliberately minimal: a two-sided threshold on
+the standardised change in a smoothed absorption ratio. This is by design. The
+question we ask is not whether a sophisticated regime detector can be built, but
+whether a simple, transparent, fully pre-specifiable one clears a structural
+admissibility standard---and a minimal trigger makes the gate's verdict
+interpretable in a way an elaborate one would not.
+
+\paragraph{Covariance estimation.} \citet{ledoitwolf2004a} established linear
+shrinkage toward structured targets; \citet{ledoitwolf2004b} propose the
+constant-correlation target we adopt, and \citet{ledoitwolf2022} extend to nonlinear
+shrinkage. \citet{molyboga2020} applies exponentially weighted covariance with
+constant-correlation shrinkage in a managed-futures context; we source the decay
+parameter $\alpha = 0.996$ to \citet{pafka2004}.
+\citet{bongiorno2025} pursue learned covariance cleaning. Our sensitivity analysis
+compares sample, linear-shrinkage, nonlinear-shrinkage, and exponentially weighted
+constant-correlation estimators.
+
+\paragraph{Evaluation methodology.} \citet{lopezdeprado2018} formalises purged,
+embargoed cross-validation for financial time series; \citet{bailey2014} quantify the
+deflation of reported Sharpe ratios under multiple testing. Our contribution is
+orthogonal and complementary to both: purging addresses leakage \emph{within} an
+evaluation and deflation adjusts a statistic \emph{after} it is computed, whereas the
+gate addresses what is permitted to reach evaluation at all. The distinction matters
+because deflation requires knowing the number of trials, which is precisely what
+informal specification search leaves unrecorded.
+
+\paragraph{Positioning.} Pre-registration is established in clinical and,
+increasingly, psychological research, and has been proposed for finance, but
+published applications in empirical portfolio construction remain rare. To our
+knowledge this is the first study in this literature to pre-register a conjunctive
+structural gate whose selection rule is executed in code, to freeze it under
+countersignature before implementation, and to report the resulting negative outcome
+without amendment.
+
+\section{Data and Universe}
+
+The panel is constructed from CRSP daily stock files. Ordinary common shares (share
+codes 10, 11) on NYSE, AMEX and Nasdaq (exchange codes 1, 2, 3) are retained.
+Delisting returns are spliced following \citet{shumway1997}, with an audit record of
+every splice. Prices recorded as bid/ask midpoints (negative in CRSP) are taken in
+absolute value for market-capitalisation computation.
+
+The investable universe at each rebalance is the largest $N = 100$ eligible names by
+lagged market capitalisation, subject to a minimum history screen and a maximum
+missing-observation fraction, constructed point-in-time so that no future membership
+information enters. Rebalancing is monthly (21 trading days).
+
+\paragraph{Region definition.} The development region runs 2003-01-08 to 2022-12-30
+(5{,}031 trading days, 240 rebalances). The holdout region begins 2023-01-03. The
+holdout was \emph{never opened} (Section~\ref{sec:holdout}).
+
+The covariance window is selected by a pre-registered deterministic rule from
+candidates $\{504, 756, 1260\}$ as a function of the median realised universe size;
+for $N = 100$ this yields $W = 504$.
+
+\section{Methodology}
+
+\subsection{The trigger}
+
+Let $\hat{\Sigma}_t$ be the covariance estimate over the trailing $W = 504$ trading
+days ending at rebalance $t$, with eigenvalues
+$\lambda_1 \geq \cdots \geq \lambda_N$. The absorption ratio is
+\begin{equation}
+AR_t \;=\; \frac{\sum_{i=1}^{k} \lambda_{i,t}}{\sum_{i=1}^{N} \lambda_{i,t}},
+\label{eq:ar}
+\end{equation}
+with $k$ fixed at the Marchenko--Pastur count of the first eligible rebalance and
+held for the entire run ($k = 15$). Fixing $k$ ex ante avoids a subtle look-ahead
+channel: a $k$ that adapts to each window makes $AR$ partly a function of how many
+components happen to clear the noise threshold at that date.
+
+The series is smoothed over five rebalances, differenced, and standardised by a
+strictly trailing scale:
+\begin{align}
+AR^{s}_t &= \tfrac{1}{5}\textstyle\sum_{j=0}^{4} AR_{t-j}, \label{eq:smooth}\\
+\Delta AR_t &= AR^{s}_t - AR^{s}_{t-1}, \label{eq:delta}\\
+\hat{\sigma}_t &= \mathrm{sd}\!\left(\Delta AR_{t-12},\dots,\Delta AR_{t-1}\right),
+\quad \text{ddof} = 1,\ \text{min.\ 6 obs.} \label{eq:sigma}
+\end{align}
+A trigger fires when
+\begin{equation}
+\left| \Delta AR_t \right| \;>\; \gamma \cdot \hat{\sigma}_t,
+\label{eq:trigger}
+\end{equation}
+two-sided with zero location and strict inequality. Because $\hat{\sigma}$ requires
+six observations, the first seven rebalances can never fire; the eligible set is
+$|E| = 240 - 7 = 233$.
+
+The candidate grid is $\gamma \in \{0.5, 1.0, 1.5, 2.0\}$, fixed ex ante.
+\textbf{$\gamma$ was not tuned.}
+
+\subsection{The structural gate}
+
+A candidate is admissible only if it satisfies all five criteria in
+Table~\ref{tab:gate}. \textbf{No criterion references any return quantity.}
+Turnover is computed and reported as a diagnostic but cannot pass or fail a
+candidate.
+
+\begin{table}[htbp]
+\centering
+\caption{The five hard structural criteria. All are evaluated on the development
+region; none references a return quantity.}
+\label{tab:gate}
+\small
+\begin{tabular}{lll}
+\toprule
+Criterion & Statistic & Pass rule \\
+\midrule
+Informativeness & $f_\gamma = |T_\gamma| / |E|$ & $0.05 \leq f_\gamma \leq 0.40$ \\
+Event sufficiency & events per development fold & $\geq 3$ in all four folds \\
+Timing variation & CV of gaps; modal-gap share & CV $\geq 0.50$ \emph{and} modal $\leq 0.50$ \\
+Separation & $J^{*}_\gamma$, max.\ Jaccard overlap & $\leq$ placebo 95th pct.\ at own $|T_\gamma|$ \\
+Cluster informativeness & $D_{VI}$ (Eq.~\ref{eq:dvi}) & $D_{VI} > 0$ \emph{and} Holm $p < 0.05$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The \emph{separation} criterion deserves comment. A trigger that fires on a fixed
+calendar is not regime-adaptive, whatever its label. We therefore compute
+\begin{equation}
+J^{*}_\gamma \;=\; \max_{q \in \{2,\dots,12\}} \; \max_{r \in \{0,\dots,q-1\}}
+\frac{\left| T_\gamma \cap P(q,r) \right|}{\left| T_\gamma \cup P(q,r) \right|},
+\label{eq:jstar}
+\end{equation}
+where $P(q,r)$ is the periodic schedule of period $q$ and phase $r$. Maximising over
+both period \emph{and phase} is essential: a trigger firing every second rebalance on
+odd-indexed dates scores $J^{*} = 0.252$ without phase adjustment (passing) and
+$1.000$ with it (caught). The threshold is recomputed by Monte Carlo at each
+candidate's own event count, because it depends strongly on that count---the 95th
+percentile is $0.171$ at 12 events and $0.382$ at 112.
+
+The \emph{cluster informativeness} criterion is the heart of the gate. It asks
+whether triggered rebalances coincide with larger changes in the hierarchical
+clustering than non-triggered ones, measured by variation of information ($VI$)
+between consecutive clusterings on the intersection of consecutive universes:
+\begin{equation}
+D_{VI} \;=\; \mathrm{median}\!\left(VI_t \mid I_t = 1\right)
+           - \mathrm{median}\!\left(VI_t \mid I_t = 0\right).
+\label{eq:dvi}
+\end{equation}
+Critically, the counterfactual clustering is recomputed at \emph{every} eligible
+rebalance, including those a live strategy would skip; without this, triggered and
+non-triggered structural change are not comparable.
+
+\subsection{Frozen inference}
+
+All inference parameters were fixed before execution: placebo seed 20260817 with
+100{,}000 draws; circular block bootstrap with 10{,}000 replicates and
+Politis--White automatic block length \citep{politiswhite2004}, resampling the pair
+$(VI_t, I_t)$ jointly in blocks to preserve alignment; one-sided
+$H_0\!:\ D_{VI} \leq 0$ with replicates centred on the observed statistic; Holm
+step-down across the four candidates at family-wise $\alpha = 0.05$. Holm rather than
+Bonferroni because the trigger sets are highly dependent across $\gamma$.
+
+\subsection{The stopping rule}
+
+Among candidates passing \emph{every} hard criterion, select the value closest to the
+inherited $\gamma = 1.0$, breaking ties toward the larger $\gamma$. \textbf{If none
+passes, the investigation stops; the ``least bad'' candidate is not selected.} This
+rule is applied automatically in code, not by the researcher.
+
+\section{Results}
+
+\subsection{Static baselines and estimator sensitivity}
+
+Table~\ref{tab:baselines} reports development-region performance for five static
+baselines under the pre-registered nonlinear-shrinkage estimator. The equal risk
+contribution portfolio follows \citet{roncalli2013}; MHRP\_EV implements component~(ii)
+of \citeauthor{molyboga2020}'s modification (equal-volatility rather than
+inverse-variance budgeting) in isolation.
+
+\begin{table}[htbp]
+\centering
+\caption{Static baselines, development region (2003--2022, 5{,}031 days).}
+\label{tab:baselines}
+\small
+\begin{tabular}{lrrrrrr}
+\toprule
+Strategy & Ann.\ return & Ann.\ vol & Sharpe & Max DD & Calmar & Ann.\ turnover \\
+\midrule
+MinVar     & 0.092 & 0.154 & 0.576 & $-0.426$ & 0.215 & 1.502 \\
+HRP\_static & 0.096 & 0.163 & 0.574 & $-0.461$ & 0.208 & 1.455 \\
+ERC        & 0.096 & 0.173 & 0.549 & $-0.502$ & 0.191 & 0.656 \\
+MHRP\_EV   & 0.093 & 0.175 & 0.534 & $-0.511$ & 0.183 & 1.779 \\
+EW         & 0.094 & 0.191 & 0.508 & $-0.560$ & 0.168 & 0.640 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+An independent accounting reconciliation---recomputing the portfolio return series
+from the stored weight path and realised asset returns, without reusing the engine's
+arithmetic---matches the engine's gross returns to a median absolute difference of
+$0.0$ for all five strategies.
+
+Table~\ref{tab:estimators} and Figure~\ref{fig:estimators} report the estimator
+sensitivity sweep. Equal weighting is invariant across estimators ($0.508$), as it
+must be: it never consults the covariance matrix. This serves as a negative control
+confirming that the observed differences are attributable to the estimator.
+
+\begin{table}[htbp]
+\centering
+\caption{Estimator sensitivity (Sharpe). Diagnostic only; selects nothing.}
+\label{tab:estimators}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Strategy & \texttt{ewma\_cc} & \texttt{lw\_linear} & \texttt{nls} & \texttt{sample} \\
+\midrule
+ERC        & 0.558 & 0.549 & 0.549 & 0.549 \\
+EW         & 0.508 & 0.508 & 0.508 & 0.508 \\
+HRP\_static & \textbf{0.608} & 0.591 & 0.574 & 0.594 \\
+MHRP\_EV   & 0.568 & 0.554 & 0.534 & 0.557 \\
+MinVar     & 0.588 & 0.551 & 0.576 & 0.556 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two findings follow, both bounded to the development region. First, exponentially
+weighted constant-correlation covariance improves every covariance-dependent
+strategy examined, most strongly HRP\_static ($0.574 \rightarrow 0.608$); it is the
+largest estimator effect in the table. Second, the equal-volatility allocation
+(MHRP\_EV) remains below static HRP under \emph{every} estimator. Since the ordering
+is invariant to the estimator, the underperformance is attributable to the
+allocation rule rather than to a covariance interaction. Taken together these
+separate two components of \citeauthor{molyboga2020}'s construction: the covariance
+modification transfers to this equity universe; the allocation modification does not.
+
+We note that \texttt{ewma\_cc} outperforms the pre-registered \texttt{nls}
+specification on four of five strategies. The pre-registered specification is
+therefore not the ex-post best-performing estimator in this sample. \textbf{The
+design is not retroactively changed to exploit this.}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{fig4_estimator_sensitivity.pdf}
+\caption{Estimator sensitivity across five static baselines. EW is invariant
+because it never consults the covariance matrix, serving as a negative control.}
+\label{fig:estimators}
+\end{figure}
+
+\subsection{The structural gate: no admissible threshold}
+
+Figure~\ref{fig:ar} shows the absorption-ratio series over the development region
+together with the standardised change and the four candidate thresholds;
+Table~\ref{tab:gateresult} gives the gate result and Figure~\ref{fig:dvi}
+summarises the cluster-informativeness outcome.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig1_absorption_ratio_and_triggers.pdf}
+\caption{Absorption ratio (top) and standardised absorption-ratio change with the
+four candidate thresholds (bottom), development region, $k = 15$ fixed, $W = 504$.}
+\label{fig:ar}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Frozen structural calibration gate. 233 eligible rebalances, $k = 15$.}
+\label{tab:gateresult}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{crrrrrrrrrc}
+\toprule
+$\gamma$ & events & firing & min ev/fold & CV gap & modal gap & $J^{*}$ & $J$ thr & $D_{VI}$ & $p$ Holm & Adm. \\
+\midrule
+0.5 & 149 & 0.639 & 35 & 1.116 & 0.824 & 0.400 & 0.446 & $+0.033$ & 0.556 & No \\
+1.0 & 111 & 0.476 & 26 & 1.458 & 0.791 & 0.326 & 0.382 & $+0.022$ & 0.556 & No \\
+1.5 &  81 & 0.348 & 18 & 1.676 & 0.763 & 0.263 & 0.320 & $+0.080$ & 0.254 & No \\
+2.0 &  58 & 0.249 & 11 & 1.823 & 0.791 & 0.208 & 0.259 & $+0.096$ & 0.221 & No \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+No candidate is admissible. The pattern of failure is informative.
+
+\paragraph{Separation passes everywhere.} $J^{*} \leq$ threshold at every $\gamma$.
+The trigger is not a disguised fixed schedule---a substantive negative finding, since
+that is the most common failure mode for signals of this kind.
+
+\paragraph{Event sufficiency passes everywhere} (11--35 events per fold, all
+$\geq 3$).
+
+\paragraph{Informativeness fails only at $\gamma \in \{0.5, 1.0\}$}, where firing
+rates of $0.639$ and $0.476$ exceed the $0.40$ ceiling. The inherited $\gamma = 1.0$
+fires on nearly half of all eligible rebalances, which is difficult to reconcile with
+a description of the events as unusual.
+
+\paragraph{Timing variation fails everywhere, on modal-gap share alone.} Every CV
+clears its floor comfortably ($1.116$--$1.823$); the failure is that modal-gap share
+($0.763$--$0.824$) never approaches the $0.50$ ceiling. Section~\ref{sec:mechanism}
+examines this.
+
+\paragraph{Cluster informativeness fails everywhere.} $D_{VI}$ is positive at every
+$\gamma$ and increases with selectivity ($+0.033 \rightarrow +0.096$), the direction
+the hypothesis predicts. But no Holm-adjusted $p$ clears $0.05$ (best $0.221$ at
+$\gamma = 2.0$). The defensible statement is that the effect is \textbf{positive in
+direction but statistically unresolved}: a positive point estimate does not establish
+that the effect is real.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig2_cluster_informativeness.pdf}
+\caption{Cluster-informativeness result. Left: $D_{VI}$ point estimates with event
+counts. Right: raw and Holm-adjusted $p$-values against the pre-registered
+$\alpha = 0.05$.}
+\label{fig:dvi}
+\end{figure}
+
+Even the strongest candidate, $\gamma = 2.0$---which passes informativeness and
+separation---is blocked by two criteria. Because failure is conjunctive and because
+cluster informativeness fails independently at every $\gamma$, the conclusion does
+not rest on the contested timing criterion.
+
+\medskip
+\noindent\textbf{Per the frozen stopping rule, the investigation terminates here. No
+portfolio was constructed and no performance quantity was computed.}
+
+\subsection{Post-mortem: is the burstiness an artefact of the pipeline?}
+\label{sec:mechanism}
+
+The timing failure has a specific character: high CV \emph{and} high modal-gap share
+together mean most inter-event gaps are one rebalance with occasional long quiescent
+stretches---the trigger fires in bursts. Two mechanisms could produce this. Real
+markets may cluster covariance-concentration episodes in time; or the estimation
+pipeline may manufacture bursts from overlapping windows, smoothing, differencing,
+and a rolling scale denominator.
+
+A placement null (random reallocation of the same number of events across the same
+grid) rejects the hypothesis that the burstiness is a mere consequence of event
+density: observed modal-gap share exceeds the placement null at every $\gamma$. But a
+placement null cannot separate the two mechanisms above, because it never exercises
+the pipeline.
+
+We therefore pre-registered a \textbf{pipeline-level null}, countersigned before
+execution, with the decision rule fixed in advance and applied mechanically. Three
+environments are pushed through the \emph{identical unmodified} frozen machinery,
+preserving the real NaN mask, membership path, market caps, rebalance dates, $W$,
+$k$, smoothing and $\hat{\sigma}$:
+\begin{itemize}
+\item \textbf{A}---vol-matched Gaussian, zero cross-correlation, no time dependence
+      (floor control);
+\item \textbf{S}---one static covariance $\Sigma_0$ fitted on development rows only,
+      drawn i.i.d.\ through time: persistent cross-sectional structure, no regimes
+      (adjudicating null);
+\item \textbf{D}---two-state Markov process in which both volatility \emph{and}
+      factor loadings scale, so covariance \emph{concentration} genuinely shifts
+      (positive control).
+\end{itemize}
+
+Because modal-gap share depends on event count, comparisons use a density-adjusted
+statistic
+\begin{equation}
+B_\gamma \;=\; M_\gamma - \mathrm{median}\!\left(M^{\mathrm{placement}} \mid n_\gamma\right),
+\label{eq:bgamma}
+\end{equation}
+where the placement median is a deterministic cached lookup keyed on the event count
+and shared with the real data. We run 500 replications per environment (1{,}500
+total).
+
+\begin{table}[htbp]
+\centering
+\caption{Pipeline-level null. Excess burstiness $B_\gamma$, 500 replications per
+environment. Intervals are 2.5th--97.5th percentiles.}
+\label{tab:mechanism}
+\small
+\begin{tabular}{crccc}
+\toprule
+$\gamma$ & real $B$ & A & S & D \\
+\midrule
+0.5 & 0.182 & 0.062--0.157 & 0.033--0.117 & 0.045--0.166 \\
+1.0 & 0.318 & 0.122--0.272 & 0.100--0.237 & 0.140--0.306 \\
+1.5 & 0.413 & 0.140--0.361 & 0.095--0.296 & 0.163--0.407 \\
+2.0 & 0.526 & 0.107--0.392 & 0.000--0.295 & 0.105--0.440 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig3_mechanism_null.pdf}
+\caption{Real-data excess burstiness (horizontal line) against regime-free pipeline
+nulls, 500 replications per environment, by $\gamma$.}
+\label{fig:mechanism}
+\end{figure}
+
+At every $\gamma$ the real value exceeds the $97.5$th percentile of both A and S,
+satisfying the pre-registered condition for the ``beyond regime-free mechanics''
+outcome. The tested regime-free architectural explanations are therefore not
+supported.
+
+Three qualifications. First, D does not bracket the real data either, so the optional
+consistency-with-nonstationarity statement is unavailable; but since D's states last
+approximately 100 and 33 daily observations against $W = 504$, a 504-day window spans
+roughly 3.8 complete cycles and materially averages the designed regimes away. D is a
+\emph{high-frequency} positive control, and its non-overlap indicates that rapid
+regime switching is heavily attenuated by the estimator rather than that regime
+explanations are excluded. Second, the D margins are thin ($+0.006$ at
+$\gamma = 1.5$) and should not carry independent weight. Third, S produced
+\emph{less} excess burstiness than A at every $\gamma$---contrary to the hypothesis
+that motivated S as the adjudicating null. We report this without explanation;
+establishing one would require further work.
+
+\subsection{Empirical size of the inference procedure}
+
+Because the cluster-informativeness criterion is the binding constraint, its
+calibration matters. We measured the empirical rejection rate under the null over
+2{,}000 synthetic datasets at three replicate counts (Table~\ref{tab:size}).
+
+\begin{table}[htbp]
+\centering
+\caption{Empirical size at nominal $\alpha = 0.05$, 2{,}000 null datasets.}
+\label{tab:size}
+\small
+\begin{tabular}{rrrc}
+\toprule
+$B$ & rate & MC SE & 95\% CI \\
+\midrule
+600     & 0.0655 & 0.0055 & 0.0547--0.0763 \\
+2{,}000  & 0.0660 & 0.0056 & 0.0551--0.0769 \\
+10{,}000 & 0.0655 & 0.0055 & 0.0547--0.0763 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The rate is stable across a seventeen-fold increase in replicates, so the departure
+is a property of the procedure rather than a finite-$B$ artefact. The test is
+\textbf{mildly anti-conservative}: empirical size $\approx 6.6\%$ against nominal
+$5\%$. This strengthens rather than weakens the central result. The
+cluster-informativeness test is biased \emph{toward} rejection, and no candidate
+rejected.
+
+\section{Discussion}
+
+\subsection{What the negative result establishes}
+
+Under a prospectively frozen, performance-blind admissibility standard, an
+absorption-ratio change trigger does not qualify as an adaptive re-clustering
+mechanism on this universe and development region. The trigger is not equivalent to
+a fixed schedule, and its events are genuinely bursty relative to both random
+placement and two regime-free pipeline nulls. But triggered rebalances are not shown
+to identify moments of greater hierarchical restructuring.
+
+The interesting asymmetry is that the trigger evidently responds to \emph{something}.
+Its timing is far from random, and its burstiness survives two architectural
+explanations. What it does not do is align with the quantity the adaptive hypothesis
+requires. A signal can react strongly to real covariance events without those events
+being moments when re-clustering changes the tree in a statistically reliable
+way---for instance if $AR$ responds to concentration changes that leave the dendrogram
+topology intact, or if it responds at a horizon offset from the restructuring.
+
+\subsection{Why performance-blindness matters here}
+
+Had this study measured performance first, the natural path would have been: pick
+$\gamma = 1.0$ (inherited), observe results, and---on encountering a $47.6\%$ firing
+rate---adjust the threshold. Each adjustment is individually defensible and
+collectively fatal, in exactly the way \citet{nikolopoulos2026} quantifies.
+
+The gate makes that path unavailable. The $0.40$ firing ceiling was fixed before the
+firing rate was known and was \emph{not} revised when $\gamma = 1.0$ exceeded it. The
+$\gamma$ grid was fixed before any event count was computed. The stopping rule was
+executed in code. There is no point at which a performance number could have
+influenced a specification choice, because no performance number existed.
+
+\subsection{The Molyboga decomposition}
+
+The estimator sweep produces an unanticipated positive finding.
+\citet{molyboga2020} proposes three modifications to HRP; two are separately
+implementable here. Within the development region, the covariance modification
+improves every covariance-dependent strategy tested, whereas the allocation
+modification remains below static HRP under every covariance estimator. This suggests
+reported gains from ``modified HRP'' may be attributable to the covariance treatment
+rather than the allocation rule---a decomposition obscured when the modifications are
+evaluated jointly.
+
+We emphasise this is in-sample within the development region. The holdout was not
+opened, and no out-of-sample claim is made.
+
+\section{Limitations}
+
+\subsection{Statistical power}
+
+The result is a failure to reject, not a demonstration of absence. With 233 eligible
+rebalances and four folds, the design has limited power against small effects, and
+$D_{VI}$ is positive at every threshold. A larger universe, a longer sample, or a
+higher rebalance frequency could plausibly resolve the effect. The honest claim is
+that this evidence is insufficient, not that the effect is zero.
+
+\subsection{Single universe and single trigger family}
+
+One universe (CRSP large-cap, $N = 100$), one region, one trigger construction. The
+absorption-ratio trigger is one member of a large family; failure here does not
+generalise to eigenspace-rotation, correlation-distance, or change-point triggers.
+
+\subsection{The holdout was never opened}
+\label{sec:holdout}
+
+The single pre-registered holdout touch was not used. A machine-checkable assertion in
+the released test suite verifies that the durable audit log records zero analysis
+touches of the test region. This is a consequence of the design, not an omission:
+performance evaluation was \emph{conditionally inaccessible}, and no adaptive
+specification earned access.
+
+\subsection{Reproducibility incidents}
+
+Two defects were found and are documented in full. A figure in the frozen
+pre-registration cited a Phase~0.5 re-clustering count as though it were a trigger
+count (corrected by erratum; no conclusion affected). Separately, a commit deleted the
+equal-volatility allocator while the driver still declared it, rendering an archived
+result temporarily unreproducible; the code was restored from history and the archived
+value reproduced exactly. Both are recorded in the released supplement, and regression
+tests now cover both failure modes.
+
+\section{Conclusion}
+
+We proposed and applied a protocol in which an adaptive portfolio mechanism must
+demonstrate structural informativeness against a frozen, performance-blind gate before
+performance evaluation becomes available. Applied to an absorption-ratio
+re-clustering trigger, the gate returned no admissible threshold, and the
+investigation terminated without a portfolio being constructed and without the holdout
+being opened.
+
+The mechanism's timing is not random and is not reproduced by two regime-free pipeline
+nulls, so it is detecting something. What it is not shown to detect is statistically
+distinguishable change in the hierarchical dependence structure---the quantity the
+adaptive hypothesis requires.
+
+We suggest the value of this result lies less in the specific mechanism than in the
+demonstration that a pre-registered structural standard can be specified precisely
+enough to be executed automatically, and can return a negative answer that survives
+adversarial review without being rewritten. The natural next question is not how to
+make this trigger pass, but what $|\Delta AR|$ is actually tracking---an alignment
+question best addressed by comparing absorption-ratio changes against eigenspace
+rotation, correlation-matrix distance, and tree instability directly.
+
+\section*{Acknowledgments}
+
+The author thanks his advisor for extensive methodological review across multiple
+rounds, including corrections to the null-characterisation decision rule, the
+Markov-process specification of the positive control, and several over-general claims
+in earlier drafts; and for the ruling that the frozen pre-registration should be
+corrected by erratum rather than revision. Any remaining errors are the author's own.
+
+\section*{Data and Code Availability}
+
+All code, frozen specifications, decision records, errata, and result artefacts are
+available at \url{https://github.com/opatel4/rac-hrp}. A reproducibility manifest pins
+SHA-256 hashes for 30 code modules, 6 result artefacts, 11 governing documents, and
+the underlying data files, together with the software environment. CRSP data are
+licensed and cannot be redistributed; the manifest records checksums so a licensed
+replicator can verify identity.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
