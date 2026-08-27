@@ -753,19 +753,48 @@ $\gamma$ grid was fixed before any event count was computed. The stopping rule w
 executed in code. There is no point at which a performance number could have
 influenced a specification choice, because no performance number existed.
 
-\subsection{The Molyboga decomposition}
+\subsection{Transfer of the modified HRP components}
 
-The estimator sweep produces an unanticipated positive finding.
-\citet{molyboga2020} proposes three modifications to HRP; two are separately
-implementable here. Within the development region, the covariance modification
-improves every covariance-dependent strategy tested, whereas the allocation
-modification remains below static HRP under every covariance estimator. This suggests
-reported gains from ``modified HRP'' may be attributable to the covariance treatment
-rather than the allocation rule---a decomposition obscured when the modifications are
-evaluated jointly.
+The estimator sweep produces an unanticipated finding about an existing result.
+Molyboga (2020) proposes three modifications to HRP and evaluates them incrementally,
+constructing a ladder from the base algorithm through exponentially weighted shrinkage
+covariance, then equal-volatility allocation, then volatility targeting, and reporting a
+marginal improvement at each rung. The decomposition is his, not ours. What our sweep
+contributes is a test of whether the two separately implementable components transfer to
+a different asset class and a much larger cross-section.
 
-We emphasise this is in-sample within the development region. The holdout was not
-opened, and no out-of-sample claim is made.
+They do not transfer alike. Within the development region, exponentially weighted
+constant-correlation covariance improves every covariance-dependent strategy examined,
+most strongly static HRP. The equal-volatility allocation, by contrast, remains below
+static HRP under every one of the four covariance estimators tested. In Molyboga's
+setting that component improved performance; here its sign is reversed, and the reversal
+holds under each estimator independently.
+
+The relevant difference is plausibly the cross-sectional dimension. Molyboga's portfolios
+contain between five and twenty managed-futures programmes; ours contain one hundred
+equities. Equal-volatility allocation distributes weight without reference to the
+covariance structure within a cluster, which is a defensible approximation when clusters
+are small and their members are already volatility-targeted, and a costlier one when
+clusters are large and heterogeneous in volatility. We do not test this explanation and
+do not claim it; establishing it would require a weight-path decomposition across cluster
+sizes.
+
+The invariance is what carries the finding. Because the ordering of static HRP above the
+equal-volatility variant is preserved across sample, linear-shrinkage,
+nonlinear-shrinkage and exponentially weighted covariance alike, the underperformance is
+attributable to the allocation rule rather than to an interaction with any particular
+estimator. Equal weighting, which never consults the covariance matrix, is invariant
+across estimators as it must be, confirming that the observed differences are estimator
+effects rather than noise in the backtest.
+
+Two constraints on how far this can be taken. These are development-region results; the
+holdout was not opened and no out-of-sample claim is made. And no inference is attached to
+the individual Sharpe differences in Table 3, which are point estimates from a single
+sample without standard errors or multiplicity control across the twenty
+estimator-strategy cells. The claim we make is the qualitative one -- that the sign of the
+allocation effect reverses relative to Molyboga's setting and does so under every
+estimator -- not that any particular magnitude in the table is distinguishable from
+zero.
 
 \section{Limitations}
 
