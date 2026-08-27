@@ -1,0 +1,4 @@
+RAC_HRP_Phase2E_PreSpec_rev4.md
+SHA-256: dfd736acdeb96e357f94c293d209b2cc11b7c5c49cc5145a4c51c85376e6e52e
+Supersedes rev.3 (committed fc4fd84 with unfilled seeds).
+No Phase 2E implementing code exists at this commit.
