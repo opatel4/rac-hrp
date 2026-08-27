@@ -45,8 +45,9 @@ frozen machinery on regime-free inputs, real-data excess burstiness exceeds the
 97.5th percentile of both an uncorrelated and a static-covariance null at all four
 thresholds, so the tested regime-free architectural explanations are not supported.
 
-Separately, a frozen estimator sensitivity sweep decomposes two components of
-Molyboga's (2020) modified HRP: within the development region, exponentially
+Separately, a frozen estimator sensitivity sweep tests whether two components of
+Molyboga's (2020) modified HRP transfer to this setting: within the development
+region, exponentially
 weighted constant-correlation covariance improves every covariance-dependent
 strategy examined, whereas the equal-volatility allocation modification remains
 below static HRP under every covariance estimator.
@@ -460,9 +461,10 @@ estimator effect in the table. Second, the equal-volatility allocation
 (MHRP_EV) remains below static HRP under *every* estimator (0.568 vs 0.608; 0.554
 vs 0.591; 0.534 vs 0.574; 0.557 vs 0.594). Since the ordering is invariant to the
 estimator, the underperformance is attributable to the allocation rule rather than
-to a covariance interaction. Taken together these separate two components of
-Molyboga's (2020) construction: the covariance modification transfers to this
-equity universe; the allocation modification does not.
+to a covariance interaction. Molyboga (2020) evaluates his three modifications
+incrementally and reports a marginal gain at each; the two separately implementable
+here behave differently in this setting. The covariance modification transfers to
+this equity universe; the allocation modification does not.
 
 We note that `ewma_cc` outperforms the pre-registered `nls` specification on four
 of five strategies. The pre-registered specification is therefore not the ex-post
