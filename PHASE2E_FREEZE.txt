@@ -1,4 +1,5 @@
-RAC_HRP_Phase2E_PreSpec_rev4.md
-SHA-256: dfd736acdeb96e357f94c293d209b2cc11b7c5c49cc5145a4c51c85376e6e52e
-Supersedes rev.3 (committed fc4fd84 with unfilled seeds).
+RAC_HRP_Phase2E_PreSpec_rev5.md
+SHA-256: 6153831fa0da7a52673a48bd24cc208fabd857715d7e3a2e5c61c0162ef88b46
+Supersedes rev.4 (78d6e95): corrects the eligible-set contraction in 3.2 to match the frozen gate.
+Supersedes rev.3 (fc4fd84): unfilled seeds.
 No Phase 2E implementing code exists at this commit.
