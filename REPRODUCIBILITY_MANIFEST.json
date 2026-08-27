@@ -1,0 +1,325 @@
+{
+  "generated_utc": "2026-08-27T02:29:04.841936+00:00",
+  "purpose": "Pins every reported number to a verifiable state. Generated BEFORE engineering migration so later churn cannot blur provenance.",
+  "git": {
+    "commit": "4d5c4f900d5ad9ef0c1c76f461bf0b0b8362420e",
+    "branch": "main",
+    "remote": "https://github.com/opatel4/rac-hrp.git",
+    "working_tree_clean": true,
+    "uncommitted": []
+  },
+  "environment": {
+    "python": "3.12.2",
+    "platform": "macOS-15.0.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "openblas_num_threads": "1",
+    "note": "Single-thread BLAS is the project standard: ~13x faster on this workload (100x100 matrices) and verified result-neutral (the --quick Phase 2 gate reproduces bit-for-bit under both settings). Set at process launch; setting it inside a script after numpy import may be too late."
+  },
+  "packages": {
+    "numpy": "1.26.4",
+    "pandas": "2.2.2",
+    "scipy": "1.14.1",
+    "sklearn": "1.5.1",
+    "pyarrow": "14.0.2"
+  },
+  "data": {
+    "path": "/Users/ompatel/rac_hrp_data/raw",
+    "files": {
+      "delist.parquet": {
+        "sha256": "6c0f4b19842b238c286e8a1487a1161d41533015b67dee5648ebff383986d7b8",
+        "bytes": 390921
+      },
+      "dsf.parquet": {
+        "sha256": "cf93a57a456b6c97d7a879a2ab6b591e955c5a9a5cf2f6f287acc95dba5fbd7f",
+        "bytes": 85203140
+      },
+      "membership.parquet": {
+        "sha256": "4e7bfa35dbf42f602929e30b26701707f945ced44f8429ee1467207d21576b7c",
+        "bytes": 58612
+      },
+      "names.parquet": {
+        "sha256": "79f02aa04c4b6414e44b86b195a6ac23a3c17871f79953300f43a6aa68cf696c",
+        "bytes": 1540208
+      },
+      "rf.parquet": {
+        "sha256": "ec3e256ec2c8fae23d9c478602788d8e3fb66d4a690417b225c2b067eb9d6013",
+        "bytes": 71745
+      }
+    },
+    "source": "CRSP via WRDS (user opatel4); CRSP-native large-cap universe; vintage ends 2024-12-31"
+  },
+  "regions": {
+    "development": "2003-01-08 .. 2022-12-30 (5,031 days)",
+    "test": "TEST_START 2023-01-03 .. 2024-12-31",
+    "test_region_analysis_touches": 0,
+    "test_region_note": "The single pre-registered test-region touch has NOT been used. No adaptive specification passed the development-stage structural gate, so performance evaluation was conditionally inaccessible by design."
+  },
+  "code": {
+    "rac_hrp/config.py": {
+      "sha256": "f7871458760bf83e34fe70937eefa524e31eca05eb4a328b34932d2a163fa340",
+      "bytes": 7177,
+      "present": true
+    },
+    "rac_hrp/core/covariance.py": {
+      "sha256": "2bcb5d0c03eba36de3015a45870c65d530305a2f2ee8de550b2d049bd4059c76",
+      "bytes": 6313,
+      "present": true
+    },
+    "rac_hrp/core/covariance_ew.py": {
+      "sha256": "b79f13747b501bb31966efb6dd1f6f2bcc6509ad2eea42eec02a9ff16797aa85",
+      "bytes": 9030,
+      "present": true
+    },
+    "rac_hrp/core/allocators.py": {
+      "sha256": "ab5bd50fa2e570408e83419f34fce65fbbeb7a7a91b028ab075ad24f5a563b12",
+      "bytes": 8602,
+      "present": true
+    },
+    "rac_hrp/core/clustering.py": {
+      "sha256": "b34e83b71cacf8b3e1eb53d7b83359887786be1102ec680d4a6457d939275cc2",
+      "bytes": 7414,
+      "present": true
+    },
+    "rac_hrp/core/pca_mp.py": {
+      "sha256": "781178bd5d2fa595ebff1e12fc2b61f5771bd4b94a5cdf9400878585c8188589",
+      "bytes": 5919,
+      "present": true
+    },
+    "rac_hrp/backtest/engine.py": {
+      "sha256": "14774900f0dbd44aca8a705e6715068f65ac0486ddf07e73a71e67d32e2034ea",
+      "bytes": 19300,
+      "present": true
+    },
+    "rac_hrp/backtest/folds.py": {
+      "sha256": "1f4a6e742407287740bfbcc86dd8902ba64f272635a9c3121c4ccd52eb9ffcfd",
+      "bytes": 7185,
+      "present": true
+    },
+    "rac_hrp/backtest/region_lock.py": {
+      "sha256": "48ade2f18d5988858dccbcdb6991c5de8ff5751b8a9f5155c3e758071039ea3d",
+      "bytes": 10404,
+      "present": true
+    },
+    "rac_hrp/backtest/metrics.py": {
+      "sha256": "801011199bfc253540ed893bb194d4e489724a1b434d6fd95c157a88f637a1d4",
+      "bytes": 3083,
+      "present": true
+    },
+    "rac_hrp/data/panel.py": {
+      "sha256": "388acd1c038bd19723b8ff90b7f28c180339ec5fd0abb55ae4e0438eedc5cee5",
+      "bytes": 9240,
+      "present": true
+    },
+    "rac_hrp/data/universe.py": {
+      "sha256": "15fa7d17a19b6f325553551c647dab66eb56a8c271d067d3516c4eb17fec3b36",
+      "bytes": 5252,
+      "present": true
+    },
+    "rac_hrp/nulls/environments.py": {
+      "sha256": "29e3607e11ed672b24ee442499f14715cb510361adeb65169082d96047b8342d",
+      "bytes": 9067,
+      "present": true
+    },
+    "rac_hrp/nulls/environments_static.py": {
+      "sha256": "6de4695e237cec81d36f7e848bf843cabde2a2249f6f507ab6e7642166d42d40",
+      "bytes": 6246,
+      "present": true
+    },
+    "rac_hrp/phase2/config.py": {
+      "sha256": "44e6ef894050db1b3e83a4c7082e9773b6154c8bf7bba40d20b6f0c7e0fe809c",
+      "bytes": 3963,
+      "present": true
+    },
+    "rac_hrp/phase2/stats.py": {
+      "sha256": "3f8d29bf908788134d31125d31b354f8d8374b49a98d5a6cbf9771822ab07895",
+      "bytes": 9503,
+      "present": true
+    },
+    "rac_hrp/phase2/calibration.py": {
+      "sha256": "4b9e62951ea9f54725e7b89b19d5ac998e0812867730bb481680fdc9362d0339",
+      "bytes": 17261,
+      "present": true
+    },
+    "scripts/run_phase05.py": {
+      "sha256": "56cfc4d79a81a427092b0f6613bf2857761caadbaf910bc214b1afb4c500cd04",
+      "bytes": 10250,
+      "present": true
+    },
+    "scripts/run_phase1.py": {
+      "sha256": "9086912bfc8e50fe7ae2b6be89e2fb47fa4bf90631fd15e739bca1a3d6e8831d",
+      "bytes": 8916,
+      "present": true
+    },
+    "scripts/run_phase2.py": {
+      "sha256": "6aa8f27610c825f1120a845b63f678ab370797971a3fa15b989d7305e0a60643",
+      "bytes": 7940,
+      "present": true
+    },
+    "scripts/run_mechanism_null.py": {
+      "sha256": "9098fd5bc6f718c358cfb78941f9ca8e652f910340f9db67961f171f9cecacad",
+      "bytes": 13255,
+      "present": true
+    },
+    "scripts/run_mechanism_null_parallel.py": {
+      "sha256": "85767658d4a6b1fb5043877777c17a56a6a43470ad6f761703a08382bdfba9d4",
+      "bytes": 11220,
+      "present": true
+    },
+    "scripts/diagnose_modal_gap_null.py": {
+      "sha256": "0e2d3e4a28bd9da5753bc9d66aa73ea21a68a24a280990731548966d2a37555c",
+      "bytes": 7256,
+      "present": true
+    },
+    "scripts/diag_bootstrap_calibration_B.py": {
+      "sha256": "6ebdcbad35c309f13613a1e7908b7a2df64385519800e641bd240b21cfef8c3d",
+      "bytes": 5508,
+      "present": true
+    },
+    "tests/test_phase05.py": {
+      "sha256": "c149364040a9d92170d38696e14c74d35c22f434a86475b84acd57a63f5c5b65",
+      "bytes": 12157,
+      "present": true
+    },
+    "tests/test_phase2_stats.py": {
+      "sha256": "b26d7e0b6b2ecda985b261c6323aa9a84290e1e0e720cdd2c6ebe2283483793a",
+      "bytes": 6346,
+      "present": true
+    },
+    "tests/test_covariance_ew.py": {
+      "sha256": "b26e289173bea3d0166f2e5c4eee10901008941615f2b15e88e760401cdb91d4",
+      "bytes": 7724,
+      "present": true
+    },
+    "tests/test_region_lock.py": {
+      "sha256": "a925ea73080ae6eec8c2e88a7e56757316b6c1f704fda1fb46adf34676845a44",
+      "bytes": 4548,
+      "present": true
+    }
+  },
+  "results": {
+    "outputs/phase1/phase1_baselines.csv": {
+      "sha256": "d1e1032816592601afc5ae525eb931d2436a773c159420c909a6704a4862a9b7",
+      "bytes": 842,
+      "present": true
+    },
+    "outputs/phase2/calibration_manifest.json": {
+      "sha256": "a65337bbc706aa4d8255df7f57fa468443bae4a8bd9cd4bacb28eee474d38f73",
+      "bytes": 2257,
+      "present": true
+    },
+    "outputs/phase2/calibration_table.csv": {
+      "sha256": "aff949fe9694a734cb9f6773a25e8cc824ee0072d65221fac67b533e50a37656",
+      "bytes": 760,
+      "present": true
+    },
+    "outputs/phase2_diagnostics/modal_gap_null.json": {
+      "sha256": "6b4c94b8f0383c017456d228199eb09c6b9d1014e35495858b4d80ed2de1f846",
+      "bytes": 1949,
+      "present": true
+    },
+    "outputs/phase2_diagnostics/bootstrap_calibration_vs_B.json": {
+      "sha256": "02725b3557ce0426125568cb4c4e4c5b812576922296cb56c01ebda77dc6e904",
+      "bytes": 1674,
+      "present": true
+    },
+    "outputs/phase2_mechanism/mechanism_null.json": {
+      "sha256": "60e07aea0cee8983e55e39b1a3bd0d12372a423a84d879fe254a35d0207917ec",
+      "bytes": 1672112,
+      "present": true
+    }
+  },
+  "documents": {
+    "RAC_HRP_Phase2_Gate_Result_Memo_v3.md": {
+      "sha256": "f7d4ef765a1e444d88cb32333255591aa226412b0a699009c9b566110452c7a8",
+      "bytes": 10670,
+      "present": true
+    },
+    "RAC_HRP_Phase2_rev5_ERRATUM_E1.md": {
+      "sha256": "cb473fb1f494e6140730194f66eb5662638e348dee85a6f3dbd0038a562ad180",
+      "bytes": 2627,
+      "present": true
+    },
+    "RAC_HRP_Phase2_Reconciliation_111_vs_112.md": {
+      "sha256": "dfade405f992e507b79831960bba5e013386c8dbba752347a92e3a78a92ff668",
+      "bytes": 3905,
+      "present": true
+    },
+    "RAC_HRP_Phase2D_MechanismDiagnostic_PreSpec.md": {
+      "sha256": "07d593a8a0dc78520a8ccc081c4222e8f4edf18c8bd5054eab01123551e3c4ab",
+      "bytes": 18047,
+      "present": true
+    },
+    "RAC_HRP_Phase2D_Mechanism_Result_Memo.md": {
+      "sha256": "d6220152e472eeca962e381a3f178549983d9538045a68a2eab18f987a9ef93e",
+      "bytes": 6652,
+      "present": true
+    },
+    "RAC_HRP_Phase2D_ImplementationDeviationRecord_ID1.md": {
+      "sha256": "53a62955e1d2284b495831f6b61c626c54218b84aed527e9442d28cbc478056c",
+      "bytes": 7035,
+      "present": true
+    },
+    "RAC_HRP_Phase1_INCIDENT_E2_deleted_allocator.md": {
+      "sha256": "3581db8cf567b1bd646e69feeda5095717ecc3c92637c44585a9aec96d881ae7",
+      "bytes": 6185,
+      "present": true
+    },
+    "RAC_HRP_Phase1_EWMA_Robustness_Note.md": {
+      "sha256": "488314fffd1cd686da3544cc4beef7123633bd40e15684134c25d29ee750f11f",
+      "bytes": 4081,
+      "present": true
+    },
+    "RAC_HRP_Phase2_Audit_Bundle.md": {
+      "sha256": "722b96f1b8db852e5d6c769e60544af0c1be55cfe5597708351729725a860f34",
+      "bytes": 8014,
+      "present": true
+    },
+    "docs/PRE_REGISTRATION.md": {
+      "sha256": "c4a0b5bd2fbd125960875a750f9d30a74f83b9070600a99aba8b5f5e9c3e5e99",
+      "bytes": 5913,
+      "present": true
+    },
+    "CHANGELOG.md": {
+      "sha256": "d2d78f50bae65f2132ff7162e44e4c8eee7ee7bd478c8e9c53d8747247b24b77",
+      "bytes": 16531,
+      "present": true
+    }
+  },
+  "headline_values": {
+    "phase1_sharpe_dev": {
+      "MinVar": 0.576,
+      "HRP_static": 0.574,
+      "ERC": 0.549,
+      "MHRP_EV": 0.534,
+      "EW": 0.508
+    },
+    "phase2_gate": {
+      "outcome": "NO ADMISSIBLE GAMMA",
+      "eligible_rebalances": 233,
+      "n_events": {
+        "0.5": 149,
+        "1.0": 111,
+        "1.5": 81,
+        "2.0": 58
+      },
+      "p_holm": {
+        "0.5": 0.556,
+        "1.0": 0.556,
+        "1.5": 0.254,
+        "2.0": 0.221
+      }
+    },
+    "phase2d_mechanism": {
+      "outcome": "2_beyond_regime_free_mechanics"
+    },
+    "bootstrap_empirical_size": {
+      "nominal": 0.05,
+      "measured": 0.066,
+      "stable_across_B": [
+        600,
+        2000,
+        10000
+      ]
+    }
+  }
+}
