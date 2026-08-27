@@ -279,6 +279,46 @@ A trigger fires when |ΔAR*ₜ*| > γ · σ̂*ₜ*, two-sided with zero location
 inequality. Because σ̂ requires six observations, the first seven rebalances can
 never fire; the eligible set is |E| = 240 − 7 = 233.
 
+The smoothing and differencing steps telescope. For any rebalance at which the
+five-period window is complete, substitution gives
+
+> ΔAR^s*ₜ* = (1/5)(AR*ₜ* − AR*ₜ₋₅*),
+
+so the trigger statistic is a five-rebalance change scaled by 1/5, not a local one.
+At monthly rebalancing this is a change measured over approximately 105 trading days.
+The smoothing window is defined in rebalances rather than days; the frozen
+specification records the correction of an earlier configuration field that had
+implied the latter. We state the identity explicitly because it governs the
+interpretation of two later results (Sections 5.3 and 6.1).
+
+Three properties follow. First, consecutive values of ΔAR^s share four of five
+constituent AR terms, so the series carries moving-average dependence by
+construction. This compounds the persistence already induced by the covariance
+window: consecutive *W* = 504 day windows stepped by 21 days share 483 observations,
+an overlap of 95.8%. Second, an isolated jump in AR at date τ enters the difference
+twice, at τ and again at τ + 5 with opposite sign, and because the threshold is
+two-sided both crossings can fire. Third, a sustained drift in AR across several
+rebalances keeps the difference large at consecutive *t*, producing runs of adjacent
+events. The mechanism is a detector of low-frequency change in covariance
+concentration, and its event sequence is expected to be temporally clustered rather
+than isolated.
+
+The scale is lagged one rebalance so that no contemporaneous information enters, and
+the lag is what binds the warm-up: ΔAR^s is first defined at the second rebalance,
+the scale window reaches six observations at the seventh, and the lag defers the
+first admissible firing to the eighth. The five-period mean is computed with a
+minimum of one observation, so the earliest values of AR^s are partial-window means
+and the identity above holds exactly only from the sixth rebalance onward.
+
+The pre-registration recorded, before the gate was specified, that the inherited
+threshold's firing rate materially exceeds what an i.i.d. normal ΔAR would produce at
+the same threshold — 46.7% against 31.7% — and attributed the excess to heavy tails
+or volatility clustering in ΔAR combined with a short twelve-observation scale
+estimate that is frequently too small, making the realised threshold looser than
+γ = 1 implies. Both mechanisms, the moving-average dependence above and the noisy
+scale denominator, push in the same direction, and neither is a property of the data
+alone.
+
 The candidate grid is γ ∈ {0.5, 1.0, 1.5, 2.0}, fixed ex ante. **γ was not tuned.**
 
 ### 4.2 The structural gate

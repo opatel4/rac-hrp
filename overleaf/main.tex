@@ -298,6 +298,49 @@ two-sided with zero location and strict inequality. Because $\hat{\sigma}$ requi
 six observations, the first seven rebalances can never fire; the eligible set is
 $|E| = 240 - 7 = 233$.
 
+Equations~\eqref{eq:smooth} and~\eqref{eq:delta} telescope. For any rebalance at
+which the five-period window is complete,
+\begin{equation}
+\Delta AR^{s}_{t} \;=\; \tfrac{1}{5}\left(AR_{t} - AR_{t-5}\right),
+\label{eq:fivelag}
+\end{equation}
+so the trigger statistic is a five-rebalance change scaled by $1/5$, not a local one.
+At monthly rebalancing this is a change measured over approximately 105 trading days.
+The smoothing window is defined in rebalances rather than days; the frozen
+specification records the correction of an earlier configuration field that had
+implied the latter. We state the identity explicitly because it governs the
+interpretation of two later results (Sections~\ref{sec:postmortem}
+and~\ref{sec:whatestablished}).
+
+Three properties follow. First, consecutive values of $\Delta AR^{s}$ share four of
+five constituent $AR$ terms, so the series carries moving-average dependence by
+construction. This compounds the persistence already induced by the covariance
+window: consecutive $W = 504$ day windows stepped by 21 days share 483 observations,
+an overlap of 95.8\%. Second, an isolated jump in $AR$ at date $\tau$ enters the
+difference twice, at $\tau$ and again at $\tau + 5$ with opposite sign, and because
+the threshold is two-sided both crossings can fire. Third, a sustained drift in $AR$
+across several rebalances keeps the difference large at consecutive $t$, producing
+runs of adjacent events. The mechanism is a detector of low-frequency change in
+covariance concentration, and its event sequence is expected to be temporally
+clustered rather than isolated.
+
+The scale in~\eqref{eq:sigma} is lagged one rebalance so that no contemporaneous
+information enters, and the lag is what binds the warm-up: $\Delta AR^{s}$ is first
+defined at the second rebalance, the scale window reaches six observations at the
+seventh, and the lag defers the first admissible firing to the eighth. The
+five-period mean is computed with a minimum of one observation, so the earliest
+values of $AR^{s}$ are partial-window means and~\eqref{eq:fivelag} holds exactly
+only from the sixth rebalance onward.
+
+The pre-registration recorded, before the gate was specified, that the inherited
+threshold's firing rate materially exceeds what an i.i.d.\ normal $\Delta AR$ would
+produce at the same threshold --- 46.7\% against 31.7\% --- and attributed the
+excess to heavy tails or volatility clustering in $\Delta AR$ combined with a short
+twelve-observation scale estimate that is frequently too small, making the realised
+threshold looser than $\gamma = 1$ implies. Both mechanisms, the moving-average
+dependence above and the noisy scale denominator, push in the same direction, and
+neither is a property of the data alone.
+
 The candidate grid is $\gamma \in \{0.5, 1.0, 1.5, 2.0\}$, fixed ex ante.
 \textbf{$\gamma$ was not tuned.}
 
@@ -614,6 +657,7 @@ not rest on the contested timing criterion.
 portfolio was constructed and no performance quantity was computed.}
 
 \subsection{Post-mortem: is the burstiness an artefact of the pipeline?}
+\label{sec:postmortem}
 \label{sec:mechanism}
 
 The timing failure has a specific character: high CV \emph{and} high modal-gap share
@@ -729,6 +773,7 @@ rejected.
 \section{Discussion}
 
 \subsection{What the negative result establishes}
+\label{sec:whatestablished}
 
 Under a prospectively frozen, performance-blind admissibility standard, an
 absorption-ratio change trigger does not qualify as an adaptive re-clustering
