@@ -34,6 +34,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import sys
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
@@ -59,13 +60,25 @@ DEFAULT_AUDIT_LOG = REPO_ROOT / "audit" / "test_region_touches.jsonl"
 _GENESIS = "0" * 64  # prev_hash of the first event in an empty chain
 
 
-def _under_pytest() -> bool:
-    # PYTEST_CURRENT_TEST is set by pytest *per test*, only during actual test
-    # execution -- not merely when pytest happens to be importable in the env.
-    # Checking this (rather than `import pytest` / sys.modules) is what keeps an
-    # analysis script that runs in a pytest-installed conda env from being
-    # misclassified.
-    return "PYTEST_CURRENT_TEST" in os.environ
+def _under_test_runner() -> bool:
+    """True when execution is genuinely a test run, by either supported route.
+
+    Two signals, both set by HOW THE PROCESS WAS LAUNCHED rather than by the
+    caller, so ordinary analysis code cannot self-declare a unit_test touch:
+
+      1. PYTEST_CURRENT_TEST -- set by pytest per test, only during actual test
+         execution; not merely when pytest is importable in the environment.
+      2. sys.argv[0] basename matching test_*.py -- this repo's suites are also
+         standalone runners invoked as `python tests/test_phase05.py`, where (1)
+         is absent. A script would have to be RENAMED to test_*.py to spoof this.
+
+    (1) alone was the original guard and was wrong: it broke the direct-invocation
+    path, which is how these suites are normally run.
+    """
+    if "PYTEST_CURRENT_TEST" in os.environ:
+        return True
+    argv0 = os.path.basename(sys.argv[0]) if sys.argv else ""
+    return argv0.startswith("test_") and argv0.endswith(".py")
 
 
 def _git_info(cwd: Path | None = None) -> tuple[str | None, bool | None]:
@@ -138,10 +151,11 @@ class TestRegionLock:
         """Unit-test unlock. Ephemeral, tagged `unit_test`, NEVER written to the
         durable log, NEVER counted toward reconciliation.  Guarded so it cannot
         be used as a bypass: raises unless actually running under pytest."""
-        if not _under_pytest():
+        if not _under_test_runner():
             raise RuntimeError(
-                "unlock_for_selftest() may only be called under pytest "
-                "(PYTEST_CURRENT_TEST is not set). Ordinary code must use "
+                "unlock_for_selftest() may only be called from a test runner "
+                "(no PYTEST_CURRENT_TEST and argv[0] is not test_*.py). "
+                "Ordinary code must use "
                 "unlock(), which records a durable analysis touch."
             )
         self._unlocked = True
