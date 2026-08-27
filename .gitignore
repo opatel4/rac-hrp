@@ -79,3 +79,4 @@ rac-hrp-paper.zip
 rac_hrp_housekeeping.py
 rac_hrp_single_author_fix.py
 *.Rapp.history
+rac_hrp_advisor_sweep.py
