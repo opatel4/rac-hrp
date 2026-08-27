@@ -263,6 +263,7 @@ for $N = 100$ this yields $W = 504$.
 \section{Methodology}
 
 \subsection{The trigger}
+\label{sec:trigger}
 
 Let $\hat{\Sigma}_t$ be the covariance estimate over the trailing $W = 504$ trading
 days ending at rebalance $t$, with eigenvalues
@@ -365,6 +366,91 @@ Among candidates passing \emph{every} hard criterion, select the value closest t
 inherited $\gamma = 1.0$, breaking ties toward the larger $\gamma$. \textbf{If none
 passes, the investigation stops; the ``least bad'' candidate is not selected.} This
 rule is applied automatically in code, not by the researcher.
+
+\subsection{Phase 0.5: staged falsification audit}
+\label{sec:phase05}
+
+Before the structural gate was specified, the full RAC-HRP implementation was subjected
+to a staged falsification audit of the kind advocated by Nikolopoulos (2026): the
+complete pipeline is executed on inputs that destroy the quantity it claims to exploit,
+and is required to produce no material edge. A pipeline that manufactures Sharpe from
+signal-free data cannot support a claim of Sharpe from real data. The audit ran in two
+versions. The first (v1) executed under its original rules and its results are preserved
+unaltered; the second (v2) was prospectively frozen after v1's outcome was decomposed,
+and is the version whose verdicts we rely on. We describe both and the transition between
+them, because the transition is itself a decision this paper's thesis makes relevant.
+
+Four environments were used: A, i.i.d. Gaussian, testing for look-ahead; B,
+cross-sectional shuffle, testing for leakage through asset identity; C, which retains
+real development-region returns but randomises the timing at which the absorption-ratio
+trigger fires, testing whether the trigger's timing contributes anything; and D,
+regime-switching volatility with no return signal, testing whether any edge is volatility
+timing in disguise. The decision rule is a one-sided equivalence test against a
+materiality margin of +0.10 in annualised Sharpe units. The rule is one-sided because a
+pipeline manufacturing signal from noise produces a positive edge; a negative excursion
+is not the failure mode the audit exists to detect. All runs are on the development
+region.
+
+Environment C is the sharpest test of this paper's premise, since a pipeline that
+performs as well with a randomly timed trigger has no absorption-ratio content. It
+passed: a Sharpe difference of -0.0016 against static HRP and +0.0046 against periodic
+HRP, both far inside the margin. Environments A and B passed cleanly against the
+same-policy baselines.
+
+Version 1 returned one failure: RAC-HRP versus ERC under environment D, +0.102, CI
+[+0.038, +0.167]. One further cell, RAC-HRP versus equal weighting under the same
+environment, had a confidence interval extending to -0.108 and so past the margin on the
+untested side; it passed the rule as specified and is noted for completeness.
+
+The pattern around the failing cell is diagnostic. A trigger-specific manufactured
+advantage should appear against otherwise identical same-policy baselines, which differ
+from RAC-HRP only in re-clustering rule; it did not. RAC-HRP showed no edge over static
+HRP (-0.006, CI [-0.066, +0.054]) and none over equal weighting. A paired recovery replay
+confirmed that static HRP, which never re-clusters, beats ERC under D by +0.109 (CI
+[+0.049, +0.168]), so essentially the entire difference is an HRP-versus-ERC allocator
+property under volatility clustering and none of it is attributable to the trigger. We
+claim only the allocator-family interpretation; the mechanism by which the two allocators
+diverge is not asserted.
+
+We record how the cell was resolved, and we do so at length because the sequence is one
+this paper elsewhere criticises. A comparator restriction was adopted immediately after
+the cell it affects returned a failure. Before adopting it, a decision memorandum was
+written setting out two alternatives -- restricting environment D to same-policy
+comparators, extending a principle already applied to environment C during
+implementation, or leaving the gate unchanged and reporting the failure as a
+characterised finding -- together with the decomposition above and an explicit statement
+that the sequence resembles altering a test until it passes. That memorandum is released.
+But this is a single-author study: the author wrote the options and chose between them,
+and no independent party ruled. The mitigation the memorandum itself identified is
+therefore absent.
+
+We do not ask the reader to accept the choice on trust. Both verdicts are reported. Under
+the original v1 rule, the audit fails on one cross-allocator cell. Under the v2 rule,
+which restricts the gating tier to same-policy comparators and retains cross-allocator
+contrasts as non-gating diagnostics, it passes. The decomposition above is the
+substantive argument for the restriction and is independent of who made it; a reader who
+finds it unpersuasive may apply the v1 rule throughout, in which case the audit is
+reported as failing on an HRP-versus-ERC allocator contrast under a regime-switching
+volatility environment, with the same downstream consequences for Phase 2, which is
+unaffected either way. Version 1 results are preserved unaltered and released.
+
+The v2 protocol was written and hashed before v2 execution: the protocol document, the
+code, the base seed, the replication counts, and the decision rules were all fixed in
+advance, and the holdout remained closed throughout. What v2 lacks relative to the design
+as originally conceived is external authorisation, not prospective specification.
+
+Under v2, all eight primary cells passed, with the largest same-policy difference +0.0132
+against a margin of +0.10, and every positive control correctly classified as failing,
+establishing that the gate had power to reject. The diagnostic panel records the
+cross-allocator differences in full, including RAC-HRP versus ERC under D at +0.093
+alongside static HRP versus ERC at +0.083.
+
+Two limitations. The v1 run used 100 replications, at which the positive control was
+inconclusive at zero injected signal, so the margin sat near the resolution limit; v2
+raised replication counts to 150 per environment and 200 for D. And a clean pass supports
+only that the trigger does not manufacture a material positive difference against
+same-policy baselines. It does not establish the mechanism of the cross-allocator
+difference, which would require weight-path analysis outside this paper's scope.
 
 \section{Results}
 
