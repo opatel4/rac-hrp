@@ -53,6 +53,9 @@ from rac_hrp.data.universe import UniverseBuilder, realized_n_report  # noqa: E4
 from rac_hrp.backtest.folds import FoldGenerator                     # noqa: E402
 from rac_hrp.phase2 import horizon as H                              # noqa: E402
 
+# 2E-HORIZON was specified and run under rev.5. rev.6 amended only the
+# 2E-POWER base path and does not touch this diagnostic; the governing
+# revision for this result is therefore rev.5, and the hash below is its.
 SPEC_FILE = "RAC_HRP_Phase2E_PreSpec_rev5.md"
 SPEC_SHA = "6153831fa0da7a52673a48bd24cc208fabd857715d7e3a2e5c61c0162ef88b46"
 
