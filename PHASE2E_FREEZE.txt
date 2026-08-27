@@ -1,5 +1,7 @@
-RAC_HRP_Phase2E_PreSpec_rev5.md
-SHA-256: 6153831fa0da7a52673a48bd24cc208fabd857715d7e3a2e5c61c0162ef88b46
-Supersedes rev.4 (78d6e95): corrects the eligible-set contraction in 3.2 to match the frozen gate.
+RAC_HRP_Phase2E_PreSpec_rev6.md
+SHA-256: 0975b0010d1c5b83e8a243195fa4c13e7859bae8e89cfc7fd4491ff3a98f7161
+Supersedes rev.5 (8b5bd90): 2E-POWER base path corrected; the named generator made the specified comparison undefined.
+Supersedes rev.4 (78d6e95): eligible-set contraction.
 Supersedes rev.3 (fc4fd84): unfilled seeds.
-No Phase 2E implementing code exists at this commit.
+2E-HORIZON was run under rev.5 and is unaffected; its result stands at 28d5f92.
+No 2E-POWER implementing code or result exists at this commit.
