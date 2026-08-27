@@ -210,7 +210,7 @@ interpretable in a way an elaborate one would not.
 **Covariance estimation.** Ledoit & Wolf (2004) established linear shrinkage
 toward structured targets; Ledoit & Wolf (2022) extend to nonlinear shrinkage.
 Molyboga (2020) applies exponentially weighted covariance with constant-correlation
-shrinkage in a managed-futures context. Bongiorno et al. (2025) pursue learned
+shrinkage in a managed-futures context. Bongiorno et al. (2026) pursue learned
 covariance cleaning. Our sensitivity analysis compares sample, linear-shrinkage,
 nonlinear-shrinkage, and exponentially weighted constant-correlation estimators.
 
@@ -837,7 +837,7 @@ Ang, A., & Timmermann, A. (2012). Regime changes and financial markets. *Annual 
 
 Avellaneda, M. (2019). Hierarchical PCA and applications to portfolio management. Courant Institute of Mathematical Sciences, NYU. arXiv:1910.02310.
 
-Bongiorno, C., Manolakis, E., & Mantegna, R. N. (2025). End-to-end large portfolio optimization for variance minimization with neural networks through covariance cleaning.
+Bongiorno, C., Manolakis, E., & Mantegna, R. N. (2026). End-to-end large portfolio optimization for variance minimization with neural networks through covariance cleaning. *The Journal of Financial Data Science*, 12. arXiv:2507.01918.
 
 Deković, D., & Posedel Šimović, P. (2025). Hierarchical risk parity: Efficient implementation and real world analysis. *Future Generation Computer Systems*, 167, 107744. DOI 10.1016/j.future.2025.107744.
 
@@ -851,7 +851,7 @@ Horvath, B., & Issa, Z. (2023). Non-parametric online market regime detection an
 
 Kim, C.-J., & Nelson, C. R. (1998). Business cycle turning points, a new coincident index, and tests of duration dependence based on a dynamic factor model with regime switching. *Review of Economics and Statistics*, 80(2), 188–201. DOI 10.1162/003465398557447.
 
-Kriuk, B., & Kriuk, F. (2026). ORCA — Online Regime Correlation Analyzer. Hong Kong University of Science and Technology / University of Technology Sydney.
+Kriuk, B., & Kriuk, F. (2026). ORCA — Online Regime Correlation Analyzer. *IEEE Symposium on Computational Intelligence for Financial Engineering and Economics (CIFEr)*, Tokyo. arXiv:2604.17251.
 
 Kritzman, M., Li, Y., Page, S., & Rigobon, R. (2011). Principal components as a measure of systemic risk. *Journal of Portfolio Management*, 37(4), 112–126. DOI 10.3905/jpm.2011.37.4.112.
 
@@ -873,7 +873,7 @@ Nikolopoulos, S. D. (2026). Spurious predictability in financial machine learnin
 
 Pafka, S., Potters, M., & Kondor, I. (2004). Exponential weighting and random-matrix-theory-based filtering of financial covariance matrices. arXiv:cond-mat/0402573.
 
-Pergher, K. G. R., Soldera, J., & Scharcanski, J. (2026). An orthogonal hierarchical risk parity allocation method for improved portfolio out-of-sample performance. *IEEE Access*. DOI 10.1109/ACCESS.2026.3656702.
+Pergher, K. G. R., Soldera, J., & Scharcanski, J. (2026). An orthogonal hierarchical risk parity allocation method for improved portfolio out-of-sample performance. *IEEE Access*, 14, 16885. DOI 10.1109/ACCESS.2026.3656702.
 
 Politis, D. N., & White, H. (2004). Automatic block-length selection for the dependent bootstrap. *Econometric Reviews*, 23(1), 53–70.
 
