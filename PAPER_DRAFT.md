@@ -567,13 +567,24 @@ and *D_VI* is positive at every threshold. A larger universe, a longer sample, o
 higher rebalance frequency could plausibly resolve the effect. The honest claim is
 that this evidence is insufficient, not that the effect is zero.
 
-### 7.2 Single universe and single trigger family
+### 7.2 Horizon alignment between trigger and criterion
+
+The trigger statistic measures change in the absorption ratio over five rebalances
+(Section 4.1) while the cluster-informativeness criterion measures change in the
+clustering over one. The pre-registration did not require these horizons to agree, and
+the gate was frozen without the mismatch being identified. The negative result
+therefore establishes that the trigger is uninformative about one-rebalance
+restructuring under the frozen procedure; it does not establish that the trigger is
+uninformative about hierarchical structure generally. A subsequent pre-registration of
+this protocol should specify the trigger and criterion horizons jointly.
+
+### 7.3 Single universe and single trigger family
 
 One universe (CRSP large-cap, *N* = 100), one region, one trigger construction. The
 absorption-ratio trigger is one member of a large family; failure here does not
 generalise to eigenspace-rotation, correlation-distance, or change-point triggers.
 
-### 7.3 The holdout was never opened
+### 7.4 The holdout was never opened
 
 The single pre-registered holdout touch was not used. A machine-checkable assertion
 in the released test suite verifies that the durable audit log records zero
@@ -581,7 +592,7 @@ analysis touches of the test region. This is a consequence of the design, not an
 omission: performance evaluation was *conditionally inaccessible*, and no adaptive
 specification earned access.
 
-### 7.4 Reproducibility incidents
+### 7.5 Reproducibility incidents
 
 Two defects were found and are documented in full. A figure in the frozen
 pre-registration cited a Phase 0.5 re-clustering count as though it were a trigger
@@ -592,6 +603,27 @@ the archived value reproduced exactly. Both are recorded in the released
 supplement, and regression tests now cover both failure modes.
 
 ---
+
+### 7.6 No independent authorisation
+
+This is a single-author study. The pre-registration was written, frozen, and applied by
+the same person, and no independent party ruled on any specification choice or
+amendment. The protocol's commitments are therefore evidenced by artefacts rather than
+by review: specification documents are hashed and their hashes recorded in a released
+manifest, the implementing code carries commit timestamps that postdate those hashes,
+the selection rule is executed by a function rather than applied by hand, and the
+calibration implementation cannot compute a performance quantity.
+
+These devices constrain the specific failure they were built for -- selecting a
+threshold after observing its effect on returns -- because the gate is structurally
+incapable of producing a return quantity and the decision rule is executed in code.
+They do not constrain judgement calls made between phases, where a self-imposed rule
+can be reinterpreted by the person who wrote it. One such decision is reported in full
+in Section 4.5, with both the original and revised outcomes, so that a reader may apply
+either rule.
+
+Independent authorisation would strengthen the protocol, and any subsequent application
+of it should include a party who does not benefit from the outcome.
 
 ## 8. Conclusion
 
