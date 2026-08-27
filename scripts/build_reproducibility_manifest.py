@@ -111,7 +111,13 @@ def main() -> int:
         for f in sorted(raw.glob("*.parquet")):
             data[f.name] = {"sha256": sha256(f), "bytes": f.stat().st_size}
 
-    dirty = git("status", "--porcelain")
+    # Ignore this manifest's own output when judging tree cleanliness:
+    # the files are written after this check, so they would always appear
+    # untracked and the flag could never report clean.
+    _self = {"REPRODUCIBILITY_MANIFEST.json", "REPRODUCIBILITY_MANIFEST.md"}
+    dirty = "\n".join(
+        l for l in (git("status", "--porcelain") or "").splitlines()
+        if l.split()[-1] not in _self)
     m = {
         "generated_utc": datetime.now(timezone.utc).isoformat(),
         "purpose": ("Pins every reported number to a verifiable state. Generated "
