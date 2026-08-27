@@ -1,6 +1,11 @@
-# ERRATUM E2 — Phase 1: silent deletion of the MHRP_EV allocator
+# INCIDENT E2 — Phase 1: silent deletion of the MHRP_EV allocator
 
-**Type:** reproducibility defect. Code deleted; result unaffected.
+**Classification (advisor ruling):** reproducibility / code-integrity INCIDENT.
+Distinguished from E1, which is a documentation erratum. E2 temporarily broke
+exact reproducibility of a committed result and is recorded as an incident with a
+full chronology, not as a documentation correction.
+
+**Type:** code deleted; result unaffected.
 **Effect on any reported number:** NONE — the archived value reproduces exactly.
 **Status:** RESOLVED. Code restored from history; result verified.
 
@@ -36,6 +41,21 @@ sensitivity work. The three test suites (21/21, 12/12, 8/8) all passed throughou
 none exercises the Phase 1 baseline list, so no test covered the path. The defect
 surfaced only when Phase 1 was re-run to add the `ewma_cc` estimator column.
 
+## Chronology of record
+
+| Stage | Commit | Event |
+|---|---|---|
+| Producing commit | `be7aa60` | MHRP_EV allocator implemented; Sharpe 0.534 produced and committed |
+| Deletion | `f6e09dc` | 66 lines removed from `allocators.py`, 3 from `engine.py`; result orphaned |
+| Outage | — | Committed result not regenerable from committed code; undetected because nothing re-ran Phase 1 and no suite covered the path |
+| Discovery | — | Surfaced when Phase 1 was re-run to add the `ewma_cc` estimator column |
+| Restoration | (this commit) | Both files restored from `be7aa60` (original code, not a reimplementation) |
+| Verification | — | Phase 1 re-run; MHRP_EV reproduces Sharpe 0.534; accounting reconciles for all five baselines |
+
+**No result was revised during or as a consequence of the outage.** No number was
+recomputed, reinterpreted, or replaced; the archived value was reproduced, not
+superseded.
+
 ## Resolution
 
 Both files were restored from `be7aa60` — the **original implementation**, not a
@@ -68,10 +88,24 @@ mitigations are in place or proposed:
 
 1. **In place** — `tests/test_region_lock.py::test_lock_implementation_is_not_shadowed`
    fails if `folds.py` shadows the durable lock implementation.
-2. **Proposed** — a coverage test asserting that every `Strategy` declared in
-   `scripts/run_phase1.py`'s `BASELINES` references an allocator the engine
-   implements. One assertion; converts this class of deletion from a discovery
-   weeks later into a red test immediately.
+2. **In place** — `tests/test_phase05.py::test_phase1_baselines_have_implemented_allocators`
+   asserts that every `Strategy` declared in `scripts/run_phase1.py`'s `BASELINES`
+   references an allocator the engine implements. This is the check that would
+   have caught E2 immediately.
+3. **Proposed** — migration of the suites to pytest, sequenced AFTER the
+   scientific results are hashed so engineering churn does not blur their
+   provenance. Note (advisor ruling): pytest auto-discovery removes the
+   "test defined but never registered" failure mode, but does NOT make production-
+   code deletion structurally impossible. Discovery must be paired with explicit
+   invariants — registry-completeness tests, import/dispatch tests for every
+   declared strategy, golden-result reproduction tests for critical baselines, a
+   collected-test-count assertion, and no `sys.exit()` structure that can leave
+   definitions unreachable.
+
+   The coverage test in (2) was itself initially inert: appended below the
+   runner's `sys.exit()`, it never executed while the suite reported green. The
+   test written to catch silent deletions was silently doing nothing — the same
+   failure shape as the defect it targets.
 
 Standing policy, reaffirmed: no `cp -R` into `rac_hrp/`; copy named files only and
 run `git status` immediately after any install.
