@@ -66,10 +66,29 @@ weighted constant-correlation covariance improves every covariance-dependent
 strategy examined, whereas the equal-volatility allocation modification remains
 below static HRP under every covariance estimator.
 
-We argue the resulting negative result is more informative than a comparable
-performance-based null, precisely because no performance quantity was available at
-the decision point. All code, frozen specifications, decision records, and a
-hash-pinned reproducibility manifest are released.
+Two pre-specified post-gate diagnostics then ask why. The first recomputes the
+cluster-informativeness statistic at a horizon matched to the trigger: the smoothing
+and differencing steps telescope, so the trigger is algebraically a five-rebalance
+change in the absorption ratio, while the gate's criterion measured a one-rebalance
+change in the clustering. At the matched horizon the effect is statistically resolved
+at two of four thresholds (Holm-adjusted $p = 0.018$ and $0.042$). The second measures
+what the gate could have detected: against the effect sizes actually observed, its
+power ranged from $11\%$ to $33\%$, and the minimum effect detectable at $80\%$ power
+was two to nine times larger than any effect present.
+
+The negative result is therefore not evidence that the mechanism is uninformative. It
+is what an underpowered test applied at the wrong horizon produces. We report this as
+the paper's central finding rather than a caveat, because it identifies a limit of the
+protocol itself: a prospectively frozen specification constrains the choices a
+researcher can make after seeing results, but it does not verify that the specified
+procedure measures what it claims to measure. The frozen gate was internally
+consistent and correctly executed, and it could not have detected the effect it was
+built to look for.
+
+All code, frozen specifications, decision records, errata, and a hash-pinned
+reproducibility manifest are released, including eight revisions of the post-gate
+specification and the invalidated output of one that was frozen, executed, and found
+incapable of the measurement it specified.
 
 \vspace{6pt}
 \noindent\textbf{Keywords:} hierarchical risk parity; absorption ratio; regime
@@ -770,6 +789,83 @@ $5\%$. This strengthens rather than weakens the central result. The
 cluster-informativeness test is biased \emph{toward} rejection, and no candidate
 rejected.
 
+\subsection{Post-gate diagnostics (pre-specified, non-gating)}
+\label{sec:postgate}
+
+Two diagnostics were specified after the gate returned its verdict, frozen and hashed
+before any implementing code was written, and run once each. Neither can render any
+threshold admissible; the Phase~2A verdict is unchanged by both. The holdout remained
+closed throughout.
+
+\paragraph{Horizon-matched cluster informativeness.}
+Section~\ref{sec:trigger} establishes that the trigger statistic is a five-rebalance
+change in the absorption ratio, while the gate's cluster-informativeness criterion
+measures change in the clustering between consecutive rebalances. The two are sampled at
+different horizons. We recompute $D_{VI}$ with variation of information taken between the
+clustering at $t$ and at $t-5$, on the intersection of the corresponding universes, using
+the frozen statistic and the frozen inference unchanged.
+
+\begin{table}[h]
+\centering
+\caption{Horizon-matched cluster informativeness. Post-gate, non-gating.}
+\begin{tabular}{lrrrrrrr}
+\hline
+$\gamma$ & events & $D_{VI}^{(5)}$ & $p$ raw & $p$ Holm & block & med fired & med not \\
+\hline
+0.5 & 149 & $+0.0662$ & 0.043 & 0.086 & 13 & 0.8226 & 0.7564 \\
+1.0 & 111 & $+0.0600$ & 0.045 & 0.086 & 13 & 0.8215 & 0.7616 \\
+1.5 &  81 & $+0.0814$ & 0.005 & 0.018 & 13 & 0.8382 & 0.7567 \\
+2.0 &  58 & $+0.1038$ & 0.014 & 0.042 & 13 & 0.8620 & 0.7582 \\
+\hline
+\end{tabular}
+\end{table}
+
+At the matched horizon the effect is resolved at $\gamma = 1.5$ and $\gamma = 2.0$. At
+the gate's horizon no threshold cleared. The point estimates are larger at every
+threshold and the ordering with selectivity is preserved.
+
+\paragraph{Detectable effect size.}
+We measure the smallest true $D_{VI}$ the frozen inference could have detected at $80\%$
+power, on the dependence structure the gate faced. Each replication draws a circular
+block resample of the observed VI series at its selected block length, pairs it with the
+frozen trigger masks, and plants an effect $\delta$ at the positions designated for one
+target threshold, leaving the other three null. All four candidate tests are computed and
+Holm-adjusted exactly as the gate does, and rejection of the target is recorded. Two
+placement conditions are used: the realised trigger positions, and an equal number drawn
+uniformly.
+
+Empirical size at $\delta = 0$ is $0.0730$ (Monte Carlo standard error $0.0058$), against
+the $0.0660$ previously measured on independent data. The procedure is mildly
+anti-conservative on the real dependence structure, somewhat more so than the earlier
+figure indicated.
+
+\begin{table}[h]
+\centering
+\caption{Detectable effect size. Post-gate, non-gating.}
+\begin{tabular}{lrrl}
+\hline
+$\gamma$ & observed $D_{VI}$ & power at that effect & MDE$_{80}$ \\
+\hline
+0.5 & $+0.033$ & $\approx 0.13$ & $(0.15, 0.20]$ \\
+1.0 & $+0.022$ & $\approx 0.11$ & $(0.15, 0.20]$ \\
+1.5 & $+0.080$ & $\approx 0.28$ & $(0.15, 0.20]$ \\
+2.0 & $+0.096$ & $\approx 0.33$ & $(0.20, 0.30]$ \\
+\hline
+\end{tabular}
+\end{table}
+
+Against the effects actually observed, the gate's power ranged from roughly $11\%$ to
+$33\%$. The smallest effect it could have detected at $80\%$ power was between two and
+nine times larger than any effect present in the data.
+
+Under uniform placement, power never reaches $0.08$ at any threshold or any effect size,
+and falls monotonically below nominal size as $\delta$ grows, reaching $0.022$ at
+$\delta = 0.30$. A large effect distributed evenly across the eligible dates makes the
+test \emph{less} likely to reject than no effect at all. The difference-of-medians
+statistic is not merely insensitive to dispersed effects; it is biased against them. This
+is a property of the criterion rather than of the trigger, and any mechanism evaluated
+against this criterion inherits it.
+
 \section{Discussion}
 
 \subsection{What the negative result establishes}
@@ -782,13 +878,34 @@ a fixed schedule, and its events are genuinely bursty relative to both random
 placement and two regime-free pipeline nulls. But triggered rebalances are not shown
 to identify moments of greater hierarchical restructuring.
 
-The interesting asymmetry is that the trigger evidently responds to \emph{something}.
-Its timing is far from random, and its burstiness survives two architectural
-explanations. What it does not do is align with the quantity the adaptive hypothesis
-requires. A signal can react strongly to real covariance events without those events
-being moments when re-clustering changes the tree in a statistically reliable
-way---for instance if $AR$ responds to concentration changes that leave the dendrogram
-topology intact, or if it responds at a horizon offset from the restructuring.
+That statement is accurate and it is the outcome the protocol produced. What the two
+post-gate diagnostics establish is that it should not be read as evidence about the
+mechanism.
+
+The gate had between $11\%$ and $33\%$ power against the effect sizes actually present
+(Section~\ref{sec:postgate}). A test with $33\%$ power fails to reject two times in
+three when the effect is real. A null from such a test carries almost no information
+about whether an effect exists, and the interpretation offered in earlier drafts of
+this paper---that a performance-blind null is more informative than a performance-based
+one---does not survive it. Blindness to returns protects against one failure mode. It
+does not confer sensitivity.
+
+The horizon diagnostic identifies a second, independent problem. The criterion sampled
+structural change at a one-rebalance horizon while the trigger operates at five. At the
+matched horizon the effect is statistically resolved at two thresholds. Either defect
+alone would have produced the observed null; both were present.
+
+The trigger is therefore detecting something, and what it detects is closer to what the
+adaptive hypothesis requires than the gate result suggested. Triggered rebalances
+coincide with greater hierarchical restructuring when restructuring is measured over the
+interval the trigger actually spans. Its timing is not random, and its burstiness
+survives two regime-free pipeline nulls.
+
+None of this makes any threshold admissible. The gate is conjunctive, and every
+candidate fails timing variation on modal-gap share alone---the two lowest also fail
+informativeness. Even setting cluster informativeness aside entirely, no threshold
+passes. The mechanism as specified is not usable, and the diagnostics do not change
+that; they change what we can conclude about why.
 
 \subsection{Why performance-blindness matters here}
 
@@ -850,13 +967,24 @@ zero.
 
 \subsection{Statistical power}
 
-The result is a failure to reject, not a demonstration of absence. With 233 eligible
-rebalances and four folds, the design has limited power against small effects, and
-$D_{VI}$ is positive at every threshold. A larger universe, a longer sample, or a
-higher rebalance frequency could plausibly resolve the effect. The honest claim is
-that this evidence is insufficient, not that the effect is zero.
+The gate's power against the effect sizes present in the data was measured after the
+fact and found to be between $11\%$ and $33\%$ (Section~\ref{sec:postgate}). The minimum
+effect detectable at $80\%$ power was in the interval $(0.15, 0.20]$ at three thresholds
+and $(0.20, 0.30]$ at the fourth, against observed effects of $+0.022$ to $+0.096$.
+
+This is a design failure, not a sampling accident. With 233 eligible rebalances, strong
+serial dependence in the variation-of-information series---lag-1 autocorrelation near
+$0.47$, selected block length 13---and trigger events arriving in tight bursts that
+reduce the number of independent episodes far below the nominal event count, the design
+never had the resolution its criterion required. A power analysis conducted before the
+gate was frozen would have shown this, and the pre-registration did not require one.
+
+The reported figures are conditional on the observed dependence realisation: they answer
+what this design could have detected on this data, not what it would detect on average
+across a population.
 
 \subsection{Horizon alignment between trigger and criterion}
+\label{sec:horizon}
 
 The trigger statistic measures change in the absorption ratio over five rebalances
 (Section~\ref{sec:trigger}) while the cluster-informativeness criterion measures change in the
@@ -913,6 +1041,38 @@ either rule.
 
 Independent authorisation would strengthen the protocol, and any subsequent application
 of it should include a party who does not benefit from the outcome.
+
+\subsection{What a frozen specification does not guarantee}
+\label{sec:freezelimits}
+
+The post-gate specification for the diagnostics in Section~\ref{sec:postgate} required
+eight revisions. Seven were corrected before the affected result existed. The eighth was
+not: a revision was frozen, hashed, implemented, and executed to completion before its
+output revealed that the specified construction could produce neither a null hypothesis
+nor a sampling distribution, and was therefore incapable of the measurement it specified.
+The defect was caught because the output was absurd---a rejection rate of exactly zero,
+and power curves that stepped from 0 to 1 between adjacent grid points---not because
+anyone read the specification and found the error. The specification was internally
+consistent throughout.
+
+We report this because it bears on what the protocol in this paper can claim. Freezing a
+specification constrains the choices a researcher can make after seeing results. It does
+not verify that the specified procedure measures what it claims to measure. Those are
+different guarantees, and the second is the one that failed here.
+
+The same failure is visible in the gate itself. The cluster-informativeness criterion was
+frozen, correctly executed, and sampled structural change at a horizon the trigger does
+not operate on (Sections~\ref{sec:postgate} and~\ref{sec:horizon}). Nothing in the
+pre-registration process would have caught that, because the criterion was internally
+coherent and its defect only became apparent when the trigger's algebra was examined
+after the fact.
+
+A protocol of this kind would be materially strengthened by requiring, before the freeze,
+an explicit demonstration that each criterion can detect the effect it targets: a power
+analysis at plausible effect sizes, and a check that the criterion and the mechanism are
+measured on commensurate scales. Neither was required here. We recommend both for any
+application of this protocol, and note that the requirement is cheap relative to the cost
+of discovering the omission afterwards.
 
 \section{Conclusion}
 
