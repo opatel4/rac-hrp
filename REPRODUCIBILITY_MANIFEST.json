@@ -1,18 +1,21 @@
 {
-  "generated_utc": "2026-08-27T02:38:54.691148+00:00",
+  "generated_utc": "2026-08-28T19:08:34.093128+00:00",
   "purpose": "Pins every reported number to a verifiable state. Generated BEFORE engineering migration so later churn cannot blur provenance.",
   "git": {
-    "commit": "1d0bd4718646837be5589baf8c035474f4d26d7e",
+    "commit": "2f5355fe334db1de087596b3114c3e3785629550",
     "branch": "main",
     "remote": "https://github.com/opatel4/rac-hrp.git",
-    "working_tree_clean": true,
-    "uncommitted": []
+    "working_tree_clean": false,
+    "uncommitted": [
+      " M scripts/build_reproducibility_manifest.py",
+      "?? RAC_HRP_Phase05_ERRATUM_E3_environment_label.md"
+    ]
   },
   "environment": {
     "python": "3.12.2",
     "platform": "macOS-15.0.1-arm64-arm-64bit",
     "machine": "arm64",
-    "openblas_num_threads": "1",
+    "openblas_num_threads": null,
     "note": "Single-thread BLAS is the project standard: ~13x faster on this workload (100x100 matrices) and verified result-neutral (the --quick Phase 2 gate reproduces bit-for-bit under both settings). Set at process launch; setting it inside a script after numpy import may be too late."
   },
   "packages": {
@@ -96,8 +99,8 @@
       "present": true
     },
     "rac_hrp/backtest/region_lock.py": {
-      "sha256": "48ade2f18d5988858dccbcdb6991c5de8ff5751b8a9f5155c3e758071039ea3d",
-      "bytes": 10404,
+      "sha256": "4f916da094fe596eb07f89a9ceefa0d6f70800c18e8e112df3a341ab914958ec",
+      "bytes": 10394,
       "present": true
     },
     "rac_hrp/backtest/metrics.py": {
@@ -121,8 +124,8 @@
       "present": true
     },
     "rac_hrp/nulls/environments_static.py": {
-      "sha256": "6de4695e237cec81d36f7e848bf843cabde2a2249f6f507ab6e7642166d42d40",
-      "bytes": 6246,
+      "sha256": "25997e6bf1f5f8cfe21de0a15d27b5143c3fcbaf5626f47f9bbc1d7d332e0b5c",
+      "bytes": 6239,
       "present": true
     },
     "rac_hrp/phase2/config.py": {
@@ -131,8 +134,8 @@
       "present": true
     },
     "rac_hrp/phase2/stats.py": {
-      "sha256": "3f8d29bf908788134d31125d31b354f8d8374b49a98d5a6cbf9771822ab07895",
-      "bytes": 9503,
+      "sha256": "88f9fba50a3dc45bd8bd07ff10d78d06d2be52b1d8c17e2809452de0be31684c",
+      "bytes": 9516,
       "present": true
     },
     "rac_hrp/phase2/calibration.py": {
@@ -141,7 +144,7 @@
       "present": true
     },
     "scripts/run_phase05.py": {
-      "sha256": "56cfc4d79a81a427092b0f6613bf2857761caadbaf910bc214b1afb4c500cd04",
+      "sha256": "c329c09289353198e61aa097a4c74d7a7fe2461add48ed85476786b92219e273",
       "bytes": 10250,
       "present": true
     },
@@ -151,8 +154,8 @@
       "present": true
     },
     "scripts/run_phase2.py": {
-      "sha256": "6aa8f27610c825f1120a845b63f678ab370797971a3fa15b989d7305e0a60643",
-      "bytes": 7940,
+      "sha256": "bfcd96433a4e209ddc99677b1b5531b11a4a32836dcaf45e3ff63ce50eb72498",
+      "bytes": 7926,
       "present": true
     },
     "scripts/run_mechanism_null.py": {
@@ -166,13 +169,13 @@
       "present": true
     },
     "scripts/diagnose_modal_gap_null.py": {
-      "sha256": "0e2d3e4a28bd9da5753bc9d66aa73ea21a68a24a280990731548966d2a37555c",
-      "bytes": 7256,
+      "sha256": "7e69ba51cf1b5f3b4a2b97a163aca9a41f284502aa6bad8e475006d60d67fc9c",
+      "bytes": 7240,
       "present": true
     },
     "scripts/diag_bootstrap_calibration_B.py": {
-      "sha256": "6ebdcbad35c309f13613a1e7908b7a2df64385519800e641bd240b21cfef8c3d",
-      "bytes": 5508,
+      "sha256": "0c43965a5d43cc52a84b93870159fc776a9a5075b8f5af31d7b71a6b505d3881",
+      "bytes": 5500,
       "present": true
     },
     "tests/test_phase05.py": {
@@ -186,8 +189,8 @@
       "present": true
     },
     "tests/test_covariance_ew.py": {
-      "sha256": "b26e289173bea3d0166f2e5c4eee10901008941615f2b15e88e760401cdb91d4",
-      "bytes": 7724,
+      "sha256": "6815445052f2a27d7618629969a4c8d643b7886201cef695b0a4cf1ea2bb8e81",
+      "bytes": 7719,
       "present": true
     },
     "tests/test_region_lock.py": {
@@ -196,13 +199,53 @@
       "present": true
     },
     "tests/test_invariants.py": {
-      "sha256": "df64859e3fd16c7906ec3bd2426de48e33a58013eb3c3b60af30f6c93c0adb30",
-      "bytes": 5914,
+      "sha256": "f998f6fb393cf2044c0b9b038944067fb67a8afe65d287cfa1715283e3f2a84d",
+      "bytes": 5917,
       "present": true
     },
     "tests/conftest.py": {
       "sha256": "9945a7cd928df9bbcdfe8d67f58978a10fdef6fcb7c014f529486f0567a4ab12",
       "bytes": 2454,
+      "present": true
+    },
+    "rac_hrp/phase2/horizon.py": {
+      "sha256": "8334a0f923e392a94b45316b8ce1f4b9a37ee4a58c40632da5458ba1c16eb05e",
+      "bytes": 13732,
+      "present": true
+    },
+    "rac_hrp/phase2/power.py": {
+      "sha256": "dcd2eef443714510efa3503cb6d59193688d1f27190ca806cdfd0306932521e4",
+      "bytes": 14321,
+      "present": true
+    },
+    "scripts/run_phase2e_horizon.py": {
+      "sha256": "5a991fba0c5acd3f215c6943576ebc399002abc7395017ecde46d8428979eff7",
+      "bytes": 7616,
+      "present": true
+    },
+    "scripts/run_phase2e_power.py": {
+      "sha256": "e71191be23136ebc184a16f0a00676ff31548a38d3759b028aca38d959b68778",
+      "bytes": 9408,
+      "present": true
+    },
+    "scripts/run_phase2e_power_parallel.py": {
+      "sha256": "de0610a8be762db5ae3071169954475bacde4ffc46c8705c44cff53ebd72479f",
+      "bytes": 11614,
+      "present": true
+    },
+    "scripts/run_phase2f_control.py": {
+      "sha256": "031be5d2b38c64388f3bb7982d9a0e2beb709025674021383d64c0f284d749a3",
+      "bytes": 14762,
+      "present": true
+    },
+    "scripts/run_phase2g.py": {
+      "sha256": "321461a3e81ba50e366f1848866452329ba94ac3cedccec1b5463109b31efc14",
+      "bytes": 17493,
+      "present": true
+    },
+    "scripts/explore_power_construction.py": {
+      "sha256": "65bcb843088a48fd10ed38c5a12c3293cb6d35e8c70d919760f11b01a9f6f760",
+      "bytes": 9306,
       "present": true
     }
   },
@@ -236,42 +279,62 @@
       "sha256": "60e07aea0cee8983e55e39b1a3bd0d12372a423a84d879fe254a35d0207917ec",
       "bytes": 1672112,
       "present": true
+    },
+    "results/phase2e_horizon_result.json": {
+      "sha256": "d7ca6d48ead08999fb1a56d7d213c791303d957c7ce69a9388286227c8226c72",
+      "bytes": 2004,
+      "present": true
+    },
+    "results/phase2e_power_result.json": {
+      "sha256": "aecc35bb240c4a7df7719796c7f61c1028d52e17d52a11ca567f31d39e18fbd4",
+      "bytes": 14626,
+      "present": true
+    },
+    "results/phase2f_control_result.json": {
+      "sha256": "a78bc78a30b8e5b0b974300ee55d83985aa06a70eef9695291377298d79142c3",
+      "bytes": 521442,
+      "present": true
+    },
+    "results/phase2g_result.json": {
+      "sha256": "20b3a500c5d1c8b6710005e0ce7d1082d05e8a3bbd1b9f4287a20c611f5baeef",
+      "bytes": 13632,
+      "present": true
     }
   },
   "documents": {
     "RAC_HRP_Phase2_Gate_Result_Memo_v3.md": {
-      "sha256": "f7d4ef765a1e444d88cb32333255591aa226412b0a699009c9b566110452c7a8",
-      "bytes": 10670,
+      "sha256": "f3a0cd64e6db99a5569037cfdb4f829a18be6ec4e4efc5347fc5eaa324a35294",
+      "bytes": 10650,
       "present": true
     },
     "RAC_HRP_Phase2_rev5_ERRATUM_E1.md": {
-      "sha256": "cb473fb1f494e6140730194f66eb5662638e348dee85a6f3dbd0038a562ad180",
-      "bytes": 2627,
+      "sha256": "3f4a34db0d6f5ebe56f61bec97172cf2fbd16c8a8009d8d4535a6aae7c4009e5",
+      "bytes": 2593,
       "present": true
     },
     "RAC_HRP_Phase2_Reconciliation_111_vs_112.md": {
-      "sha256": "dfade405f992e507b79831960bba5e013386c8dbba752347a92e3a78a92ff668",
-      "bytes": 3905,
+      "sha256": "e9552129ba813c497501d250e1c8f8b6c5449e92c2de969a153272996b727fff",
+      "bytes": 3880,
       "present": true
     },
     "RAC_HRP_Phase2D_MechanismDiagnostic_PreSpec.md": {
-      "sha256": "07d593a8a0dc78520a8ccc081c4222e8f4edf18c8bd5054eab01123551e3c4ab",
-      "bytes": 18047,
+      "sha256": "9703a626ecbaf5dd43f93093dce337c6fcf2025d527173d6a1b2e15f7aa7f8be",
+      "bytes": 18028,
       "present": true
     },
     "RAC_HRP_Phase2D_Mechanism_Result_Memo.md": {
-      "sha256": "d6220152e472eeca962e381a3f178549983d9538045a68a2eab18f987a9ef93e",
-      "bytes": 6652,
+      "sha256": "9509d8a8378c68317bb2e6ee1744ac401cfe0fdf26d8fd34cd0c3275f464de18",
+      "bytes": 6638,
       "present": true
     },
     "RAC_HRP_Phase2D_ImplementationDeviationRecord_ID1.md": {
-      "sha256": "53a62955e1d2284b495831f6b61c626c54218b84aed527e9442d28cbc478056c",
-      "bytes": 7035,
+      "sha256": "c1eb5d1c05fc9dcac838329708fa2f4345935404b4e841810e6e43ff00314734",
+      "bytes": 7014,
       "present": true
     },
     "RAC_HRP_Phase1_INCIDENT_E2_deleted_allocator.md": {
-      "sha256": "3581db8cf567b1bd646e69feeda5095717ecc3c92637c44585a9aec96d881ae7",
-      "bytes": 6185,
+      "sha256": "86d0d1aa04ab335f49858d1e43af28c664a80f8d09e86abec8a31141e4f79272",
+      "bytes": 6151,
       "present": true
     },
     "RAC_HRP_Phase1_EWMA_Robustness_Note.md": {
@@ -280,8 +343,8 @@
       "present": true
     },
     "RAC_HRP_Phase2_Audit_Bundle.md": {
-      "sha256": "722b96f1b8db852e5d6c769e60544af0c1be55cfe5597708351729725a860f34",
-      "bytes": 8014,
+      "sha256": "cb1f2074bbba8b7fd73f99a755a54c66b01c021a41769630d560e4319833df88",
+      "bytes": 8025,
       "present": true
     },
     "docs/PRE_REGISTRATION.md": {
@@ -292,6 +355,86 @@
     "CHANGELOG.md": {
       "sha256": "d2d78f50bae65f2132ff7162e44e4c8eee7ee7bd478c8e9c53d8747247b24b77",
       "bytes": 16531,
+      "present": true
+    },
+    "docs/CORRECTION_NOTICE_single_author.md": {
+      "sha256": "1dcbc90b27d0d03f1af16baeb55018e78d18d3970e7ee44cfd8002acda780d1d",
+      "bytes": 4581,
+      "present": true
+    },
+    "RAC_HRP_ERRATUM_E4_advisor_approval.md": {
+      "sha256": "bbf5b5d36c661d06caa901003b231c597526c02ee43477d6bfcad9dd6b27046b",
+      "bytes": 2429,
+      "present": true
+    },
+    "RAC_HRP_Phase05_ERRATUM_E3_environment_label.md": {
+      "sha256": "196b13b33cbdd0ba20e849c7cbc2c5d06676264f0b1134250eb4a4ff74ec05b0",
+      "bytes": 4933,
+      "present": true
+    },
+    "RAC_HRP_Phase2E_PreSpec_rev3.md": {
+      "sha256": "74198263f1979836b9f0c3fbb80304a958bf84df322f93831a3dccceaa3dd6c2",
+      "bytes": 17005,
+      "present": true
+    },
+    "RAC_HRP_Phase2E_PreSpec_rev4.md": {
+      "sha256": "dfd736acdeb96e357f94c293d209b2cc11b7c5c49cc5145a4c51c85376e6e52e",
+      "bytes": 17190,
+      "present": true
+    },
+    "RAC_HRP_Phase2E_PreSpec_rev5.md": {
+      "sha256": "6153831fa0da7a52673a48bd24cc208fabd857715d7e3a2e5c61c0162ef88b46",
+      "bytes": 18277,
+      "present": true
+    },
+    "RAC_HRP_Phase2E_PreSpec_rev6.md": {
+      "sha256": "0975b0010d1c5b83e8a243195fa4c13e7859bae8e89cfc7fd4491ff3a98f7161",
+      "bytes": 20644,
+      "present": true
+    },
+    "RAC_HRP_Phase2E_PreSpec_rev7.md": {
+      "sha256": "df7cc9066f786a0ec31671f6f66c836ac28acef44ba6e52786f7110976d1f2e5",
+      "bytes": 23912,
+      "present": true
+    },
+    "RAC_HRP_Phase2E_PreSpec_rev8.md": {
+      "sha256": "cfdd64cca9a23a1d873695b2de0576b442cf2b80e302602830a0d1502c403674",
+      "bytes": 27172,
+      "present": true
+    },
+    "PHASE2E_FREEZE.txt": {
+      "sha256": "914cb16a01895950bdeb4fce2722f737999dfe66ab22c9771915334cd2f9ffbd",
+      "bytes": 778,
+      "present": true
+    },
+    "RAC_HRP_Phase2F_PreSpec_rev1.md": {
+      "sha256": "ca47b609096a04eb474f99d34d1c6619766d1ed9bf46ebfed17aced6ca8c9b72",
+      "bytes": 7828,
+      "present": true
+    },
+    "RAC_HRP_Phase2F_PreSpec_rev2.md": {
+      "sha256": "1adee84e80e10eed0beda46dcfc155bc66240833db2ba17e6d2ec8665709417f",
+      "bytes": 7985,
+      "present": true
+    },
+    "PHASE2F_FREEZE.txt": {
+      "sha256": "cf51d54d288f3951c48a08b81974beb387847e4d249d76763c695adbfc7e4ae5",
+      "bytes": 343,
+      "present": true
+    },
+    "RAC_HRP_Phase2G_PreSpec_rev1.md": {
+      "sha256": "c431974eb7bd611b27533d7d52abbe1ac00f385d2f2eb4573b3563d279794fd2",
+      "bytes": 10771,
+      "present": true
+    },
+    "PHASE2G_FREEZE.txt": {
+      "sha256": "b54d4f3d6aebcc2b7ef808878214c86ebd842562f24b795f8691117471fdf3d6",
+      "bytes": 315,
+      "present": true
+    },
+    "RAC_HRP_Phase2EFG_Audit_Bundle.md": {
+      "sha256": "be47a0d3a6ad7f7a1f9ac18f6fba2cf6ed95d27617bb0d180f953c7a2758e3fe",
+      "bytes": 9865,
       "present": true
     }
   },

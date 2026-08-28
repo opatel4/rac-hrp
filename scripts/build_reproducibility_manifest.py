@@ -51,6 +51,15 @@ CODE = [
     "tests/test_region_lock.py",
     "tests/test_invariants.py",
     "tests/conftest.py",
+    # --- Phase 2E / 2F / 2G post-gate diagnostics ---
+    "rac_hrp/phase2/horizon.py",
+    "rac_hrp/phase2/power.py",
+    "scripts/run_phase2e_horizon.py",
+    "scripts/run_phase2e_power.py",
+    "scripts/run_phase2e_power_parallel.py",
+    "scripts/run_phase2f_control.py",
+    "scripts/run_phase2g.py",
+    "scripts/explore_power_construction.py",   # EXPLORATORY, not a result
 ]
 
 RESULTS = [
@@ -60,6 +69,11 @@ RESULTS = [
     "outputs/phase2_diagnostics/modal_gap_null.json",
     "outputs/phase2_diagnostics/bootstrap_calibration_vs_B.json",
     "outputs/phase2_mechanism/mechanism_null.json",
+    # --- Phase 2E / 2F / 2G results ---
+    "results/phase2e_horizon_result.json",
+    "results/phase2e_power_result.json",
+    "results/phase2f_control_result.json",
+    "results/phase2g_result.json",
 ]
 
 DOCS = [
@@ -74,6 +88,27 @@ DOCS = [
     "RAC_HRP_Phase2_Audit_Bundle.md",
     "docs/PRE_REGISTRATION.md",
     "CHANGELOG.md",
+    # --- single-author correction and errata ---
+    "docs/CORRECTION_NOTICE_single_author.md",
+    "RAC_HRP_ERRATUM_E4_advisor_approval.md",
+    "RAC_HRP_Phase05_ERRATUM_E3_environment_label.md",
+    # --- Phase 2E: eight revisions, superseded ones preserved ---
+    "RAC_HRP_Phase2E_PreSpec_rev3.md",
+    "RAC_HRP_Phase2E_PreSpec_rev4.md",
+    "RAC_HRP_Phase2E_PreSpec_rev5.md",
+    "RAC_HRP_Phase2E_PreSpec_rev6.md",
+    "RAC_HRP_Phase2E_PreSpec_rev7.md",
+    "RAC_HRP_Phase2E_PreSpec_rev8.md",
+    "PHASE2E_FREEZE.txt",
+    # --- Phase 2F ---
+    "RAC_HRP_Phase2F_PreSpec_rev1.md",
+    "RAC_HRP_Phase2F_PreSpec_rev2.md",
+    "PHASE2F_FREEZE.txt",
+    # --- Phase 2G ---
+    "RAC_HRP_Phase2G_PreSpec_rev1.md",
+    "PHASE2G_FREEZE.txt",
+    # --- audit bundle for the post-gate phases ---
+    "RAC_HRP_Phase2EFG_Audit_Bundle.md",
 ]
 
 
