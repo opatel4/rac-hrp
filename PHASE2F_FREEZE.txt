@@ -1,0 +1,5 @@
+RAC_HRP_Phase2F_PreSpec_rev1.md
+SHA-256: ca47b609096a04eb474f99d34d1c6619766d1ed9bf46ebfed17aced6ca8c9b72
+W-calibrated positive control; repairs the failed Environment D control in the frozen mechanism null.
+Frozen mechanism-null result at outputs/phase2_mechanism/ is unaltered and not superseded.
+No Phase 2F implementing code exists at this commit.
