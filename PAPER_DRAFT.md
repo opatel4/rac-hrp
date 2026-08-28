@@ -61,7 +61,9 @@ resolved at one of four thresholds and suggestive at a second, once the procedur
 measured size on the real dependence structure is taken into account. The second
 measures what the gate could have detected: against the effect sizes actually
 observed, its power ranged from 11% to 33%, and the minimum effect detectable at 80%
-power was two to nine times larger than any effect present.
+power was two to nine times larger than any effect present. A third set of
+diagnostics finds the clustering-change effect is not stable in the retained-component
+count: it changes sign across the values examined.
 
 The negative result is therefore not evidence that the mechanism is uninformative.
 It is what an underpowered test applied at the wrong horizon produces. We report
@@ -783,6 +785,97 @@ is not merely insensitive to dispersed effects; it is biased against them. This 
 property of the criterion rather than of the trigger, and any mechanism evaluated
 against this criterion inherits it.
 
+### 5.6 Robustness diagnostics (pre-specified, non-gating)
+
+Three further diagnostics were specified together after the gate returned its
+verdict, frozen and hashed before implementation, and run once. As with the
+diagnostics in Section 5.5, none can render a threshold admissible. The
+specification also fixed in advance that no result here would cause the confirmatory
+analysis to be re-specified: the gate remains *k* = 15, difference-of-medians, and a
+one-rebalance horizon whatever these show. Each diagnostic contains a cell required
+to reproduce a frozen result exactly, and all three reproduced.
+
+**Sensitivity to the retained-component count.** The absorption ratio is the share of
+variance in the leading *k* components, and *k* = 15 was fixed at the
+Marchenko–Pastur count of the first eligible rebalance and held for twenty years. We
+recompute the entire trigger series and the frozen gate statistic at
+*k* ∈ {10, 15, 20, 25}.
+
+| *k* | AR range | events (γ = 0.5 … 2.0) | *D_VI* (γ = 0.5 … 2.0) | Holm *p* |
+|---|---|---|---|---|
+| 10 | 0.498–0.779 | 147, 112, 83, 60 | +0.005, +0.029, +0.064, +0.061 | 0.554, 0.554, 0.282, 0.476 |
+| 15 | 0.566–0.812 | 149, 111, 81, 58 | +0.033, +0.022, +0.080, +0.096 | 0.559, 0.559, 0.246, 0.195 |
+| 20 | 0.617–0.838 | 155, 110, 79, 59 | −0.040, −0.005, −0.009, −0.002 | 1.000, 1.000, 1.000, 1.000 |
+| 25 | 0.662–0.861 | 151, 111, 73, 60 | +0.041, +0.095, +0.081, +0.124 | 0.135, 0.025, 0.025, 0.003 |
+
+The *k* = 15 row reproduces the frozen gate exactly, as required. The result is not
+stable across the grid. The effect is weakly positive at *k* = 10, positive at the
+frozen *k* = 15, **negative at every threshold at *k* = 20**, and positive and
+nominally significant at three thresholds at *k* = 25. Event counts are broadly
+similar throughout, so the instability is in the statistic rather than in how often
+the trigger fires.
+
+We do not report the *k* = 25 column as a finding. The specification fixed *k* = 15
+before the gate ran and fixed, before this diagnostic ran, that no value would be
+re-selected in light of it. What the sweep establishes is that the sign of the
+clustering-change effect depends on a parameter chosen by a rule applied at a single
+date in 2003, and that the paper's central quantity is therefore not robust to it.
+
+**A continuous alternative to the binarised statistic.** The frozen criterion
+thresholds the trigger and compares medians across the two arms, discarding the
+magnitude of |ΔAR|/σ̂ entirely. Section 5.5 showed the resulting statistic is biased
+against dispersed effects. We therefore compute the Spearman rank correlation between
+*VI_t* and the continuous trigger strength *z_t* = |ΔAR_t|/σ̂_t over the eligible
+rebalances, with the frozen inference otherwise unchanged: circular block bootstrap,
+10,000 replicates, Politis–White block length, the pair resampled jointly, one-sided.
+
+ρ = +0.072, one-sided *p* = 0.239, block length 19, *n* = 233. There is no
+multiplicity adjustment because there is no threshold grid and hence exactly one
+test, which also makes this *p*-value incomparable to the gate's Holm-adjusted
+values.
+
+The continuous statistic does not resolve an effect the binarised one missed. This is
+informative against a natural objection: the gate's criterion discards information,
+but recovering that information does not recover an effect. Binarisation was not the
+binding constraint.
+
+**Robustness of the horizon-matched result.** Section 5.5 reports the
+clustering-change effect at *h* = 5, the horizon the frozen smoother forces. A reader
+cannot distinguish a pre-specified horizon that happens to work from a knife-edge
+without the curve, so we compute *D_VI* at *h* ∈ {1, …, 8}.
+
+| *h* | γ = 0.5 | γ = 1.0 | γ = 1.5 | γ = 2.0 |
+|---|---|---|---|---|
+| 1 | +0.033 (0.571) | +0.022 (0.571) | +0.080 (0.239) | +0.096 (0.185) |
+| 2 | +0.094 (0.014) | +0.022 (0.530) | +0.095 (0.021) | +0.102 (0.054) |
+| 3 | +0.060 (0.058) | +0.067 (0.030) | +0.093 (0.010) | +0.129 (0.029) |
+| 4 | +0.085 (0.043) | +0.060 (0.126) | +0.100 (0.011) | +0.121 (0.016) |
+| 5 | +0.066 (0.093) | +0.060 (0.093) | +0.081 (0.018) | +0.104 (0.047) |
+| 6 | +0.097 (0.000) | +0.102 (0.000) | +0.123 (0.000) | +0.154 (0.000) |
+| 7 | +0.058 (0.155) | −0.007 (0.656) | +0.075 (0.101) | +0.135 (0.000) |
+| 8 | +0.011 (0.649) | +0.015 (0.649) | +0.069 (0.266) | +0.105 (0.044) |
+
+Holm-adjusted *p* in parentheses. *h* = 1 reproduces the frozen gate and *h* = 5 the
+horizon-matched result, both as required.
+
+The result at *h* = 5 is not a knife-edge: effects appear across *h* = 2 to *h* = 6.
+But the curve is not monotone and does not peak at the pre-specified horizon. *h* = 6
+is the strongest cell in the table at every threshold, and *h* = 7 collapses. We
+report *h* = 5 as the inferential claim because the specification fixed it before
+execution and because it follows algebraically from the frozen smoother. Reporting
+the maximum over *h* would be a search of the kind this paper exists to avoid, and we
+note that a reader who does not accept the *h* = 5 pre-specification has, in this
+table, everything needed to reach a different conclusion.
+
+One implementation note. At *h* = 8 a single rebalance falls below the
+minimum-overlap floor for the universe intersection, producing an undefined *VI*. The
+frozen difference-of-medians statistic takes medians without filtering, so one
+undefined value propagates to both arms. Positions with undefined *VI* are dropped
+from the series and the trigger masks together before the statistic and the
+bootstrap, and the retained count is recorded. No other horizon is affected, and the
+frozen gate is unaffected because its single undefined position falls outside the
+eligible set.
+
 ## 6. Discussion
 
 ### 6.1 What the negative result establishes
@@ -927,6 +1020,13 @@ therefore establishes that the trigger is uninformative about one-rebalance
 restructuring under the frozen procedure; it does not establish that the trigger is
 uninformative about hierarchical structure generally. A subsequent pre-registration of
 this protocol should specify the trigger and criterion horizons jointly.
+
+The instability is broader than horizon alone. Section 5.6 reports that the
+clustering-change effect changes sign across the retained-component count, being
+negative at every threshold at k = 20. The gate's construction therefore involved at
+least two choices — the measurement horizon and the component count — on which the
+central result depends and neither of which the pre-registration subjected to
+sensitivity analysis. A subsequent application of this protocol should require both.
 
 ### 7.3 Single universe and single trigger family
 
