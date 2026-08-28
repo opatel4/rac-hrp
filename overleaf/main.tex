@@ -57,7 +57,10 @@ A pre-registered post-mortem then asks whether the trigger's unusually bursty
 timing is an artefact of the estimation pipeline. Across 1{,}500 replications of the
 frozen machinery on regime-free inputs, real-data excess burstiness exceeds the
 $97.5$th percentile of both an uncorrelated and a static-covariance null at all four
-thresholds, so the tested regime-free architectural explanations are not supported.
+thresholds, so the tested regime-free architectural explanations are not supported. A
+repaired positive control, calibrated so its regime durations exceed the covariance window,
+brackets the observed burstiness at three of four thresholds where the original control
+bracketed none.
 
 Separately, a frozen estimator sensitivity sweep tests whether two components of
 the modified HRP framework of \citet{molyboga2020} transfer to this setting: within the
@@ -330,9 +333,7 @@ so the trigger statistic is a five-rebalance change scaled by $1/5$, not a local
 At monthly rebalancing this is a change measured over approximately 105 trading days.
 The smoothing window is defined in rebalances rather than days; the frozen
 specification records the correction of an earlier configuration field that had
-implied the latter. We state the identity explicitly because it governs the
-interpretation of two later results (Sections~\ref{sec:postmortem}
-and~\ref{sec:whatestablished}).
+implied the latter. We state the identity explicitly because it governs the interpretation of two later results (Sections~\ref{sec:postgate} and~\ref{sec:whatestablished}).
 
 Three properties follow. First, consecutive values of $\Delta AR^{s}$ share four of
 five constituent $AR$ terms, so the series carries moving-average dependence by
@@ -1322,9 +1323,9 @@ unedited. Regression tests were added for the two failure modes that admit them,
 against recurrence rather than detection.
 
 The four share a structure worth naming. Each attached a correct quantity, or a correct
-procedure, to the wrong context, and each was found by comparing a document against the
-artefact it described rather than by any automated check. No test in the released suite
-would have caught any of them.
+procedure, to the wrong context, and each was found by comparing a document against the artefact it described rather than
+by any automated check. None was found by a test, and no test in the suite would have
+detected them; the regressions added afterwards guard against recurrence.
 
 \subsection{No independent authorisation}
 \label{sec:no-independent-authorisation}
