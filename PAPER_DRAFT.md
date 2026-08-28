@@ -876,6 +876,57 @@ bootstrap, and the retained count is recorded. No other horizon is affected, and
 frozen gate is unaffected because its single undefined position falls outside the
 eligible set.
 
+### 5.7 Total trial count
+
+A paper arguing that unrecorded trial counts are the disease should record its own.
+Table 12 gives every test statistic computed on the development region across all
+phases.
+
+| Phase | What was computed | Tests |
+|---|---:|---:|
+| 2A gate | five criteria × four γ | 20 |
+| 2A separation | Monte Carlo threshold at each candidate's own event count | 4 |
+| 2A inference | bootstrap + Holm across four γ | 4 |
+| Phase 0.5 v1 | primary and cross-allocator cells | 11 |
+| Phase 0.5 v2 | eight primary + twelve diagnostic-panel cells | 20 |
+| Estimator sweep | five strategies × four estimators | 20 |
+| 2D burstiness null | four γ × three environments | 12 |
+| 2E-HORIZON | four γ at one horizon | 4 |
+| 2E-POWER | 64 grid cells + one size cell | 65 |
+| 2F control | four γ, one environment | 4 |
+| 2G-K | four k × four γ | 16 |
+| 2G-RANK | one rank correlation | 1 |
+| 2G-HORIZON | eight horizons × four γ | 32 |
+| **Total** | | **213** |
+
+The raw total is not the relevant multiplicity, and reporting it alone would
+overstate the problem as badly as omitting it would understate it. What matters for
+inference is how many of these were points at which a specification choice could have
+been made in light of a result.
+
+By construction, almost none were. The five gate criteria are conjunctive and were
+fixed before any was evaluated; failing one is sufficient, so they do not constitute
+a search across criteria. The estimator sweep selects nothing and is labelled
+diagnostic in its own table caption. The 2E-POWER grid is a simulation over planted
+effect sizes, not a set of hypotheses about the data. The 2G cells are sensitivity
+analysis under a specification clause that forbids re-selecting the confirmatory
+analysis in light of them, and Section 5.6 reports the *k* = 25 column without
+adopting it. The post-gate diagnostics were each frozen before implementation with
+their decision rules fixed.
+
+The genuine selection points are the four values of γ, and multiplicity across them
+is controlled by Holm within each criterion, as pre-registered.
+
+Two qualifications against our own position. First, the sequence of post-gate
+diagnostics was itself chosen after seeing that the gate returned a null, and each
+was motivated by a specific failure — the horizon mismatch by an algebraic property,
+the power analysis by external review, the *k* sweep likewise. That the individual
+analyses were frozen before execution does not make the decision to run them
+independent of the outcome that prompted them, and Section 5.5 states this ordering.
+Second, one specification required eight revisions and another two, all recorded; a
+reader may reasonably count revision as a form of search even where each revision is
+documented with its reason and every superseded version is preserved.
+
 ## 6. Discussion
 
 ### 6.1 What the negative result establishes
