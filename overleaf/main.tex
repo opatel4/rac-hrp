@@ -769,17 +769,64 @@ satisfying the pre-registered condition for the ``beyond regime-free mechanics''
 outcome. The tested regime-free architectural explanations are therefore not
 supported.
 
-Three qualifications. First, D does not bracket the real data either, so the optional
-consistency-with-nonstationarity statement is unavailable; but since D's states last
-approximately 100 and 33 daily observations against $W = 504$, a 504-day window spans
-roughly 3.8 complete cycles and materially averages the designed regimes away. D is a
-\emph{high-frequency} positive control, and its non-overlap indicates that rapid
-regime switching is heavily attenuated by the estimator rather than that regime
-explanations are excluded. Second, the D margins are thin ($+0.006$ at
-$\gamma = 1.5$) and should not carry independent weight. Third, S produced
-\emph{less} excess burstiness than A at every $\gamma$---contrary to the hypothesis
-that motivated S as the adjudicating null. We report this without explanation;
-establishing one would require further work.
+D, however, does not bracket the real data either. As specified it was the positive
+control---the environment in which covariance concentration genuinely shifts and which
+the pipeline should therefore resolve---and its failure to bracket meant the
+experiment's sensitivity was never demonstrated. Two features explain it. D's states
+persist approximately 100 and 34 daily observations against $W = 504$, so a single
+covariance window spans roughly four complete regime cycles and materially averages the
+designed structure away. And the D margins are thin: real exceeds the upper bound by
+only $+0.006$ at $\gamma = 1.5$, within Monte Carlo variation at 500 replications.
+
+\paragraph{A $W$-calibrated positive control.}
+We therefore pre-specified a repaired control, frozen and hashed before implementation,
+differing from D in one respect: the state persistence probabilities are lengthened
+from $(0.99, 0.97)$ to $(0.999, 0.9985)$, giving mean regime durations of 1000 and 667
+days against 100 and 34. Both now exceed $W$, so a covariance window can lie within a
+single regime. Everything else is unchanged---factor structure, volatility and loading
+scaling, zero conditional mean in both states---and the density correction is loaded
+from the frozen manifest rather than recomputed, so the arms remain directly
+comparable. The frozen D result stands unaltered; this is an addition, not a
+replacement. The transition mechanism itself was verified correct by simulation before
+the repair, so the defect is duration alone.
+
+Realised regime durations averaged 1224 and 761 days across 500 replications, with
+$37.2\%$ of time in the high state.
+
+\begin{table}[ht]
+\centering
+\caption{$W$-calibrated positive control. Excess burstiness $B_\gamma$, 500
+replications. The frozen D interval is reproduced for comparison and is unaltered.}
+\label{tab:wcontrol}
+\begin{tabular}{crccc}
+\toprule
+$\gamma$ & real $B$ & $D_{\text{slow}}$ (2.5--97.5\%) & frozen D (2.5--97.5\%) & real is \\
+\midrule
+0.5 & 0.182 & 0.044 -- 0.201 & 0.045 -- 0.166 & inside \\
+1.0 & 0.318 & 0.128 -- 0.339 & 0.140 -- 0.306 & inside \\
+1.5 & 0.413 & 0.176 -- 0.437 & 0.163 -- 0.407 & inside \\
+2.0 & 0.526 & 0.163 -- 0.512 & 0.105 -- 0.440 & above \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The repaired control brackets the observed burstiness at three of four thresholds,
+against none under the original. Under the pre-registered decision rule this is the
+outcome in which the control resolves and the burstiness result survives: real
+burstiness is consistent with genuine slow regime structure while remaining
+inconsistent with the regime-free environments A and S. The frozen D remains
+informative as a \emph{high-frequency} control, and its non-overlap is now attributable
+to the estimator attenuating rapid switching rather than to any failure of the regime
+explanation.
+
+One residual. At $\gamma = 2.0$ the real value still exceeds the upper bound, by
+$+0.014$. The most selective threshold produces burstiness beyond what even slow regime
+switching generates in this design, and we do not explain it.
+
+A further qualification carries over from the original run: S produced \emph{less}
+excess burstiness than A at every $\gamma$---contrary to the hypothesis that motivated
+S as the adjudicating null. We report this without explanation; establishing one would
+require further work.
 
 \subsection{Empirical size of the inference procedure}
 \label{sec:size}
