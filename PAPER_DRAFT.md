@@ -382,6 +382,15 @@ observed statistic; Holm step-down across the four candidates at family-wise
 α = 0.05. Holm rather than Bonferroni because the trigger sets are highly
 dependent across γ.
 
+We note a limitation of that choice, since power is this paper's central problem.
+Holm does not exploit dependence; it relaxes the Bonferroni constraint stepwise
+under arbitrary dependence. The bootstrap stepdown procedure of Romano and Wolf
+(2005) is designed for precisely this setting and would be more powerful at the same
+family-wise error rate given the dependence documented here. It was not used, and
+the gate is frozen, so the choice stands for the confirmatory result. The wider literature
+on multiple testing in finance — White (2000), Hansen (2005), Harvey and Liu (2015),
+Harvey, Liu and Zhu (2016) — bears directly on the design of gates of this kind.
+
 ### 4.4 The stopping rule
 
 Among candidates passing *every* hard criterion, select the value closest to the
@@ -530,6 +539,16 @@ We note that `ewma_cc` outperforms the pre-registered `nls` specification on fou
 of five strategies. The pre-registered specification is therefore not the ex-post
 best-performing estimator in this sample. **The design is not retroactively
 changed to exploit this.**
+
+A sharper version of the same observation deserves stating. For HRP_static, `nls`
+is strictly the worst of the four estimators (0.574), below even unshrunk sample
+covariance (0.594); the same ordering holds for MHRP_EV (0.534 against 0.557).
+Nonlinear shrinkage underperforming the sample estimator is unexpected under the
+usual argument for shrinkage, and HRP offers a candidate explanation: the allocator
+consumes only the correlation-distance ordering and the resulting dendrogram, not
+the covariance matrix itself. Aggressive eigenvalue shrinkage can alter that
+ordering without improving the quantities HRP actually uses. We do not test this and
+report it as an observation, not a finding.
 
 ### 5.2 The structural gate: no admissible threshold
 

@@ -427,6 +427,16 @@ $H_0\!:\ D_{VI} \leq 0$ with replicates centred on the observed statistic; Holm
 step-down across the four candidates at family-wise $\alpha = 0.05$. Holm rather than
 Bonferroni because the trigger sets are highly dependent across $\gamma$.
 
+We note a limitation of that choice, since power is this paper's central problem. Holm
+does not exploit dependence; it relaxes the Bonferroni constraint stepwise under
+arbitrary dependence. The bootstrap stepdown procedure of \citet{romanowolf2005} is
+designed for precisely this setting and would be more powerful at the same family-wise
+error rate given the dependence documented here. It was not used, and the gate is
+frozen, so the choice stands for the confirmatory result. The wider literature on
+multiple testing in finance---\citet{white2000}, \citet{hansen2005},
+\citet{harveyliu2015}, \citet{harveyliuzhu2016}---bears directly on the design of
+gates of this kind.
+
 \subsection{The stopping rule}
 
 Among candidates passing \emph{every} hard criterion, select the value closest to the
@@ -585,6 +595,16 @@ allocation rule rather than to a covariance interaction. \citeauthor{molyboga202
 three modifications incrementally and reports a marginal gain at each; the two
 separately implementable here behave differently in this setting. The covariance
 modification transfers to this equity universe; the allocation modification does not.
+
+A sharper version of the same observation deserves stating. For HRP\_static,
+\texttt{nls} is strictly the worst of the four estimators ($0.574$), below even
+unshrunk sample covariance ($0.594$); the same ordering holds for MHRP\_EV ($0.534$
+against $0.557$). Nonlinear shrinkage underperforming the sample estimator is
+unexpected under the usual argument for shrinkage, and HRP offers a candidate
+explanation: the allocator consumes only the correlation-distance ordering and the
+resulting dendrogram, not the covariance matrix itself. Aggressive eigenvalue
+shrinkage can alter that ordering without improving the quantities HRP actually uses.
+We do not test this and report it as an observation, not a finding.
 
 We note that \texttt{ewma\_cc} outperforms the pre-registered \texttt{nls}
 specification on four of five strategies. The pre-registered specification is
