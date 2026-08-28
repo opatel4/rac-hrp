@@ -994,8 +994,7 @@ correlation-matrix distance, and tree instability directly.
 
 ## Acknowledgments
 
-The author thanks [names, if anyone read drafts or discussed the work] for helpful
-discussion. This is a single-author study; no independent party reviewed or authorised
+This is a single-author study. No independent party reviewed, discussed, or authorised
 the methodological decisions described here, and the protocol's commitments rest on
 hashed specifications and commit timestamps rather than on external review (§7.6).
 
@@ -1030,6 +1029,12 @@ Bailey, D. H., Borwein, J. M., López de Prado, M., & Zhu, Q. J. (2014). Pseudo-
 
 DeMiguel, V., Garlappi, L., & Uppal, R. (2009). Optimal versus naive diversification: How inefficient is the 1/N portfolio strategy? *Review of Financial Studies*, 22(5), 1915–1953.
 
+Hansen, P. R. (2005). A test for superior predictive ability. *Journal of Business and Economic Statistics*, 23(4), 365–380. DOI 10.1198/073500105000000063.
+
+Harvey, C. R., & Liu, Y. (2015). Backtesting. *Journal of Portfolio Management*, 42(1), 13–28. DOI 10.3905/jpm.2015.42.1.013.
+
+Harvey, C. R., Liu, Y., & Zhu, H. (2016). … and the cross-section of expected returns. *Review of Financial Studies*, 29(1), 5–68. DOI 10.1093/rfs/hhv059.
+
 Hamilton, J. D. (1989). A new approach to the economic analysis of nonstationary time series and the business cycle. *Econometrica*, 57(2), 357–384.
 
 Horvath, B., & Issa, Z. (2023). Non-parametric online market regime detection and regime clustering for multidimensional and path-dependent data structures. arXiv:2306.15835.
@@ -1062,10 +1067,14 @@ Pergher, K. G. R., Soldera, J., & Scharcanski, J. (2026). An orthogonal hierarch
 
 Politis, D. N., & White, H. (2004). Automatic block-length selection for the dependent bootstrap. *Econometric Reviews*, 23(1), 53–70.
 
+Romano, J. P., & Wolf, M. (2005). Stepwise multiple testing as formalized data snooping. *Econometrica*, 73(4), 1237–1282. DOI 10.1111/j.1468-0262.2005.00615.x.
+
 Roncalli, T. (2013). *Introduction to Risk Parity and Budgeting*. Chapman & Hall/CRC.
 
 Sheppert, A. P. (2026). The GT-Score: A robust objective function for reducing overfitting in data-driven trading strategies. *Journal of Risk and Financial Management* (MDPI), published 12 January 2026.
 
 Shumway, T. (1997). The delisting bias in CRSP data. *Journal of Finance*, 52(1), 327–340.
+
+White, H. (2000). A reality check for data snooping. *Econometrica*, 68(5), 1097–1126. DOI 10.1111/1468-0262.00152.
 
 Zhang, Y., Goel, D., Ahmad, H., & Szabo, C. (2025). RegimeFolio: A regime aware ML system for sectoral portfolio optimization in dynamic markets. arXiv:2510.14986.
