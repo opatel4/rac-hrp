@@ -646,7 +646,7 @@ Figure 3 shows the full null distributions against the real values.
 |---|---:|:---:|:---:|:---:|
 | 0.5 | 0.182 | 0.062 – 0.157 | 0.033 – 0.117 | 0.045 – 0.166 |
 | 1.0 | 0.318 | 0.122 – 0.272 | 0.100 – 0.237 | 0.140 – 0.306 |
-| 1.5 | 0.413 | 0.140 – 0.361 | 0.095 – 0.296 | 0.163 – 0.407 |
+| 1.5 | 0.4125 | 0.140 – 0.361 | 0.095 – 0.296 | 0.163 – 0.407 |
 | 2.0 | 0.526 | 0.107 – 0.392 | 0.000 – 0.295 | 0.105 – 0.440 |
 
 At every γ the real value exceeds the 97.5th percentile of both A and S, satisfying
@@ -682,7 +682,7 @@ Realised regime durations averaged 1224 and 761 days across 500 replications, wi
 |---|---:|:---:|:---:|:---:|
 | 0.5 | 0.182 | 0.044 – 0.201 | 0.045 – 0.166 | inside |
 | 1.0 | 0.318 | 0.128 – 0.339 | 0.140 – 0.306 | inside |
-| 1.5 | 0.413 | 0.176 – 0.437 | 0.163 – 0.407 | inside |
+| 1.5 | 0.4125 | 0.176 – 0.437 | 0.163 – 0.407 | inside |
 | 2.0 | 0.526 | 0.163 – 0.512 | 0.105 – 0.440 | above |
 
 The repaired control brackets the observed burstiness at three of four thresholds,
@@ -1248,7 +1248,7 @@ Any remaining errors are the author's own.
 
 All code, frozen specifications, decision records, errata, and result artefacts are
 available at `github.com/opatel4/rac-hrp`. A reproducibility manifest pins SHA-256
-hashes for 38 code modules, 10 result artefacts, 27 governing documents (including every superseded revision of each frozen specification), and the
+hashes for 38 code modules, 15 result artefacts, 27 governing documents (including every superseded revision of each frozen specification), and the
 underlying data files, together with the software environment. CRSP data are
 licensed and cannot be redistributed; the manifest records checksums so a licensed
 replicator can verify identity.

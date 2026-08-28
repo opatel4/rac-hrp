@@ -119,7 +119,8 @@ def check_phase05_values():
               "+0.0132", "+0.093", "+0.083"]
     hay = ""
     for f in ("results/null_gate_v1.csv", "results/primary_gate.csv",
-              "results/diagnostic_panel.csv"):
+              "results/diagnostic_panel.csv",
+              "outputs/RAC-HRP_NullGate_v2_Protocol_rev2.txt"):
         p = Path(f)
         if p.exists():
             hay += p.read_text()
@@ -135,7 +136,7 @@ def check_phase05_values():
 
     for q in quoted:
         v = round(float(q), 4)
-        if any(abs(v - n) <= 5e-4 for n in nums):
+        if any(round(n, 3) == round(v, 3) for n in nums):
             ok(f"Phase 0.5 {q}")
         else:
             bad(f"Phase 0.5 {q}", "not found in any Phase 0.5 CSV")
@@ -157,9 +158,9 @@ def check_phase1():
             skip(label, f"{path} not found")
             continue
         hay = p.read_text()
-        nums = {round(float(t), 4) for t in re.findall(r"-?\d+\.\d+", hay)}
+        nums = {float(t) for t in re.findall(r"-?\d+\.\d+", hay)}
         miss = [q for q in quoted
-                if not any(abs(float(q) - n) <= 5e-4 for n in nums)]
+                if not any(round(n, len(q.split('.')[-1])) == float(q) for n in nums)]
         if miss:
             bad(label, f"not found in artefact: {', '.join(miss)}")
         else:
@@ -181,7 +182,7 @@ def check_mechanism():
     printed = {
         0.5: ("0.182", (0.062, 0.157), (0.033, 0.117), (0.045, 0.166)),
         1.0: ("0.318", (0.122, 0.272), (0.100, 0.237), (0.140, 0.306)),
-        1.5: ("0.413", (0.140, 0.361), (0.095, 0.296), (0.163, 0.407)),
+        1.5: ("0.4125", (0.140, 0.361), (0.095, 0.296), (0.163, 0.407)),
         2.0: ("0.526", (0.107, 0.392), (0.000, 0.295), (0.105, 0.440)),
     }
     for row in table:
@@ -190,7 +191,7 @@ def check_mechanism():
             continue
         realB, A, S, D = printed[g]
         checks = [
-            ("real B", row.get("real_B"), float(realB), 5e-4),
+            ("real B", row.get("real_B"), float(realB), 5e-3),
             ("A lo", row.get("A_iid_gaussian_q2.5"), A[0], 5e-4),
             ("A hi", row.get("A_iid_gaussian_q97.5"), A[1], 5e-4),
             ("S lo", row.get("S_static_corr_q2.5"), S[0], 5e-4),

@@ -1,6 +1,6 @@
 # RAC-HRP — Reproducibility Manifest
 
-Generated 2026-08-28T19:08:34.093128+00:00 at commit `2f5355fe334db1de087596b3114c3e3785629550`
+Generated 2026-08-28T22:12:52.371256+00:00 at commit `3364955bd11e87f32dd392838d22c2981494fcdf`
 (branch `main`, working tree clean: False).
 
 Pins every reported number to a verifiable state. Generated **before** engineering
@@ -81,6 +81,11 @@ The single pre-registered test-region touch has NOT been used. No adaptive speci
 | file | sha256 (first 16) | bytes |
 |---|---|---:|
 | `outputs/phase1/phase1_baselines.csv` | `d1e1032816592601` | 842 |
+| `outputs/phase1/phase1_estimator_sensitivity.csv` | `63a37583983b1e97` | 451 |
+| `results/null_gate_v1.csv` | `fb9e5dec27a1b1a0` | 1277 |
+| `results/primary_gate.csv` | `3b3e5e9303508b00` | 783 |
+| `results/diagnostic_panel.csv` | `d956d8542be34da5` | 723 |
+| `results/replication_sharpe_matrix.csv` | `a705ddb36d7ede03` | 78202 |
 | `outputs/phase2/calibration_manifest.json` | `a65337bbc706aa4d` | 2257 |
 | `outputs/phase2/calibration_table.csv` | `aff949fe9694a734` | 760 |
 | `outputs/phase2_diagnostics/modal_gap_null.json` | `6b4c94b8f0383c01` | 1949 |
@@ -106,7 +111,7 @@ The single pre-registered test-region touch has NOT been used. No adaptive speci
 | `RAC_HRP_Phase2_Audit_Bundle.md` | `cb1f2074bbba8b7f` | 8025 |
 | `docs/PRE_REGISTRATION.md` | `c4a0b5bd2fbd1259` | 5913 |
 | `CHANGELOG.md` | `d2d78f50bae65f21` | 16531 |
-| `docs/CORRECTION_NOTICE_single_author.md` | `1dcbc90b27d0d03f` | 4581 |
+| `docs/CORRECTION_NOTICE_single_author.md` | `33a4368a3bb2cab6` | 5398 |
 | `RAC_HRP_ERRATUM_E4_advisor_approval.md` | `bbf5b5d36c661d06` | 2429 |
 | `RAC_HRP_Phase05_ERRATUM_E3_environment_label.md` | `196b13b33cbdd0ba` | 4933 |
 | `RAC_HRP_Phase2E_PreSpec_rev3.md` | `74198263f1979836` | 17005 |

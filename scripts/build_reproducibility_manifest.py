@@ -64,6 +64,12 @@ CODE = [
 
 RESULTS = [
     "outputs/phase1/phase1_baselines.csv",
+    "outputs/phase1/phase1_estimator_sensitivity.csv",
+    # --- Phase 0.5 falsification audit ---
+    "results/null_gate_v1.csv",
+    "results/primary_gate.csv",
+    "results/diagnostic_panel.csv",
+    "results/replication_sharpe_matrix.csv",
     "outputs/phase2/calibration_manifest.json",
     "outputs/phase2/calibration_table.csv",
     "outputs/phase2_diagnostics/modal_gap_null.json",
@@ -198,8 +204,12 @@ def main() -> int:
                             "eligible_rebalances": 233,
                             "n_events": {"0.5": 149, "1.0": 111,
                                          "1.5": 81, "2.0": 58},
-                            "p_holm": {"0.5": 0.556, "1.0": 0.556,
-                                       "1.5": 0.254, "2.0": 0.221}},
+                            "p_raw": {"0.5": 0.2778, "1.0": 0.3523,
+                                      "1.5": 0.0846, "2.0": 0.0552},
+                            "p_holm": {"0.5": 0.5555, "1.0": 0.5555,
+                                       "1.5": 0.2538, "2.0": 0.2208},
+                            "bootstrap_seed_base": 20262817,
+                            "bootstrap_replicates": 10000},
             "phase2d_mechanism": {"outcome": "2_beyond_regime_free_mechanics"},
             "bootstrap_empirical_size": {"nominal": 0.05, "measured": 0.066,
                                          "stable_across_B": [600, 2000, 10000]},

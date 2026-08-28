@@ -1,21 +1,23 @@
 {
-  "generated_utc": "2026-08-28T19:08:34.093128+00:00",
+  "generated_utc": "2026-08-28T22:12:52.371256+00:00",
   "purpose": "Pins every reported number to a verifiable state. Generated BEFORE engineering migration so later churn cannot blur provenance.",
   "git": {
-    "commit": "2f5355fe334db1de087596b3114c3e3785629550",
+    "commit": "3364955bd11e87f32dd392838d22c2981494fcdf",
     "branch": "main",
     "remote": "https://github.com/opatel4/rac-hrp.git",
     "working_tree_clean": false,
     "uncommitted": [
+      "M PAPER_DRAFT.md",
+      " M overleaf/main.tex",
       " M scripts/build_reproducibility_manifest.py",
-      "?? RAC_HRP_Phase05_ERRATUM_E3_environment_label.md"
+      " M scripts/verify_numbers.py"
     ]
   },
   "environment": {
     "python": "3.12.2",
     "platform": "macOS-15.0.1-arm64-arm-64bit",
     "machine": "arm64",
-    "openblas_num_threads": null,
+    "openblas_num_threads": "1",
     "note": "Single-thread BLAS is the project standard: ~13x faster on this workload (100x100 matrices) and verified result-neutral (the --quick Phase 2 gate reproduces bit-for-bit under both settings). Set at process launch; setting it inside a script after numpy import may be too late."
   },
   "packages": {
@@ -255,6 +257,31 @@
       "bytes": 842,
       "present": true
     },
+    "outputs/phase1/phase1_estimator_sensitivity.csv": {
+      "sha256": "63a37583983b1e973e8ef09d67678c7578da2df68c50a505f5dfc82d29a2c906",
+      "bytes": 451,
+      "present": true
+    },
+    "results/null_gate_v1.csv": {
+      "sha256": "fb9e5dec27a1b1a045982eea97f5d6a35aeb42da75eec4706e20e292121bdcf4",
+      "bytes": 1277,
+      "present": true
+    },
+    "results/primary_gate.csv": {
+      "sha256": "3b3e5e9303508b0046ecb133114d2c5816705c644883a21105afc1716db37df8",
+      "bytes": 783,
+      "present": true
+    },
+    "results/diagnostic_panel.csv": {
+      "sha256": "d956d8542be34da5115aaadfbe9a0a2c7266d3512ca7480de1c83e998566c239",
+      "bytes": 723,
+      "present": true
+    },
+    "results/replication_sharpe_matrix.csv": {
+      "sha256": "a705ddb36d7ede03bb3af599b9a301dc0b104ba5001d7bf54c1917b2150e4dd2",
+      "bytes": 78202,
+      "present": true
+    },
     "outputs/phase2/calibration_manifest.json": {
       "sha256": "a65337bbc706aa4d8255df7f57fa468443bae4a8bd9cd4bacb28eee474d38f73",
       "bytes": 2257,
@@ -358,8 +385,8 @@
       "present": true
     },
     "docs/CORRECTION_NOTICE_single_author.md": {
-      "sha256": "1dcbc90b27d0d03f1af16baeb55018e78d18d3970e7ee44cfd8002acda780d1d",
-      "bytes": 4581,
+      "sha256": "33a4368a3bb2cab6c14e39ba43a7671cee470cbbe517aa0fae2c1c11e92d1f1d",
+      "bytes": 5398,
       "present": true
     },
     "RAC_HRP_ERRATUM_E4_advisor_approval.md": {
@@ -455,12 +482,20 @@
         "1.5": 81,
         "2.0": 58
       },
+      "p_raw": {
+        "0.5": 0.2778,
+        "1.0": 0.3523,
+        "1.5": 0.0846,
+        "2.0": 0.0552
+      },
       "p_holm": {
-        "0.5": 0.556,
-        "1.0": 0.556,
-        "1.5": 0.254,
-        "2.0": 0.221
-      }
+        "0.5": 0.5555,
+        "1.0": 0.5555,
+        "1.5": 0.2538,
+        "2.0": 0.2208
+      },
+      "bootstrap_seed_base": 20262817,
+      "bootstrap_replicates": 10000
     },
     "phase2d_mechanism": {
       "outcome": "2_beyond_regime_free_mechanics"
