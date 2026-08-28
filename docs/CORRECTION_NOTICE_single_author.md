@@ -60,3 +60,23 @@ superseded by this notice and by §7.6 of the manuscript.
 At the time of this notice the recorded hashes were verified against the files on disk and all
 three matched, confirming that the executed code is the code the manifests describe. Should these
 phases be re-run for an unrelated reason, the strings should be corrected in that run.
+
+## Naming defects pending the pre-submission verification pass
+
+Three identifiers describe behaviour the code does not implement. None affects any result, and the
+manuscript's description of k is accurate for every phase.
+
+- `Config.mp_k_mode` defaults to `"fixed_per_fold"`, and `config.py`'s accompanying NOTE describes
+  the choice as an open decision. The frozen Phase 2 specification settled it, and both code paths
+  implement per-run regardless of the setting.
+- `engine.py:244` names the variable `fold_k` and the comment at 255-256 says "freeze k within the
+  fold". The variable is initialised once before a flat loop over all rebalances and never reset, so
+  k is frozen at the first rebalance and held for the entire run.
+- `calibration.py:82` writes `mp_k_mode = fixed_per_run`. No such mode exists; the enum is
+  `{"fixed_per_fold", "rolling"}`, and this function ignores the field entirely.
+
+The consequence is benign and worth stating positively: the backtest engine and the Phase 2
+calibration path freeze k identically, so the absorption-ratio series is constructed the same way in
+every phase. `engine.py` and `calibration.py` are hashed in released manifests and are therefore not
+edited; the naming is corrected in this notice rather than in the source, consistent with the policy
+above.
