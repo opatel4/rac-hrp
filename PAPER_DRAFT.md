@@ -383,8 +383,9 @@ All inference parameters were fixed before execution: placebo seed 20260817 with
 automatic block length, resampling the pair (VI*ₜ*, I*ₜ*) jointly in blocks to
 preserve alignment; one-sided H₀: *D_VI* ≤ 0 with replicates centred on the
 observed statistic; Holm step-down across the four candidates at family-wise
-α = 0.05. Holm rather than Bonferroni because the trigger sets are highly
-dependent across γ.
+α = 0.05. Holm rather than Bonferroni because the trigger sets are highly dependent across γ.
+With *B* = 10,000 replicates and the (1 + #exceed)/(*B* + 1) convention, the smallest attainable raw *p* is 1/(*B*_kept + 1), where *B*_kept counts non-degenerate replicates; no replicate was degenerate at any γ, so the floor is 1/10,001 ≈ 0.0001; values reported at that magnitude sit at the
+resolution floor of the procedure and are not exactly zero.
 
 We note a limitation of that choice, since power is this paper's central problem.
 Holm does not exploit dependence; it relaxes the Bonferroni constraint stepwise
@@ -737,10 +738,10 @@ statistic and the frozen inference unchanged.
 
 | γ | events | *D_VI*(5) | *p* raw | *p* Holm | block | med VI fired | med VI not |
 |---|---|---|---|---|---|---|---|
-| 0.5 | 149 | +0.0662 | 0.043 | 0.086 | 13 | 0.8226 | 0.7564 |
-| 1.0 | 111 | +0.0600 | 0.045 | 0.086 | 13 | 0.8215 | 0.7616 |
-| 1.5 | 81 | +0.0814 | 0.005 | 0.018 | 13 | 0.8382 | 0.7567 |
-| 2.0 | 58 | +0.1038 | 0.014 | 0.042 | 13 | 0.8620 | 0.7582 |
+| 0.5 | 149 | +0.0662 | 0.0432 | 0.0864 | 13 | 0.8226 | 0.7564 |
+| 1.0 | 111 | +0.0600 | 0.0448 | 0.0864 | 13 | 0.8215 | 0.7616 |
+| 1.5 | 81 | +0.0814 | 0.0046 | 0.0184 | 13 | 0.8382 | 0.7567 |
+| 2.0 | 58 | +0.1038 | 0.0141 | 0.0423 | 13 | 0.8620 | 0.7582 |
 
 At the matched horizon, Holm-adjusted *p* clears 0.05 at γ = 1.5 and γ = 2.0. That
 comparison is against a nominal level, and the same diagnostic measures the
@@ -867,8 +868,8 @@ without the curve, so we compute *D_VI* at *h* ∈ {1, …, 8}.
 | 3 | +0.060 (0.058) | +0.067 (0.030) | +0.093 (0.010) | +0.129 (0.029) |
 | 4 | +0.085 (0.043) | +0.060 (0.126) | +0.100 (0.011) | +0.121 (0.016) |
 | 5 | +0.066 (0.093) | +0.060 (0.093) | +0.081 (0.018) | +0.104 (0.047) |
-| 6 | +0.097 (0.000) | +0.102 (0.000) | +0.123 (0.000) | +0.154 (0.000) |
-| 7 | +0.058 (0.155) | −0.007 (0.656) | +0.075 (0.101) | +0.135 (0.000) |
+| 6 | +0.097 (0.0004) | +0.102 (0.0004) | +0.123 (0.0004) | +0.154 (0.0004) |
+| 7 | +0.058 (0.155) | −0.007 (0.656) | +0.075 (0.101) | +0.135 (<0.001) |
 | 8 | +0.011 (0.649) | +0.015 (0.649) | +0.069 (0.266) | +0.105 (0.044) |
 
 Holm-adjusted *p* in parentheses. *h* = 1 reproduces the frozen gate and *h* = 5 the

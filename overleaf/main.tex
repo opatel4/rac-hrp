@@ -427,8 +427,11 @@ All inference parameters were fixed before execution: placebo seed 20260817 with
 Politis--White automatic block length \citep{politiswhite2004}, resampling the pair
 $(VI_t, I_t)$ jointly in blocks to preserve alignment; one-sided
 $H_0\!:\ D_{VI} \leq 0$ with replicates centred on the observed statistic; Holm
-step-down across the four candidates at family-wise $\alpha = 0.05$. Holm rather than
-Bonferroni because the trigger sets are highly dependent across $\gamma$.
+step-down across the four candidates at family-wise $\alpha = 0.05$. Holm rather than Bonferroni because the trigger sets are highly dependent across
+$\gamma$. With $B = 10{,}000$ replicates and the $(1 + \#\{\text{exceed}\})/(B + 1)$
+convention, the smallest attainable raw $p$ is $1/(B_{\text{kept}} + 1)$, where $B_{\text{kept}}$ counts non-degenerate replicates; no replicate was degenerate at any $\gamma$, so the floor is $1/10{,}001 \approx 0.0001$; values
+reported at that magnitude sit at the resolution floor of the procedure and are not
+exactly zero.
 
 We note a limitation of that choice, since power is this paper's central problem. Holm
 does not exploit dependence; it relaxes the Bonferroni constraint stepwise under
@@ -643,14 +646,14 @@ four candidate thresholds (bottom), development region, $k = 15$ fixed, $W = 504
 \label{tab:gateresult}
 \small
 \setlength{\tabcolsep}{4pt}
-\begin{tabular}{crrrrrrrrrc}
+\begin{tabular}{crrrrrrrrrrc}
 \toprule
-$\gamma$ & events & firing & min ev/fold & CV gap & modal gap & $J^{*}$ & $J$ thr & $D_{VI}$ & $p$ Holm & Adm. \\
+$\gamma$ & events & firing & min ev/fold & CV gap & modal gap & $J^{*}$ & $J$ thr & $D_{VI}$ & $p$ raw & $p$ Holm & Adm. \\
 \midrule
-0.5 & 149 & 0.639 & 35 & 1.116 & 0.824 & 0.400 & 0.446 & $+0.033$ & 0.556 & No \\
-1.0 & 111 & 0.476 & 26 & 1.458 & 0.791 & 0.326 & 0.382 & $+0.022$ & 0.556 & No \\
-1.5 &  81 & 0.348 & 18 & 1.676 & 0.763 & 0.263 & 0.320 & $+0.080$ & 0.254 & No \\
-2.0 &  58 & 0.249 & 11 & 1.823 & 0.791 & 0.208 & 0.259 & $+0.096$ & 0.221 & No \\
+0.5 & 149 & 0.6395 & 35 & 1.1162 & 0.8243 & 0.4000 & 0.4457 & $+0.0326$ & 0.2778 & 0.5555 & No \\
+1.0 & 111 & 0.4764 & 26 & 1.4579 & 0.7909 & 0.3256 & 0.3818 & $+0.0217$ & 0.3523 & 0.5555 & No \\
+1.5 &  81 & 0.3476 & 18 & 1.6763 & 0.7625 & 0.2628 & 0.3200 & $+0.0796$ & 0.0846 & 0.2538 & No \\
+2.0 &  58 & 0.2489 & 11 & 1.8228 & 0.7895 & 0.2083 & 0.2593 & $+0.0961$ & 0.0552 & 0.2208 & No \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -888,10 +891,10 @@ reports the result.
 \toprule
 $\gamma$ & events & $D_{VI}^{(5)}$ & $p$ raw & $p$ Holm & block & med fired & med not \\
 \midrule
-0.5 & 149 & $+0.0662$ & 0.043 & 0.086 & 13 & 0.8226 & 0.7564 \\
-1.0 & 111 & $+0.0600$ & 0.045 & 0.086 & 13 & 0.8215 & 0.7616 \\
-1.5 &  81 & $+0.0814$ & 0.005 & 0.018 & 13 & 0.8382 & 0.7567 \\
-2.0 &  58 & $+0.1038$ & 0.014 & 0.042 & 13 & 0.8620 & 0.7582 \\
+0.5 & 149 & $+0.0662$ & 0.0432 & 0.0864 & 13 & 0.8226 & 0.7564 \\
+1.0 & 111 & $+0.0600$ & 0.0448 & 0.0864 & 13 & 0.8215 & 0.7616 \\
+1.5 &  81 & $+0.0814$ & 0.0046 & 0.0184 & 13 & 0.8382 & 0.7567 \\
+2.0 &  58 & $+0.1038$ & 0.0141 & 0.0423 & 13 & 0.8620 & 0.7582 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1052,8 +1055,8 @@ $h$ & $\gamma = 0.5$ & $\gamma = 1.0$ & $\gamma = 1.5$ & $\gamma = 2.0$ \\
 3 & $+0.060$ (0.058) & $+0.067$ (0.030) & $+0.093$ (0.010) & $+0.129$ (0.029) \\
 4 & $+0.085$ (0.043) & $+0.060$ (0.126) & $+0.100$ (0.011) & $+0.121$ (0.016) \\
 5 & $+0.066$ (0.093) & $+0.060$ (0.093) & $+0.081$ (0.018) & $+0.104$ (0.047) \\
-6 & $+0.097$ (0.000) & $+0.102$ (0.000) & $+0.123$ (0.000) & $+0.154$ (0.000) \\
-7 & $+0.058$ (0.155) & $-0.007$ (0.656) & $+0.075$ (0.101) & $+0.135$ (0.000) \\
+6 & $+0.097$ (0.0004) & $+0.102$ (0.0004) & $+0.123$ (0.0004) & $+0.154$ (0.0004) \\
+7 & $+0.058$ (0.155) & $-0.007$ (0.656) & $+0.075$ (0.101) & $+0.135$ ($<0.001$) \\
 8 & $+0.011$ (0.649) & $+0.015$ (0.649) & $+0.069$ (0.266) & $+0.105$ (0.044) \\
 \bottomrule
 \end{tabular}
