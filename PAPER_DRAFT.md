@@ -975,10 +975,11 @@ involved. We report the pre-specified results as the inferential claims and the
 sensitivity alongside them, and we do not represent the horizon-matched result as a
 finding that survives scrutiny it has not survived.
 
-What survives is narrower than the horizon result alone suggested. The trigger's
-timing is not random, and its burstiness is not reproduced by either regime-free
-pipeline null while being consistent with a *W*-calibrated regime environment
-(Section 5.3); neither of those results depends on the component count. What does not
+What survives is narrower than the horizon result alone suggested. The trigger's timing is not random, and its burstiness is not reproduced by either
+regime-free pipeline null. A *W*-calibrated regime environment brackets it at three of
+four thresholds, the exception being the most selective one, where the observed value
+exceeds even that control by +0.014 and we offer no explanation (Section 5.3). Neither
+result depends on the component count. What does not
 survive is the stronger claim that triggered rebalances reliably coincide with greater
 hierarchical restructuring.
 
