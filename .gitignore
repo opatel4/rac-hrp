@@ -88,3 +88,6 @@ overleaf/*.bbl
 overleaf/*.blg
 overleaf/*.pdf
 overleaf/*.synctex.gz
+
+.venv-frozen/
+.venv*/
