@@ -678,9 +678,8 @@ clears its floor comfortably ($1.116$--$1.823$); the failure is that modal-gap s
 examines this.
 
 \paragraph{Cluster informativeness fails everywhere.} $D_{VI}$ is positive at every
-$\gamma$ and increases with selectivity ($+0.033 \rightarrow +0.096$), the direction
-the hypothesis predicts. But no Holm-adjusted $p$ clears $0.05$ (best $0.221$ at
-$\gamma = 2.0$). The defensible statement is that the effect is \textbf{positive in
+$\gamma$ and increases with selectivity ($+0.0326 \rightarrow +0.0961$), the direction the hypothesis
+predicts. But no Holm-adjusted $p$ clears $0.05$ (best $0.2208$ at $\gamma = 2.0$). The defensible statement is that the effect is \textbf{positive in
 direction but statistically unresolved}: a positive point estimate does not establish
 that the effect is real.
 
@@ -902,10 +901,9 @@ $\gamma$ & events & $D_{VI}^{(5)}$ & $p$ raw & $p$ Holm & block & med fired & me
 At the matched horizon, Holm-adjusted $p$ clears $0.05$ at $\gamma = 1.5$ and
 $\gamma = 2.0$. That comparison is against a nominal level, and the same diagnostic
 measures the procedure's actual size on this dependence structure as $0.0730$. Judged
-against actual rather than nominal size, only $\gamma = 1.5$ (raw $p = 0.005$) is
-resolved; $\gamma = 2.0$ (raw $p = 0.014$) is suggestive but weaker than its Holm value
-implies; and $\gamma = 0.5$ and $\gamma = 1.0$ (raw $p = 0.043$ and $0.045$) sit at or
-below the measured size and carry essentially no evidence. We apply this correction to
+against actual rather than nominal size, only $\gamma = 1.5$ (raw $p = 0.0046$) is resolved; $\gamma = 2.0$ (raw $p = 0.0141$) is
+suggestive but weaker than its Holm value implies; and $\gamma = 0.5$ and $\gamma = 1.0$
+(raw $p = 0.0432$ and $0.0448$) sit at or below the measured size and carry essentially no evidence. We apply this correction to
 the positive result because we apply it to the null in Section~\ref{sec:size}, and
 applying it in only one direction would be the asymmetry this paper exists to criticise.
 
@@ -971,8 +969,8 @@ One clarification about what that check covers. Each diagnostic draws its bootst
 replicates from its own seed, deliberately: reusing the gate's seeds would make the
 diagnostics statistically dependent on the result they are examining. The reproduction checks
 therefore verify the \emph{statistic}---event counts and $D_{VI}$ to four decimals---and not
-the $p$-value, which cannot match across independent draws and does not. At $\gamma = 2.0$ the
-frozen gate reports Holm $p = 0.221$, the $k = 15$ cell $0.195$ and the $h = 1$ cell $0.185$;
+the $p$-value, which cannot match across independent draws and does not. At $\gamma = 2.0$ the frozen gate reports Holm $p = 0.2208$, the $k = 15$ cell $0.195$ and
+the $h = 1$ cell $0.185$;
 eight further seeds span $0.180$ to $0.202$, with the Politis--White block length equal to 19
 in every case. The frozen gate reproduces exactly from its recorded configuration (seed base
 20262817, 10{,}000 replicates), and its value sits at the conservative end of that spread.
