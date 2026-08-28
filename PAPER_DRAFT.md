@@ -1121,9 +1121,9 @@ the archived value reproduced exactly. A third defect, found during pre-submissi
 interval to the wrong environment label in a completion record. A fourth withdrew every
 statement of advisor approval and countersignature from the project's records: no
 independent party reviewed or authorised any decision, and the earlier wording was
-false (Section 7.6). All four are recorded in the released supplement as errata that
-leave the frozen documents unedited, and regression tests cover the two failure modes
-that admit them.
+false (Section 7.6). All four are recorded in the released supplement as errata that leave the frozen
+documents unedited. Regression tests were added for the two failure modes that admit
+them, and guard against recurrence rather than detection.
 
 The four share a structure worth naming. Each attached a correct quantity, or a correct
 procedure, to the wrong context, and each was found by comparing a document against the
