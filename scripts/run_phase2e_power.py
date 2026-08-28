@@ -2,8 +2,8 @@
 Phase 2E -- 2E-POWER: planted-effect power curve.
 DEVELOPMENT REGION ONLY.
 
-Frozen specification: RAC_HRP_Phase2E_PreSpec_rev7.md
-SHA-256: df7cc9066f786a0ec31671f6f66c836ac28acef44ba6e52786f7110976d1f2e5
+Frozen specification: RAC_HRP_Phase2E_PreSpec_rev8.md
+SHA-256: cfdd64cca9a23a1d873695b2de0576b442cf2b80e302602830a0d1502c403674
 
 NON-GATING. Nothing here can render any gamma admissible, reopen the Phase 2A
 calibration gate, or alter any frozen value. The Phase 2A verdict -- NO ADMISSIBLE
@@ -62,8 +62,8 @@ from rac_hrp.backtest.folds import FoldGenerator                     # noqa: E40
 from rac_hrp.phase2.calibration import structural_pass               # noqa: E402
 from rac_hrp.phase2 import power as PW                               # noqa: E402
 
-SPEC_FILE = "RAC_HRP_Phase2E_PreSpec_rev7.md"
-SPEC_SHA = "df7cc9066f786a0ec31671f6f66c836ac28acef44ba6e52786f7110976d1f2e5"
+SPEC_FILE = "RAC_HRP_Phase2E_PreSpec_rev8.md"
+SPEC_SHA = "cfdd64cca9a23a1d873695b2de0576b442cf2b80e302602830a0d1502c403674"
 THRESHOLD_HOURS = 12.0
 
 

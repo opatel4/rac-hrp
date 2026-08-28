@@ -1,8 +1,8 @@
 """
 Phase 2E -- 2E-POWER, PARALLEL RUNNER.
 
-Frozen specification: RAC_HRP_Phase2E_PreSpec_rev7.md
-SHA-256: df7cc9066f786a0ec31671f6f66c836ac28acef44ba6e52786f7110976d1f2e5
+Frozen specification: RAC_HRP_Phase2E_PreSpec_rev8.md
+SHA-256: cfdd64cca9a23a1d873695b2de0576b442cf2b80e302602830a0d1502c403674
 
 BIT-IDENTICAL TO THE SERIAL RUNNER BY CONSTRUCTION
     `rac_hrp.phase2.power` is imported UNMODIFIED. This script changes only the
@@ -58,8 +58,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from rac_hrp.phase2 import power as PW                               # noqa: E402
 from run_phase2e_power import build_structural, _sha256              # noqa: E402
 
-SPEC_FILE = "RAC_HRP_Phase2E_PreSpec_rev7.md"
-SPEC_SHA = "df7cc9066f786a0ec31671f6f66c836ac28acef44ba6e52786f7110976d1f2e5"
+SPEC_FILE = "RAC_HRP_Phase2E_PreSpec_rev8.md"
+SPEC_SHA = "cfdd64cca9a23a1d873695b2de0576b442cf2b80e302602830a0d1502c403674"
 FROZEN_NUMPY = "1.26.4"
 FROZEN_PANDAS = "2.2.2"
 

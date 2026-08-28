@@ -3,8 +3,8 @@ rac_hrp.phase2.power
 ====================
 2E-POWER: planted-effect power curve for the frozen cluster-informativeness test.
 
-Frozen specification: RAC_HRP_Phase2E_PreSpec_rev7.md
-SHA-256: df7cc9066f786a0ec31671f6f66c836ac28acef44ba6e52786f7110976d1f2e5
+Frozen specification: RAC_HRP_Phase2E_PreSpec_rev8.md
+SHA-256: cfdd64cca9a23a1d873695b2de0576b442cf2b80e302602830a0d1502c403674
 
 WHAT THIS IS
 ------------
@@ -64,9 +64,10 @@ from typing import Dict, List, Optional, Sequence, Tuple
 import numpy as np
 
 from .calibration import StructuralPass
-from .stats import circular_block_bootstrap_p, d_vi, holm_adjust
+from .stats import (circular_block_bootstrap_p, d_vi, holm_adjust,
+                    politis_white_block_length)
 
-SPEC_SHA = "df7cc9066f786a0ec31671f6f66c836ac28acef44ba6e52786f7110976d1f2e5"
+SPEC_SHA = "cfdd64cca9a23a1d873695b2de0576b442cf2b80e302602830a0d1502c403674"
 
 BASE_SEED = 292828877
 GAMMA_CANDIDATES: Tuple[float, ...] = (0.5, 1.0, 1.5, 2.0)
@@ -76,7 +77,7 @@ N_REPLICATIONS_DEFAULT = 2000
 BOOTSTRAP_REPLICATES = 2000
 ALPHA = 0.05
 POWER_TARGET = 0.80
-SIZE_ABORT = 0.20                      # section 2.5 gross-malfunction guard
+SIZE_BAND = (0.02, 0.10)               # section 2.5 pass band, rev.8
 EXPECTED_EVENT_COUNTS: Dict[float, int] = {0.5: 149, 1.0: 111, 1.5: 81, 2.0: 58}
 EXPECTED_ELIGIBLE = 233
 
@@ -98,7 +99,8 @@ def seed_for(g: float, delta: float, condition: str, r: int) -> int:
 # --------------------------------------------------------------------------
 @dataclass
 class PowerInputs:
-    base: np.ndarray                       # median-centred observed VI, length E
+    observed: np.ndarray                   # RAW observed VI at eligible dates
+    block_length: int                      # Politis-White length on that series
     fired: Dict[float, np.ndarray]         # frozen trigger masks, eligible-local
     n_events: Dict[float, int]
     base_median: float
@@ -106,7 +108,12 @@ class PowerInputs:
 
 
 def build_inputs(sp: StructuralPass) -> PowerInputs:
-    """Median-centred observed VI plus the frozen trigger masks. Aborts on drift."""
+    """Observed VI, its block length, and the frozen masks. Aborts on drift.
+
+    The series is NOT centred. rev.7 centred it on the mistaken view that this
+    would null the statistic; subtracting a scalar leaves the difference between
+    two subgroup medians unchanged. Nulling happens per replication, by resampling.
+    """
     elig = np.where(sp.eligible)[0]
     E = len(elig)
     if E != EXPECTED_ELIGIBLE:
@@ -118,7 +125,7 @@ def build_inputs(sp: StructuralPass) -> PowerInputs:
                          "the base path must be complete")
 
     med = float(np.median(vi))
-    base = vi - med
+    L = int(politis_white_block_length(vi))
 
     fired: Dict[float, np.ndarray] = {}
     counts: Dict[float, int] = {}
@@ -132,8 +139,22 @@ def build_inputs(sp: StructuralPass) -> PowerInputs:
         fired[g] = m
         counts[g] = n
 
-    return PowerInputs(base=base, fired=fired, n_events=counts,
-                       base_median=med, E=E)
+    return PowerInputs(observed=vi, block_length=L, fired=fired,
+                       n_events=counts, base_median=med, E=E)
+
+
+
+def block_resample(x: np.ndarray, L: int, rng: np.random.Generator) -> np.ndarray:
+    """Circular block resample of x at block length L, same length out.
+
+    Identical in mechanics to the resampling inside the frozen bootstrap, used
+    here to generate each replication's null realisation (rev.8 section 2.2).
+    """
+    n = len(x)
+    n_blocks = int(np.ceil(n / L))
+    starts = rng.integers(0, n, size=n_blocks)
+    idx = ((starts[:, None] + np.arange(L)[None, :]) % n).ravel()[:n]
+    return x[idx]
 
 
 def uniform_mask(E: int, n_events: int, rng: np.random.Generator) -> np.ndarray:
@@ -151,12 +172,18 @@ def _one_replication(inp: PowerInputs, target: float, delta: float,
     """Returns (target rejected under Holm, realised block length for target)."""
     rng = np.random.default_rng(seed_for(target, delta, condition, r))
 
+    # rev.8 section 2.2: this replication's null realisation. Circular block
+    # resampling breaks the association between path and mask, so no subgroup
+    # carries an effect; blocks preserve serial dependence; a fresh draw each
+    # replication supplies the sampling variation a power curve requires.
+    path = block_resample(inp.observed, inp.block_length, rng)
+
     if condition == "R":
         plant = inp.fired[target]
     else:
         plant = uniform_mask(inp.E, inp.n_events[target], rng)
 
-    path = inp.base.copy()
+    path = path.copy()
     path[plant] += delta
 
     raw: Dict[float, float] = {}
@@ -234,11 +261,12 @@ def run_power(sp: StructuralPass, n_replications: int = N_REPLICATIONS_DEFAULT,
     if verbose:
         print(f"            size = {size.power:.4f}  (MC SE {size.mc_se:.4f}, "
               f"median block {size.median_block_length})")
-    if size.power > SIZE_ABORT:
+    lo, hi = SIZE_BAND
+    if not (lo <= size.power <= hi):
         raise PowerAbort(
-            f"delta=0 rejection rate {size.power:.3f} exceeds the frozen abort "
-            f"threshold {SIZE_ABORT}; the procedure is not approximately calibrated "
-            "on this dependence structure and a power curve built on it would be "
+            f"delta=0 rejection rate {size.power:.4f} falls outside the frozen "
+            f"pass band [{lo}, {hi}]; the procedure is not adequately calibrated on "
+            "this dependence structure and a power curve built on it would be "
             "uninterpretable")
 
     # ---- the grid --------------------------------------------------------
@@ -278,7 +306,8 @@ def format_report(res: PowerResult) -> str:
     L.append(f"  spec SHA-256 {res.spec_sha256}")
     L.append(f"  replications per cell {res.n_replications}, "
              f"bootstrap B = {BOOTSTRAP_REPLICATES}, alpha = {ALPHA}")
-    L.append(f"  base path: observed one-step VI, median {res.base_median:.4f}, centred")
+    L.append(f"  base path: per-replication circular block resample of the observed "
+             f"one-step VI (median {res.base_median:.4f})")
     L.append("")
     if res.size_cell is not None:
         s = res.size_cell
