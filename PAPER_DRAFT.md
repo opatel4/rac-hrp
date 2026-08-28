@@ -57,7 +57,8 @@ cluster-informativeness statistic at a horizon matched to the trigger: the smoot
 and differencing steps telescope, so the trigger is algebraically a five-rebalance
 change in the absorption ratio, while the gate's criterion measured a one-rebalance
 change in the clustering. At the matched horizon the effect is statistically
-resolved at two of four thresholds (Holm-adjusted *p* = 0.018 and 0.042). The second
+resolved at one of four thresholds and suggestive at a second, once the procedure's
+measured size on the real dependence structure is taken into account. The second
 measures what the gate could have detected: against the effect sizes actually
 observed, its power ranged from 11% to 33%, and the minimum effect detectable at 80%
 power was two to nine times larger than any effect present.
@@ -678,7 +679,17 @@ statistic and the frozen inference unchanged.
 | 1.5 | 81 | +0.0814 | 0.005 | 0.018 | 13 | 0.8382 | 0.7567 |
 | 2.0 | 58 | +0.1038 | 0.014 | 0.042 | 13 | 0.8620 | 0.7582 |
 
-At the matched horizon the effect is resolved at γ = 1.5 and γ = 2.0. At the gate's
+At the matched horizon, Holm-adjusted *p* clears 0.05 at γ = 1.5 and γ = 2.0. That
+comparison is against a nominal level, and the same diagnostic measures the
+procedure's actual size on this dependence structure as 0.0730. Judged against
+actual rather than nominal size, only γ = 1.5 (raw *p* = 0.005) is resolved; γ = 2.0
+(raw *p* = 0.014) is suggestive but weaker than its Holm value implies; and γ = 0.5
+and γ = 1.0 (raw *p* = 0.043 and 0.045) sit at or below the measured size and carry
+essentially no evidence. We apply this correction to the positive result because we
+apply it to the null in Section 5.4, and applying it in only one direction would be
+the asymmetry this paper exists to criticise.
+
+At the gate's
 horizon no threshold cleared. The point estimates are larger at every threshold and
 the ordering with selectivity is preserved.
 
@@ -740,7 +751,9 @@ not confer sensitivity.
 
 The horizon diagnostic identifies a second, independent problem. The criterion
 sampled structural change at a one-rebalance horizon while the trigger operates at
-five. At the matched horizon the effect is statistically resolved at two thresholds.
+five. At the matched horizon the effect is resolved at one threshold and suggestive
+at a second, judged against the procedure's measured size rather than its nominal
+level (Section 5.5).
 Either defect alone would have produced the observed null; both were present.
 
 The trigger is therefore detecting something, and what it detects is closer to what
@@ -762,11 +775,24 @@ Had this study measured performance first, the natural path would have been: pic
 adjust the threshold. Each adjustment is individually defensible and collectively
 fatal, in exactly the way Nikolopoulos (2026) quantifies.
 
-The gate makes that path unavailable. The 0.40 firing ceiling was fixed before the
-firing rate was known and was *not* revised when γ = 1.0 exceeded it. The γ grid
-was fixed before any event count was computed. The stopping rule was executed in
-code. There is no point at which a performance number could have influenced a
-specification choice, because no performance number existed.
+The gate makes that path unavailable, and the record shows the constraint binding at
+the moment it cost something. The firing rate of the inherited threshold was known
+before the gate was specified: an early revision of the pre-registration reports it
+as a central vulnerability and analyses its causes (Section 4.1). The 0.40
+informativeness ceiling was then set in full knowledge that γ = 1.0 exceeded it.
+Every subsequent revision, through to the frozen version, records that γ = 1.0 has
+already failed the firing-rate criterion and states explicitly that the ceiling is
+not revised. The γ grid was fixed before any event count was computed, and the
+stopping rule was executed in code.
+
+What the design excludes is not knowledge of the trigger's structural behaviour,
+which was necessary to specify a sensible gate at all, but knowledge of what any
+specification choice would do to returns. No performance quantity for any adaptive
+specification existed on the development region at any point in the process. The
+distinction matters: a gate calibrated in ignorance of firing behaviour would have
+been arbitrary, whereas a gate calibrated against firing behaviour and then held
+fixed against the researcher's own inherited preference is the case where
+pre-registration does work.
 
 ### 6.3 Transfer of the modified HRP components
 
