@@ -1,0 +1,5 @@
+RAC_HRP_Phase2G_PreSpec_rev1.md
+SHA-256: c431974eb7bd611b27533d7d52abbe1ac00f385d2f2eb4573b3563d279794fd2
+Three non-gating robustness diagnostics: 2G-K, 2G-RANK, 2G-HORIZON.
+Section 0.3 forbids re-selecting the confirmatory analysis in light of any result here.
+No Phase 2G implementing code exists at this commit.
