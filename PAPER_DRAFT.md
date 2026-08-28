@@ -442,12 +442,19 @@ untested side; it passed the rule as specified and is noted for completeness.
 The pattern around the failing cell is diagnostic. A trigger-specific manufactured
 advantage should appear against otherwise identical same-policy baselines, which differ
 from RAC-HRP only in re-clustering rule; it did not. RAC-HRP showed no edge over static
-HRP (-0.006, CI [-0.066, +0.054]) and none over equal weighting. A paired recovery replay
-confirmed that static HRP, which never re-clusters, beats ERC under D by +0.109 (CI
-[+0.049, +0.168]), so essentially the entire difference is an HRP-versus-ERC allocator
-property under volatility clustering and none of it is attributable to the trigger. We
-claim only the allocator-family interpretation; the mechanism by which the two allocators
-diverge is not asserted.
+HRP (-0.006, CI [-0.066, +0.054]) and none over equal weighting. The v2 protocol document records a paired Condition-2 contrast in which static
+HRP, which never re-clusters, beats ERC under D by +0.109 (paired 95% CI
+[+0.049, +0.168]), so essentially the entire difference is an HRP-versus-ERC
+allocator property under volatility clustering and none of it is attributable to
+the trigger. That contrast carries a caveat we state plainly: it is recorded in
+the protocol document rather than in a result file, the v1 per-replication Sharpe
+data was not retained, and the released Phase 0.5 driver does not compute it, so a
+replicator can follow the reasoning but cannot recompute the number. The
+conclusion does not rest on it. The released v1 rows show the same thing
+independently: RAC-HRP has no edge over static HRP (-0.006) and none over equal
+weighting, which is what a trigger-specific artefact would have to produce. We
+claim only the allocator-family interpretation; the mechanism by which the two
+allocators diverge is not asserted.
 
 We record how the cell was resolved, and we do so at length because the sequence is one
 this paper elsewhere criticises. A comparator restriction was adopted immediately after
