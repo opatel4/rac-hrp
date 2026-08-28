@@ -1,8 +1,10 @@
-RAC_HRP_Phase2E_PreSpec_rev7.md
-SHA-256: df7cc9066f786a0ec31671f6f66c836ac28acef44ba6e52786f7110976d1f2e5
-Supersedes rev.6 (601ad64): 2.3 overclaimed what the placement comparison isolates.
+RAC_HRP_Phase2E_PreSpec_rev8.md
+SHA-256: cfdd64cca9a23a1d873695b2de0576b442cf2b80e302602830a0d1502c403674
+Supersedes rev.7 (14ca67b): base-path construction could produce neither a null nor a sampling distribution; the rev.7 run is preserved as outputs/phase2e_power/power_result_INVALID_rev7.json and is NOT a result.
+Supersedes rev.6 (601ad64): 2.3 overclaim.
 Supersedes rev.5 (8b5bd90): 2E-POWER base path.
 Supersedes rev.4 (78d6e95): eligible-set contraction.
 Supersedes rev.3 (fc4fd84): unfilled seeds.
 2E-HORIZON was run under rev.5 and is unaffected; its result stands at 28d5f92.
-No 2E-POWER implementing code or result exists at this commit.
+The rev.8 construction was verified on synthetic data before freezing; harness at scripts/explore_power_construction.py.
+No rev.8 2E-POWER implementing code or result exists at this commit.
