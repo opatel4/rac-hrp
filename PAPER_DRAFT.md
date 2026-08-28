@@ -162,7 +162,7 @@ informativeness, event sufficiency, timing variation, calendar separation, and
 cluster informativeness — with frozen inference, pre-registered multiplicity
 control, and a stopping rule that forbids selecting a "least bad" candidate.
 
-**A clean negative result for an absorption-ratio trigger.** No threshold in the
+**A diagnosed negative result for an absorption-ratio trigger.** No threshold in the
 pre-registered grid is admissible. The binding failure is cluster informativeness:
 the clustering-change effect is positive in direction at every threshold and
 increases with selectivity, but is statistically unresolved under the frozen
@@ -712,7 +712,9 @@ departure is a property of the procedure rather than a finite-*B* artefact. The
 test is **mildly anti-conservative**: empirical size ≈ 6.6% against nominal 5%.
 
 This strengthens rather than weakens the central result. The cluster-informativeness
-test is biased *toward* rejection, and no candidate rejected.
+test is biased *toward* rejection, and no candidate rejected. Section 5.5 measures the
+same quantity on the real dependence structure rather than on independent data and
+obtains 7.3%; the argument here survives, and its magnitude was understated.
 
 ---
 
@@ -945,9 +947,7 @@ mechanism.
 The gate had between 11% and 33% power against the effect sizes actually present
 (Section 5.5). A test with 33% power fails to reject two times in three when the
 effect is real. A null from such a test carries almost no information about whether
-an effect exists, and the interpretation offered in earlier drafts of this paper —
-that a performance-blind null is more informative than a performance-based one —
-does not survive it. Blindness to returns protects against one failure mode. It does
+an effect exists, and the interpretation that a performance-blind null is more informative than a performance-based one does not survive it. Blindness to returns protects against one failure mode. It does
 not confer sensitivity.
 
 The horizon diagnostic identifies a second, independent problem. The criterion
@@ -956,6 +956,22 @@ five. At the matched horizon the effect is resolved at one threshold and suggest
 at a second, judged against the procedure's measured size rather than its nominal
 level (Section 5.5).
 Either defect alone would have produced the observed null; both were present.
+
+That result does not survive robustness testing intact. The clustering-change effect
+is positive at three of the four component counts examined and *negative at every
+threshold* at the fourth (Section 5.6), so its sign depends on a parameter fixed by a
+rule applied at a single date at the start of the sample. A continuous rank statistic,
+which discards none of the trigger's magnitude information, does not resolve the
+effect either. And the horizon curve, while showing effects across a range of horizons
+rather than at an isolated point, peaks at h = 6 rather than at the pre-specified
+h = 5.
+
+The honest summary is that the trigger's relationship to hierarchical restructuring is
+not robustly established. It appears at some horizons and some component counts, is
+absent at others, and the design had 11% to 33% power against the effect sizes
+involved. We report the pre-specified results as the inferential claims and the
+sensitivity alongside them, and we do not represent the horizon-matched result as a
+finding that survives scrutiny it has not survived.
 
 The trigger is therefore detecting something, and what it detects is closer to what
 the adaptive hypothesis requires than the gate result suggested. Triggered
@@ -1095,7 +1111,7 @@ specification earned access.
 
 ### 7.5 Reproducibility incidents
 
-Two defects were found and are documented in full. A figure in the frozen
+Four defects were found and are documented in full, each by an erratum that leaves the frozen document unedited. A figure in the frozen
 pre-registration cited a Phase 0.5 re-clustering count as though it were a trigger
 count (corrected by erratum; no conclusion affected). Separately, a commit deleted
 the equal-volatility allocator while the driver still declared it, rendering an
@@ -1167,14 +1183,15 @@ investigation terminated without a portfolio being constructed and without the
 holdout being opened.
 
 The mechanism's timing is not random and is not reproduced by two regime-free
-pipeline nulls, so it is detecting something. What it is not shown to detect is
-statistically distinguishable change in the hierarchical dependence structure —
-the quantity the adaptive hypothesis requires.
+pipeline nulls, so it is detecting something. What it detects is related to hierarchical
+restructuring when that restructuring is measured over the interval the trigger actually
+spans, but not robustly: the relationship changes sign across the retained-component
+count, and the gate that failed to find it had 11% to 33% power against the effect sizes
+present.
 
 We suggest the value of this result lies less in the specific mechanism than in the
 demonstration that a pre-registered structural standard can be specified precisely
-enough to be executed automatically, and can return a negative answer that survives
-adversarial review without being rewritten. The natural next question is not how to
+enough to be executed automatically, and can return a negative answer, and that the answer can then be diagnosed rather than defended. This paper was substantially revised in response to review, and the revisions are recorded; what was not revised is the frozen specification or the verdict it produced. The natural next question is not how to
 make this trigger pass, but what |ΔAR| is actually tracking — an alignment question
 best addressed by comparing absorption-ratio changes against eigenspace rotation,
 correlation-matrix distance, and tree instability directly.
