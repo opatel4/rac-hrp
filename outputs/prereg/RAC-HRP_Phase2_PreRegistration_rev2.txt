@@ -1,0 +1,127 @@
+PHASE 2 — PRE-REGISTRATION &amp; CALIBRATION GATE (rev.2)
+Incorporates advisor rulings R1–R3 and the eight authorization conditions. Includes two code audits and one correction to a proposed metric.
+Project
+RAC-HRP — Regime-Adaptive Clustering Hierarchical Risk Parity
+Phase
+2 — regime-adaptive layer (development region only)
+Prepared by
+Om Patel
+For
+[Advisor name] — countersignature required before implementation
+Status
+DRAFT rev.2 — no Phase 2 code written
+1.  Rulings adopted
+
+Ruling
+Consequence
+R1
+Two-sided, zero-location trigger retained; directional events reported separately
+|ΔAR| &gt; γσ̂ stands. I⁺ and I⁻ reported as diagnostics. Paper must claim &apos;unusually large changes in covariance concentration in either direction&apos;, NOT a stress trigger.
+R2
+Five rebalance observations retained; parameter renamed
+ar_smooth_days → ar_smooth_rebalances = 5 (≈105 trading days). Behaviour unchanged, so the completed null gate remains applicable.
+R3
+No post-trigger suppression in the primary specification
+Cooldown permitted only as a separately registered robustness extension, never to rescue a failing firing rate.
+2.  γ = 1.0 has already failed the firing-rate criterion
+Stated without qualification, as required:
+The inherited primary value γ = 1.0 is retained as the reference specification, but it has already failed the pre-specified firing-rate criterion on the development region. It cannot be carried forward as the operational Phase 2 specification unless the gate itself is formally amended and justified.
+The 40% ceiling is not revised to accommodate γ = 1.0. Doing so would be post hoc and is expressly declined.
+3.  Eligible opportunities — defined, and the firing rate corrected
+A rebalance date is eligible only once every input exists. Tracing the implemented pipeline: the AR smoother uses min_periods=1 so it contributes no delay; the first difference costs one observation; the scale estimate uses rolling(12, min_periods=6).shift(1). The binding constraint is therefore the shifted scale estimate.
+Quantity
+Value
+Basis
+Rebalance opportunities in the dev region
+240
+5,031 days / 21
+Warm-up dates that can never fire
+7
+σ̂ undefined until index 7 after .shift(1)
+Eligible opportunities  |E|
+233
+240 − 7
+Trigger events at γ = 1.0
+112
+Phase 0.5, development region
+Corrected firing rate  f(γ=1.0)
+48.1%
+112 / 233, not 112 / 240
+
+The previously reported 46.7% used an inflated denominator. The corrected eligible rate is 48.1%, further above the 40% ceiling. The failure in §2 is therefore worse, not marginal.
+4.  Audit — fold-level k and look-ahead
+Condition 6 required confirmation that k uses training information only. The code was audited directly (engine.py, shared estimation pass).
+Finding 1 — no look-ahead. k is taken from the Marchenko-Pastur count of the covariance matrix estimated on the trailing 504-day window ending at the first rebalance date, and applied forward. No observation after that date enters it. The specification is:
+k_f = MPCount( Σ̂ over [t₀ − 504, t₀] ),   t₀ = first eligible rebalance of the segment
+Finding 2 — the scope is wider than the name implies. The variable is initialised once per call to run(), not once per fold. Because the orchestrators pass the four development folds concatenated in a single call, k is frozen once at the first rebalance (2003) and held through 2022. The configuration option is named fixed_per_fold; the realised behaviour is fixed_per_run. Phase 0.5 reported median spec.k = 16 against a frozen k = 15.
+This is not look-ahead and does not invalidate any completed result, but it is a twenty-year extrapolation from a single estimate and the name misdescribes it. A ruling is requested in §9 (R4).
+5.  Numerical gate definitions
+Every qualitative phrase in rev.1 is replaced by a formula and a numeric decision rule. Let E be the eligible set, T_γ the trigger dates at γ, and f_γ = |T_γ| / |E|.
+Criterion
+Statistic
+Pass rule
+Informativeness
+f_γ = |T_γ| / |E|
+0.05 ≤ f_γ ≤ 0.40
+Event sufficiency
+count of events per development fold
+≥ 3 in every one of the four folds
+Timing variation
+CV_g = sd(g_j)/mean(g_j), g_j = t_j − t_{j−1}; plus modal-gap share
+CV_g ≥ 0.50 AND modal-gap share ≤ 0.50
+Separation from periodic
+J*_γ = max over q∈{2,3,4,6} of |T_γ∩P_q| / |T_γ∪P_q|
+J*_γ ≤ placebo 95th percentile at the same event count (see §6)
+Cluster informativeness
+D_VI = median(VI_t | I_t=1) − median(VI_t | I_t=0)
+D_VI &gt; 0 with a block-bootstrap 95% CI excluding zero
+Turnover
+re-cluster-attributable annual turnover
+reported; ≤ 1.5 × the HRP_periodic_3 comparator
+Null cleanliness
+Null Gate v2 primary cells at the selected γ
+overall PASS (see §8)
+
+VI is computed against a counterfactual: hypothetical clusters are recomputed at every eligible rebalance, including those where the live strategy does not re-cluster, so triggered and non-triggered structural change are directly comparable. The block bootstrap is required because consecutive observations are temporally dependent; block length by Politis-White, consistent with the Phase 4 inference plan.
+6.  Correction to the separation metric
+The proposed statistic included q = 1 in the candidate schedules. This makes the metric degenerate. P₁ is every eligible date, hence a superset of any trigger set, so
+J(γ, q=1) = |T_γ| / |E| = f_γ   identically
+and therefore J*_γ ≥ f_γ always, with the maximum attained trivially at q = 1. A placebo simulation confirms the metric carries no information in that form:
+Candidate schedules
+Placebo J* (median)
+Placebo J* (99th pct)
+q ∈ {1,2,3,4,6}  (as proposed)
+0.481
+0.481 — zero spread, degenerate
+q ∈ {2,3,4,6}  (recommended)
+0.324
+0.396 — usable
+
+Method: 4,000 random trigger sets of the observed event count drawn without replacement from E. Recommendation: exclude q = 1 and set the pass threshold at the placebo 95th percentile of J*, recomputed at each candidate γ&apos;s own event count (≈ 0.371 at 112 events). This satisfies the requirement that the cutoff be simulation-supported rather than asserted. Note that q = 1 remains a legitimate performance comparator; it is only unusable inside this particular set-overlap statistic.
+7.  Comparator roles
+HRP_periodic_3 — frozen primary performance comparator (unchanged from the Null Gate v2 primary cells).
+q ∈ {2,3,4,6} — structural diagnostics for the separation statistic only.
+HRP_periodic_1 — reported in the vulnerability analysis as the nearest-schedule reference; excluded from J* for the reason in §6.
+8.  Procedure — calibration is blind to performance
+Performance is not merely &apos;used for nothing&apos;; it is not generated until selection is complete and recorded.
+Step 1. Compute structural diagnostics only — firing, timing, VI/ARI, turnover, separation — for γ ∈ {0.5, 1.0, 1.5, 2.0}. No portfolio returns, Sharpe ratios, or drawdowns are computed or displayed.
+Step 2. Apply the deterministic selection rule in §9 automatically, in code, with no human choice.
+Step 3. Write the selected γ and the full diagnostic set to a frozen record (hashed, as in the Null Gate v2 manifest).
+Step 4. Run the full Null Gate v2 at the selected γ. The existing gate verdict applies only to γ = 1.0 and is not inherited by any other candidate.
+Step 5. Only if step 4 passes, generate performance output. Candidate-level performance may appear later in a sensitivity appendix; it is not visible when selection occurs.
+9.  Deterministic selection rule
+Among γ ∈ {0.5, 1.0, 1.5, 2.0}, select the value closest to the inherited γ = 1.0 that passes every hard structural criterion in §5. If two candidates are equidistant, select the larger γ, reflecting a conservative preference for fewer interventions and lower turnover.
+If no candidate passes, Phase 2 stops. The &apos;least bad&apos; candidate is not selected, and the conclusion recorded is that the current trigger specification is not sufficiently informative — which would itself be a reportable finding.
+Given §2 and §3, γ = 1.0 is expected to fail informativeness. The rule then evaluates γ = 1.5 next. That ordering follows from the frozen rule and from distance to the inherited value — not from any performance quantity.
+10.  Volatility-regime overlap
+Not frozen at this time. Unless the volatility variable, regime-labelling model, lookback, contemporaneous-versus-forward labelling, and matching tolerance are all specified in advance, this analysis is labelled EXPLORATORY and cannot support any confirmatory claim. It is excluded from the gating criteria in §5.
+11.  New ruling requested
+R4 — scope of the frozen k
+Should k be frozen once per run (as built — a single 2003 estimate held to 2022), or re-estimated at the start of each development fold from that fold&apos;s own trailing window (as the name fixed_per_fold implies)? Neither introduces look-ahead. Preparer&apos;s view: retain the as-built per-run freeze for Phase 2, because changing it alters the RAC-HRP configuration that the completed null gate validated, and rename the option to fixed_per_run so the record is accurate. Per-fold re-estimation may be added later as a registered robustness variant.
+12.  Sign-off
+R4 ruling:  ______________________________
+Phase 2 implementation authorized:      YES      /      YES WITH CHANGES      /      NOT YET
+
+Advisor signature / date
+
+Conditions / notes

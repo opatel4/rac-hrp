@@ -1,0 +1,119 @@
+PHASE 2 — PRE-REGISTRATION &amp; CALIBRATION GATE (rev.4)
+Self-contained. Monte Carlo frozen. Multiplicity adjusted. Ready to freeze.
+Project
+RAC-HRP — Regime-Adaptive Clustering Hierarchical Risk Parity
+Phase
+2 — regime-adaptive layer (development region only)
+Prepared by
+Om Patel
+For
+[Advisor name] — countersignature to FREEZE
+Status
+DRAFT rev.4 — no Phase 2 code written
+1.  Trigger specification (complete — no reference to prior revisions)
+AR_t = ( Σ_{i=1..k} λ_i,t ) / ( Σ_{i=1..N} λ_i,t )
+Element
+Frozen
+Matrix
+COVARIANCE eigenvalues; nonlinear Ledoit-Wolf (nls) estimator; W = 504 (D4 rule)
+k
+Marchenko-Pastur count of the trailing 504-day window ending at the FIRST eligible rebalance; held for the whole run (mp_k_mode = fixed_per_run). k = 15. No look-ahead.
+Smoothing
+AR^s_t = rolling_mean(AR, 5 rebalances), min_periods = 1
+Change measure
+ΔAR_t = AR^s_t − AR^s_{t−1}, at rebalance frequency
+Scale
+σ̂_t = rolling_std(ΔAR, 12 rebalances, min_periods=6).shift(1) — strictly trailing
+Trigger
+|ΔAR_t| &gt; γ·σ̂_t   — two-sided, zero location, strict inequality
+Warm-up
+no trigger until σ̂ is defined; NaN → False
+Suppression
+none
+Observability
+weights formed at t from data through t, live at t+1
+Documentation note: because the smoother uses min_periods=1, the first four smoothed AR values are formed from fewer than five rebalances and do enter the early ΔAR history. “Five rebalances” describes the window length, not a requirement of five observations from inception.
+Eligible set. A date is eligible once σ̂ is defined. Binding constraint is the shifted scale estimate: 7 warm-up rebalances can never fire. |E| = 240 − 7 = 233. Firing rate f_γ = |T_γ| / |E|. At γ = 1.0, f = 112/233 = 48.1%.
+γ = 1.0 is retained as the reference specification but has already failed the pre-specified firing-rate criterion on the development region. It cannot be carried forward as the operational specification unless the gate is formally amended and justified. The 40% ceiling is NOT revised.
+2.  Structural calibration gate — complete hard-gate table (condition A)
+Candidates γ ∈ {0.5, 1.0, 1.5, 2.0}. Primary reference γ = 1.0. All criteria evaluated on the development region. No performance quantity enters this table.
+Criterion
+Statistic
+Pass rule
+Informativeness
+f_γ = |T_γ| / |E|
+0.05 ≤ f_γ ≤ 0.40
+Event sufficiency
+events per development fold
+≥ 3 in every one of the 4 folds
+Timing variation
+CV_g = sd(g_j)/mean(g_j), g_j = t_j − t_{j−1}; modal-gap share
+CV_g ≥ 0.50 AND modal share ≤ 0.50
+Separation from schedule
+J*_γ = max over q∈{2..12}, r∈{0..q−1} of |T_γ∩P(q,r)| / |T_γ∪P(q,r)|
+J*_γ ≤ placebo 95th pct at the same event count (§3)
+Cluster informativeness
+D_VI = median(VI_t | I_t=1) − median(VI_t | I_t=0)
+D_VI &gt; 0, Holm-adjusted block-bootstrap p &lt; 0.05 (§4)
+Turnover
+½·Σ_i |w_i(new tree,t) − w_i(old tree,t)|, summed over triggered dates, annualised
+REPORTED DIAGNOSTIC — not a gate
+Attributable turnover holds date, covariance, universe and allocator fixed, varying only the tree, so it isolates re-clustering cost. The rev.2 1.5× multiplier was asserted rather than derived and is removed rather than retrofitted with a justification.
+3.  Separation statistic and its frozen Monte Carlo (condition B)
+Maximisation is over schedule period and phase. Phase matters: a trigger firing exactly every second rebalance on odd-indexed dates scores J* = 0.252 without phase adjustment (passing) and J* = 1.000 with it (correctly caught).
+Grid: q ∈ {2,…,12} — the systematic set, so the claim is not limited to a few hand-picked periods. The threshold is identical to the narrow {2,3,4,6} set because at these event counts the q = 2 schedule always attains the maximum, so the wider search costs nothing.
+3.1  Frozen placebo procedure
+Element
+Frozen value
+RNG
+numpy PCG64 via numpy.random.default_rng
+Seed
+20260817
+Draws B
+100,000
+Draw
+trigger sets of size |T_γ| sampled without replacement from E
+Statistic
+J*_γ as defined above, identical code path as the live statistic
+Percentile
+numpy.percentile linear interpolation, 95th
+Equality
+J*_γ ≤ q_0.95 passes (weak inequality at the cutoff)
+Recomputation
+threshold recomputed at each candidate γ&apos;s own event count
+At |T| = 112: median 0.3471, 95th percentile 0.3818, 99th 0.4049. B = 100,000 with a fixed seed removes Monte Carlo drift from a decision boundary.
+4.  Multiplicity adjustment on the inferential gate (condition C)
+D_VI is the only explicitly inferential structural criterion and it is evaluated for four candidate γ. Using an unadjusted 95% interval four times and then selecting among the passers introduces a multiple-testing problem inconsistent with the project&apos;s anti-snooping stance.
+Block-bootstrap p-values for H0: D_VI ≤ 0 are computed for all four γ (Politis-White automatic block length, consistent with the Phase 4 inference plan).
+The four p-values are adjusted by the Holm step-down procedure at family-wise α = 0.05. Holm is chosen over Bonferroni because the trigger sets are highly dependent across γ and Bonferroni would be needlessly conservative.
+A candidate passes cluster informativeness iff its Holm-adjusted p &lt; 0.05 and D_VI &gt; 0.
+VI is computed against a counterfactual: hypothetical clusters are recomputed at every eligible rebalance, including non-triggered ones, so triggered and non-triggered structural change are directly comparable.
+5.  Two gates, sequenced
+
+Structural calibration gate
+Null Gate v2
+Role
+selects γ
+validates the selected γ
+Criteria
+§2 table (all non-performance)
+primary same-policy cells, controls, activation
+Selects?
+YES — this and only this
+NO — pass/fail only
+Selection rule (frozen): among γ ∈ {0.5, 1.0, 1.5, 2.0}, select the value closest to the inherited γ = 1.0 passing every hard criterion in §2; ties broken toward the larger γ. If none passes, Phase 2 stops — the “least bad” candidate is not selected.
+Null-failure stopping rule (frozen): if the selected γ fails Null Gate v2, Phase 2 stops. No fall-through to the next candidate — fall-through would constitute a second unregistered selection procedure operating on null-gate outcomes.
+6.  Procedure
+1. Structural diagnostics only. No returns, Sharpe or drawdown computed or displayed.
+2. Apply the §5 selection rule automatically in code.
+3. Write selected γ and full diagnostics to a hashed frozen record.
+4. Run Null Gate v2 at the selected γ. The existing verdict applies only to γ = 1.0 and is not inherited.
+5. Only on a pass, generate performance output.
+7.  Carried rulings (not reopened)
+R1 two-sided zero-location trigger, I⁺/I⁻ reported separately; the paper claims “unusually large changes in covariance concentration in either direction”, not a stress trigger. R2 five-rebalance smoothing, renamed ar_smooth_rebalances. R3 no suppression in the primary model. R4 fixed_per_run primary with k described as an inception-calibrated structural parameter; fixed_per_fold pre-registered as robustness. Volatility-regime overlap remains EXPLORATORY and non-gating.
+8.  Sign-off
+Authorize and FREEZE:      YES      /      YES WITH CHANGES      /      NOT YET
+
+Advisor signature / date
+
+Conditions / notes

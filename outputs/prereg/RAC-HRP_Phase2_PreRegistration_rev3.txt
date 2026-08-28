@@ -1,0 +1,89 @@
+PHASE 2 — PRE-REGISTRATION &amp; CALIBRATION GATE (rev.3)
+Incorporates the four conditions on rev.2 and the R4 ruling. Ready to freeze.
+Project
+RAC-HRP — Regime-Adaptive Clustering Hierarchical Risk Parity
+Phase
+2 — regime-adaptive layer (development region only)
+Prepared by
+Om Patel
+For
+[Advisor name] — countersignature to freeze
+Status
+DRAFT rev.3 — no Phase 2 code written
+1.  Carried forward unchanged from rev.2
+R1 two-sided zero-location trigger (I⁺/I⁻ reported separately); R2 five-rebalance smoothing, renamed ar_smooth_rebalances; R3 no post-trigger suppression; γ = 1.0 acknowledged as having already failed the firing-rate criterion (48.1% &gt; 40%) with the 40% ceiling NOT revised; eligible set |E| = 233; AR definition and observability; the §5 numerical gate definitions except as amended below.
+Documentation item (as-built, retained): the smoother uses min_periods=1, so the first four smoothed AR observations are formed from fewer than five rebalances and do enter the early ΔAR history used to initialise σ̂. The “five-rebalance” definition describes the window length, not a requirement of five observations from inception.
+2.  Separation statistic — phase-adjusted (condition 1)
+rev.2 maximised the Jaccard overlap over schedule period only, implicitly anchoring every schedule at offset 0. That is a material flaw: a trigger anchored on the opposite phase of a periodic grid scores as well separated while being exactly calendar-driven. The statistic is replaced by a maximum over period and phase:
+P(q,r) = { e_j ∈ E : j mod q = r },   r = 0,…,q−1
+J*_γ = max over q ∈ {2,3,4,6}, r ∈ {0,…,q−1}  of  |T_γ ∩ P(q,r)| / |T_γ ∪ P(q,r)|
+Demonstration of the flaw, on a constructed adversarial trigger that fires exactly every second rebalance but on the odd-indexed dates:
+Statistic
+J* on adversary
+Consequence
+rev.2 (period only, r = 0)
+0.252
+PASSES a 0.371 cutoff — a pure calendar rule certified as well separated
+rev.3 (period and phase)
+1.000
+correctly identified as a perfect schedule match
+
+2.1  Placebo threshold, recomputed for the new statistic
+The rev.2 cutoff is void; maximising over phase raises the null distribution and the threshold must be recomputed against the exact statistic in use. Method unchanged: 4,000 random trigger sets of the observed event count drawn without replacement from E.
+Statistic
+median
+95th pct
+99th pct
+rev.2, period only (void)
+0.324
+0.371
+0.396
+rev.3, period and phase
+0.347
+0.382
+0.399
+
+Frozen pass rule: J*_γ ≤ placebo 95th percentile, recomputed at each candidate γ&apos;s own event count (0.382 at 112 events). Recomputation per candidate is required because the null depends on |T_γ|.
+3.  Two gates, sequenced — no circularity (condition 2)
+rev.2 listed “null cleanliness” among the §5 selection criteria while §8 ran the null gate only after selection. That is circular. The two are now explicitly distinct:
+
+Structural calibration gate
+Null Gate v2 (validity gate)
+Role
+selects γ
+validates the selected γ
+Timing
+before any performance output
+after selection, before any performance output
+Criteria
+firing rate, event sufficiency, timing variation, separation, cluster informativeness
+primary same-policy cells, controls, activation
+Selects anything?
+YES — this and only this
+NO — pass/fail only
+
+Null-failure stopping rule (frozen): if the selected γ fails Null Gate v2, Phase 2 stops. There is no fall-through to the next candidate. Falling through would constitute a second, unregistered selection procedure operating on null-gate outcomes. The recorded conclusion would be that the trigger specification selected by the frozen structural rule does not survive the null gate.
+4.  Attributable turnover — defined, and demoted (condition 3)
+Operational definition. At each triggered rebalance t, hold everything else fixed and recompute weights under the previous cluster tree:
+turnover_attributable(t) = ½ · Σ_i | w_i(new tree, t) − w_i(old tree, t) |
+Both weight vectors use the same date, same covariance, same universe, same allocator; they differ only in the tree. The difference therefore isolates turnover caused by re-clustering rather than by drift or universe change. Aggregation: sum over triggered rebalances, annualised by the evaluation span.
+Threshold. The 1.5× HRP_periodic_3 multiplier in rev.2 was asserted, not derived, and no simulation or prior justifies it. Rather than defend an arbitrary cutoff or calibrate one after the fact, turnover is demoted from a hard gate to a reported diagnostic. It is reported for every candidate γ and for the comparators, and it informs the interpretation of any result, but it does not pass or fail a candidate. This removes an unjustified decision boundary rather than dressing one up.
+5.  R4 ruling — k is an inception-calibrated structural parameter
+Ruling adopted: retain the as-built per-run freeze as primary; rename the option accurately; pre-register per-fold re-estimation as a robustness specification.
+Primary: mp_k_mode = &quot;fixed_per_run&quot; (renamed from the inaccurate fixed_per_fold). k is taken from the Marchenko-Pastur count of the trailing 504-day covariance ending at the first eligible rebalance and held for the whole run. No look-ahead: no observation after that date enters it.
+Rationale: a constant k gives AR a constant mathematical definition, so ΔAR reflects movement in the eigenvalue spectrum and never a discrete change in the component count. Re-estimating k at fold boundaries would itself inject mechanical level shifts into AR.
+Description: k is reported as an inception-calibrated structural parameter (k = 15, calibrated at the 2003 inception window), not as a quantity recalibrated each fold. The known weakness — a twenty-year extrapolation from one estimate — is stated rather than obscured.
+Robustness (pre-registered): fixed_per_fold re-estimation reported as a separate specification.
+Diagnostic only: the time-varying median spec.k of 16 against the frozen 15 is reassuring but is not offered as a justification, since it is an ex-post observation.
+6.  Procedure (unchanged in substance, resequenced for clarity)
+Step 1. Structural diagnostics only for γ ∈ {0.5, 1.0, 1.5, 2.0}. No returns, Sharpe, or drawdown computed or displayed.
+Step 2. Apply the deterministic selection rule automatically in code: among the candidates, select the value closest to the inherited γ = 1.0 passing every hard structural criterion; ties broken toward the larger γ. If none passes, Phase 2 stops.
+Step 3. Write the selected γ and the full diagnostic set to a hashed frozen record.
+Step 4. Run Null Gate v2 at the selected γ. The existing verdict applies only to γ = 1.0 and is not inherited. On failure, Phase 2 stops (§3).
+Step 5. Only on a pass, generate performance output.
+7.  Sign-off
+Phase 2 implementation authorized to freeze:      YES      /      YES WITH CHANGES      /      NOT YET
+
+Advisor signature / date
+
+Conditions / notes

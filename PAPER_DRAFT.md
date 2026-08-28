@@ -1248,7 +1248,7 @@ Any remaining errors are the author's own.
 
 All code, frozen specifications, decision records, errata, and result artefacts are
 available at `github.com/opatel4/rac-hrp`. A reproducibility manifest pins SHA-256
-hashes for 38 code modules, 15 result artefacts, 27 governing documents (including every superseded revision of each frozen specification), and the
+hashes for 38 code modules, 15 result artefacts, 32 governing documents (including every superseded revision of each frozen specification), and the
 underlying data files, together with the software environment. CRSP data are
 licensed and cannot be redistributed; the manifest records checksums so a licensed
 replicator can verify identity.

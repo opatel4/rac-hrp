@@ -1,0 +1,140 @@
+PHASE 2 — PRE-REGISTRATION &amp; CALIBRATION GATE (rev.5)
+FREEZE CANDIDATE. ddof and bootstrap mechanics frozen; separation claim narrowed. No further methodological edits — changes require formal amendment.
+Project
+RAC-HRP — Regime-Adaptive Clustering Hierarchical Risk Parity
+Phase
+2 — regime-adaptive layer (development region only)
+Prepared by
+Om Patel
+For
+[Advisor name] — countersignature to FREEZE
+Status
+FREEZE CANDIDATE — no Phase 2 code written
+1.  Trigger specification (complete and self-contained)
+AR_t = ( Σ_{i=1..k} λ_i,t ) / ( Σ_{i=1..N} λ_i,t )
+Element
+Frozen
+Matrix
+COVARIANCE eigenvalues; nonlinear Ledoit-Wolf (nls); W = 504 (D4 rule)
+k
+MP count of the trailing 504-day window ending at the FIRST eligible rebalance; held for the whole run (mp_k_mode = fixed_per_run). k = 15. No look-ahead.
+Smoothing
+AR^s_t = rolling(5 rebalances, min_periods=1).mean()
+Change measure
+ΔAR_t = AR^s_t − AR^s_(t−1), at rebalance frequency
+Scale
+σ̂_t = ΔAR.rolling(12, min_periods=6).std(ddof=1).shift(1)
+Trigger
+|ΔAR_t| &gt; γ·σ̂_t — two-sided, zero location, strict inequality
+Warm-up / NaN
+no trigger until σ̂ defined; NaN → False
+Suppression
+none
+Observability
+weights formed at t from data through t, live at t+1
+ddof audited, not chosen. The as-built call uses pandas .rolling(...).std(), whose default is ddof = 1 (sample standard deviation). This is recorded, not changed; with 6–12 observations the ddof convention is material and must not remain implicit.
+Eligible set: σ̂ binds, so 7 warm-up rebalances can never fire. |E| = 240 − 7 = 233; f_γ = |T_γ|/|E|. At γ = 1.0, f = 112/233 = 48.1% — γ = 1.0 has already failed the firing-rate criterion. The 40% ceiling is NOT revised.
+2.  Structural calibration gate — complete hard-gate table
+Candidates γ ∈ {0.5, 1.0, 1.5, 2.0}. No performance quantity enters this table.
+Criterion
+Statistic
+Pass rule
+Informativeness
+f_γ = |T_γ|/|E|
+0.05 ≤ f_γ ≤ 0.40
+Event sufficiency
+events per development fold
+≥ 3 in every one of the 4 folds
+Timing variation
+CV_g = sd(g_j)/mean(g_j); modal-gap share
+CV_g ≥ 0.50 AND modal share ≤ 0.50
+Separation
+J*_γ = max over q∈{2..12}, r∈{0..q−1} of |T_γ∩P(q,r)|/|T_γ∪P(q,r)|
+J*_γ ≤ placebo 95th pct at that candidate&apos;s own event count (§3)
+Cluster informativeness
+D_VI = median(VI_t|I_t=1) − median(VI_t|I_t=0)
+D_VI &gt; 0 AND Holm-adjusted p &lt; 0.05 (§4)
+Turnover
+½·Σ_i |w_i(new tree,t) − w_i(old tree,t)|, over triggered dates, annualised
+REPORTED DIAGNOSTIC — not a gate
+3.  Separation statistic and frozen Monte Carlo
+Maximisation is over schedule period and phase. A trigger firing exactly every second rebalance on odd-indexed dates scores J* = 0.252 without phase adjustment (passing) and 1.000 with it (caught).
+3.1  Frozen placebo procedure
+Element
+Frozen value
+RNG
+numpy PCG64 via numpy.random.default_rng
+Seed
+20260817
+Draws B
+100,000
+Draw
+sets of size |T_γ| without replacement from E
+Statistic
+identical code path as the live J*_γ
+Percentile
+numpy.percentile, linear interpolation, 95th
+Equality
+J*_γ ≤ q_0.95 passes
+Recomputation
+threshold recomputed at EACH candidate&apos;s own event count
+3.2  The threshold depends strongly on event count
+Per-candidate recomputation is essential, not cosmetic. Simulated 95th percentiles and the share of draws in which q = 2 attains the maximum:
+|T|
+95th pct
+q = 2 attains max
+12 (~5%)
+0.1714
+0.0% — q=2 never dominates at low event counts
+70 (~30%)
+0.2897
+88.2%
+112 (48.1%, observed)
+0.3818
+99.6%
+Claim stated narrowly: at |T| = 112, expanding the grid from {2,3,4,6} to {2,…,12} does not change the reported cutoff because q = 2 attains the maximum in the simulated draws. This does not generalise — at low event counts q = 2 never attains the maximum and the cutoff more than halves. The algorithm is unaffected: the full q ∈ {2,…,12} statistic and its own placebo threshold are recomputed for every candidate.
+4.  D_VI bootstrap — fully frozen
+D_VI is a hard selection gate, so its bootstrap must be exactly reproducible. VI is computed against a counterfactual: hypothetical clusters are recomputed at every eligible rebalance, including non-triggered ones.
+Element
+Frozen value
+Bootstrap
+circular block bootstrap (edge observations not under-weighted)
+Block length
+Politis-White automatic selection, consistent with the Phase 4 inference protocol
+Resampling unit
+the PAIR (VI_t, I_t) resampled jointly in blocks — trigger/VI alignment preserved
+Replications
+B_boot = 10,000
+RNG / seed
+numpy PCG64; seed = 20260817 + 2000 + c, c = index of γ in {0.5,1.0,1.5,2.0}
+Hypotheses
+H0: D_VI ≤ 0   vs   H1: D_VI &gt; 0   (one-sided)
+Null centering
+bootstrap replicates centred by subtracting the observed D̂_VI
+p-value
+p = (1 + #{b : D*_b − D̂_VI ≥ D̂_VI}) / (B_boot + 1)
+Multiplicity
+Holm step-down across the four γ at family-wise α = 0.05
+Holm is used rather than Bonferroni because the trigger sets are highly dependent across γ. A candidate passes iff D̂_VI &gt; 0 and its Holm-adjusted p &lt; 0.05.
+5.  Two gates, sequenced; selection and stopping rules
+
+Structural calibration gate
+Null Gate v2
+Role
+selects γ
+validates the selected γ
+Selects?
+YES — this and only this
+NO — pass/fail only
+Selection (frozen): among γ ∈ {0.5, 1.0, 1.5, 2.0}, select the value closest to the inherited γ = 1.0 passing every hard criterion in §2; ties broken toward the larger γ. If none passes, Phase 2 stops — the “least bad” candidate is not selected.
+Null failure (frozen): if the selected γ fails Null Gate v2, Phase 2 stops. No fall-through.
+Procedure: (1) structural diagnostics only, no returns/Sharpe/drawdown computed or displayed; (2) apply the selection rule automatically in code; (3) write selected γ and diagnostics to a hashed frozen record; (4) run Null Gate v2 at the selected γ — the existing verdict applies only to γ = 1.0 and is not inherited; (5) only on a pass, generate performance output.
+6.  Carried rulings — closed, not reopened
+R1 two-sided zero-location trigger, I⁺/I⁻ reported separately; the claim is “unusually large changes in covariance concentration in either direction”, not a stress trigger. R2 five-rebalance smoothing, renamed ar_smooth_rebalances. R3 no suppression in the primary model. R4 fixed_per_run primary, k an inception-calibrated structural parameter, fixed_per_fold pre-registered as robustness. Volatility-regime overlap remains EXPLORATORY and non-gating.
+On countersignature this document is frozen and hashed. Further methodological change requires a formal amendment, not a further revision.
+7.  Sign-off
+AUTHORIZE AND FREEZE:      YES      /      NOT YET
+
+Advisor signature / date
+
+Conditions / notes

@@ -3,7 +3,11 @@
 **Experiment:** RAC-HRP Phase 2A, structural calibration gate for the
 absorption-ratio change trigger (development region only).
 **Outcome:** PHASE 2 CLOSED — NO ADMISSIBLE gamma. Negative result.
-**Frozen specification:** RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.docx (frozen and hashed; single-author, no independent authorization).
+**Frozen specification:** `outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.txt`
+(frozen and hashed; single-author, no independent authorization). The four superseded
+revisions are released alongside it in the same directory. The `.docx` originals from
+which these are converted are not redistributed; the text conversions are the released
+and hashed form.
 
 This index binds the artefacts that constitute the Phase 2A record. Commit hashes
 below are the authoritative pointers; the manifests additionally embed the code
@@ -22,7 +26,7 @@ quantity was ever computed.
 
 | # | Artefact | Path | Role |
 |---|----------|------|------|
-| 1 | Frozen pre-registration | RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.docx | frozen spec, docs/protocol/phase2_prereg/ |
+| 1 | Frozen pre-registration | outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.txt | frozen spec; rev1-rev4 released in the same directory |
 | 2 | Gate manifest | outputs/phase2/calibration_manifest.json | frozen gate record; embeds code hashes |
 | 3 | Gate table | outputs/phase2/calibration_table.csv | per-gamma criteria + pass/fail |
 | 4 | Erratum E1 | RAC_HRP_Phase2_rev5_ERRATUM_E1.md | corrects §1 112->111 provenance error |

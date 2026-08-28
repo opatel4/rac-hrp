@@ -83,6 +83,12 @@ RESULTS = [
 ]
 
 DOCS = [
+    # --- Phase 2 pre-registration: every revision through the freeze ---
+    "outputs/prereg/RAC-HRP_Phase2_PreRegistration.txt",
+    "outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev2.txt",
+    "outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev3.txt",
+    "outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev4.txt",
+    "outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.txt",
     "RAC_HRP_Phase2_Gate_Result_Memo_v3.md",
     "RAC_HRP_Phase2_rev5_ERRATUM_E1.md",
     "RAC_HRP_Phase2_Reconciliation_111_vs_112.md",

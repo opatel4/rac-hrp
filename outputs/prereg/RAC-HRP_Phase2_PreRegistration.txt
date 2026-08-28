@@ -1,0 +1,149 @@
+PHASE 2 — PRE-REGISTRATION &amp; CALIBRATION GATE
+Regime-adaptive re-clustering layer. To be frozen before any Phase 2 code is written or run.
+Project
+RAC-HRP — Regime-Adaptive Clustering Hierarchical Risk Parity
+Phase
+2 — regime-adaptive layer (development region only)
+Prepared by
+Om Patel
+For
+[Advisor name] — countersignature required before implementation
+Status
+DRAFT — no Phase 2 code written; three open rulings in §7
+1.  Purpose and scope
+Phase 2 implements the regime-adaptive re-clustering layer — the study&apos;s actual contribution. This memo freezes the identification logic before implementation, so that no element of the trigger definition, threshold rule, or calibration procedure can be selected after observing a Phase 2 result.
+Development region only (2003-01-08 → 2022-12-30). The test region remains untouched and structurally locked; the TEST_END amendment is pending and does not block this work.
+An important asymmetry: parts of the trigger were already implemented and exercised during Phase 0.5, because the null gate required a working RAC-HRP to test. Those parts are documented in §2–§4 as as-built and are effectively already frozen by that use. §7 lists what is genuinely open. This memo does not retroactively re-specify anything the null gate already ran.
+2.  Absorption ratio — as-built definition
+AR_t  =  ( Σ_{i=1..k} λ_i,t )  /  ( Σ_{i=1..N} λ_i,t )
+Element
+Frozen specification
+Matrix
+COVARIANCE eigenvalues (spec.cov_eigenvalues), not correlation. AR is a variance-absorption statistic.
+Estimator
+nonlinear Ledoit-Wolf (nls), identical to the allocation covariance
+Estimation window
+W = 504 trading days, set by the D4 rule (median N / W ≤ 0.67)
+Eigenvalue ordering
+descending
+k selection
+Marchenko-Pastur retained count, FIXED PER FOLD (mp_k_mode = fixed_per_fold)
+Filtered vs raw
+raw covariance spectrum; MP is used only to choose k, not to clean the matrix
+Observability
+AR_t computed from data through t, used to form weights at t, live at t+1 (one-day implementation lag)
+
+Rationale for fixing k per fold: a k that moves with the spectrum injects a mechanical sawtooth directly into AR, because AR is a ratio whose numerator gains or loses a whole eigenvalue when k steps. That artefact would be indistinguishable from a genuine regime signal. Fixing k per fold means AR moves only with the eigenvalues.
+3.  Change measure — as-built
+AR^s_t = rolling_mean(AR_t, m)        ΔAR_t = AR^s_t − AR^s_{t−1}
+The trigger uses the first difference of a smoothed AR series, evaluated at rebalance dates (21 trading days). It does not use levels, and it does not use a z-score of the level.
+Open item — smoothing units. The configuration field is named ar_smooth_days = 5, but the AR series is indexed by rebalance dates, so .rolling(5) is a 5-rebalance (≈105 trading day) mean, not a 5-day mean. The name and the behaviour disagree. This must be resolved explicitly in §7, because 5-day and 5-month smoothing produce materially different ΔAR series.
+4.  Threshold rule — as-built, and a discrepancy to resolve
+As implemented and run in Phase 0.5:
+trigger_t  =  |ΔAR_t|  &gt;  γ · σ̂_t         γ = 1.0
+Element
+As-built
+Sidedness
+TWO-SIDED — absolute value of ΔAR
+Location term
+none (μ implicitly 0)
+γ
+1.0, inherited from Kritzman et al. (2011)
+σ̂ history
+rolling std of ΔAR over max(252/21, 6) = 12 rebalances, min_periods = 6
+Look-ahead guard
+σ̂ is .shift(1) — strictly trailing; the current observation cannot inform its own threshold
+Inequality
+strict ( &gt; )
+Warm-up
+no trigger until ≥ 6 rebalances of ΔAR history; NaN → False
+Post-trigger suppression
+NONE — triggers may fire on consecutive rebalances
+
+Discrepancy. The rule discussed in supervision was one-sided with a location term, ΔAR_t &gt; μ + γσ. The implemented rule is two-sided with no location term. These are not equivalent and they fire at very different rates. Under an iid normal ΔAR, |ΔAR| &gt; 1σ fires ≈ 31.7% of the time whereas ΔAR &gt; +1σ fires ≈ 15.9%. §7 requires a ruling on which is the pre-registered rule.
+5.  The central vulnerability — observed firing behaviour
+On real development-region data the trigger fired 112 times in 240 rebalance opportunities (46.7%).
+Quantity
+Value
+Comment
+Observed firing rate
+46.7%
+112 of 240 rebalances
+Expected under iid normal, |ΔAR|&gt;1σ
+31.7%
+two-sided
+Expected under iid normal, ΔAR&gt;+1σ
+15.9%
+one-sided
+RAC-HRP re-clusters
+112
+development region
+HRP_periodic_1 re-clusters
+120
+nearest scheduled comparator
+Dev Sharpe, RAC-HRP
+0.586
+diagnostic only
+Dev Sharpe, HRP_periodic_1
+0.583
+diagnostic only
+
+Two problems follow, and Phase 2 must address both rather than report around them.
+Excess firing. 46.7% materially exceeds the 31.7% an iid-normal ΔAR would produce at the same threshold. The likely causes are heavy tails or volatility clustering in ΔAR combined with a short (12-observation) rolling σ̂ that is frequently too small. Either way the realised threshold is looser than γ = 1 implies.
+Loss of separation from a calendar rule. At 112 versus 120 re-clusterings, RAC-HRP is close to a monthly re-clustering policy, and its development Sharpe (0.586) is close to HRP_periodic_1&apos;s (0.583). A trigger that fires on nearly every other opportunity is not identifying regimes; it is approximating a schedule. This is the single largest threat to the thesis and it is why §6 makes separation a gating criterion rather than a reported statistic.
+Null Gate v2 already established that this behaviour does not manufacture an edge — Environment C passed with tight bounds. That is a different question from whether the trigger is informative. Phase 2 must answer the second question.
+6.  Calibration gate — what it selects on
+The threshold sensitivity exercise is a calibration gate, not a performance sweep. It evaluates candidate γ values on trigger informativeness and structural stability. It must not, at any point, select on Sharpe ratio, return, drawdown, or any other performance metric. Performance is reported for every candidate and used for nothing.
+6.1  Candidate set and primary value
+Primary (frozen): γ = 1.0, inherited from Kritzman et al. (2011) and already used throughout Phase 0.5.
+Sensitivity set: γ ∈ {0.5, 1.0, 1.5, 2.0}. All results reported.
+The primary value is not revised on the basis of the sweep unless it fails a gating criterion in §6.2, in which case the failure and any revision are recorded as an amendment.
+6.2  Gating criteria (all evaluated on the development region)
+Criterion
+Measure
+Requirement
+Informativeness
+firing rate over eligible opportunities
+≥ 5% and ≤ 40%
+Event sufficiency
+count of trigger events per fold
+≥ 3 in every fold
+Timing variation
+dispersion of inter-trigger intervals
+not degenerate; must not collapse to a fixed period
+Separation from periodic
+agreement rate between trigger dates and the nearest periodic schedule
+must be materially below 1; a trigger indistinguishable from a schedule FAILS
+Cluster stability
+adjusted Rand index / variation of information between consecutive clusterings
+re-clusterings must change structure more than non-triggered refits would
+Turnover
+re-cluster-attributable turnover
+reported; not to exceed the periodic comparator by an implausible margin
+Null cleanliness
+Null Gate v2 primary cells at that γ
+no manufactured advantage
+
+A candidate γ that fails separation from periodic is not usable regardless of its performance, because at that point the study has no adaptive content to test.
+7.  Open rulings required before implementation
+Three items are genuinely undetermined. Implementation does not begin until each is ruled and this memo is countersigned.
+R1 — Sidedness and location term
+Is the pre-registered rule |ΔAR| &gt; γσ (as built and as run in Phase 0.5), or ΔAR &gt; μ + γσ (as discussed in supervision)? Note that changing this changes the Phase 0.5 RAC-HRP configuration, so a change would require re-running the null gate at the new specification rather than carrying the existing verdict forward. Preparer&apos;s view: retain the as-built two-sided rule and record the supervision phrasing as a drafting inconsistency, because a regime break in either direction is a structural change and the two-sided form is what the passed null gate actually tested.
+R2 — Smoothing window units
+Is the AR smoothing window 5 rebalances (≈105 trading days, as built) or 5 trading days (as the field name implies)? Preparer&apos;s view: the as-built behaviour is what Phase 0.5 ran and what the null gate cleared; retain it and rename the field to ar_smooth_rebalances to remove the ambiguity. Changing the value would invalidate the existing gate result.
+R3 — Post-trigger suppression
+Should a re-clustering suppress further triggers for a minimum number of rebalances? None is currently applied. A suppression window would directly reduce the 46.7% firing rate and improve separation from a calendar rule, but it is a new free parameter and would itself require pre-registration and a sensitivity treatment. Preparer&apos;s view: do not add suppression as a primary-specification change; instead report firing behaviour honestly and, if separation fails in §6.2, treat suppression as a pre-registered amendment with its own sensitivity set.
+8.  Deliverables
+ΔAR sensitivity curve across γ ∈ {0.5, 1.0, 1.5, 2.0} with all §6.2 criteria reported per candidate.
+Three-way variant comparison: RAC-HRP vs HRP_static vs HRP_periodic_3, development region.
+Cluster stability diagnostics: adjusted Rand index and variation of information between consecutive clusterings, triggered vs non-triggered.
+Trigger meaningfulness panel: firing rate, inter-trigger intervals, overlap with volatility-regime changes, cluster distance before/after, re-cluster-attributable turnover, structure persistence, placebo-trigger comparison.
+All outputs labelled DEVELOPMENT REGION ONLY.
+9.  Sign-off
+R1 ruling:  ______________________     R2 ruling:  ______________________     R3 ruling:  ______________________
+
+Phase 2 implementation authorized:      YES      /      YES WITH CHANGES      /      NOT YET
+
+Advisor signature / date
+
+Conditions / notes

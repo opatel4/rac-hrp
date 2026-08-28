@@ -1,6 +1,6 @@
 # RAC-HRP — Reproducibility Manifest
 
-Generated 2026-08-28T22:12:52.371256+00:00 at commit `3364955bd11e87f32dd392838d22c2981494fcdf`
+Generated 2026-08-28T22:27:46.573699+00:00 at commit `9329e387eb21c40d4363e98d07e07c23f568e1de`
 (branch `main`, working tree clean: False).
 
 Pins every reported number to a verifiable state. Generated **before** engineering
@@ -100,6 +100,11 @@ The single pre-registered test-region touch has NOT been used. No adaptive speci
 
 | file | sha256 (first 16) | bytes |
 |---|---|---:|
+| `outputs/prereg/RAC-HRP_Phase2_PreRegistration.txt` | `b6558c572a0fac8f` | 10224 |
+| `outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev2.txt` | `6f08e6e00f8327aa` | 9439 |
+| `outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev3.txt` | `09611989f6d4cdb1` | 6992 |
+| `outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev4.txt` | `faf42f3aad3367f4` | 7271 |
+| `outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.txt` | `80c4d9fb2e6e3a74` | 6745 |
 | `RAC_HRP_Phase2_Gate_Result_Memo_v3.md` | `f3a0cd64e6db99a5` | 10650 |
 | `RAC_HRP_Phase2_rev5_ERRATUM_E1.md` | `3f4a34db0d6f5ebe` | 2593 |
 | `RAC_HRP_Phase2_Reconciliation_111_vs_112.md` | `e9552129ba813c49` | 3880 |
@@ -108,7 +113,7 @@ The single pre-registered test-region touch has NOT been used. No adaptive speci
 | `RAC_HRP_Phase2D_ImplementationDeviationRecord_ID1.md` | `c1eb5d1c05fc9dca` | 7014 |
 | `RAC_HRP_Phase1_INCIDENT_E2_deleted_allocator.md` | `86d0d1aa04ab335f` | 6151 |
 | `RAC_HRP_Phase1_EWMA_Robustness_Note.md` | `488314fffd1cd686` | 4081 |
-| `RAC_HRP_Phase2_Audit_Bundle.md` | `cb1f2074bbba8b7f` | 8025 |
+| `RAC_HRP_Phase2_Audit_Bundle.md` | `06cc559981720781` | 8277 |
 | `docs/PRE_REGISTRATION.md` | `c4a0b5bd2fbd1259` | 5913 |
 | `CHANGELOG.md` | `d2d78f50bae65f21` | 16531 |
 | `docs/CORRECTION_NOTICE_single_author.md` | `33a4368a3bb2cab6` | 5398 |

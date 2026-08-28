@@ -1,16 +1,19 @@
 {
-  "generated_utc": "2026-08-28T22:12:52.371256+00:00",
+  "generated_utc": "2026-08-28T22:27:46.573699+00:00",
   "purpose": "Pins every reported number to a verifiable state. Generated BEFORE engineering migration so later churn cannot blur provenance.",
   "git": {
-    "commit": "3364955bd11e87f32dd392838d22c2981494fcdf",
+    "commit": "9329e387eb21c40d4363e98d07e07c23f568e1de",
     "branch": "main",
     "remote": "https://github.com/opatel4/rac-hrp.git",
     "working_tree_clean": false,
     "uncommitted": [
-      "M PAPER_DRAFT.md",
-      " M overleaf/main.tex",
-      " M scripts/build_reproducibility_manifest.py",
-      " M scripts/verify_numbers.py"
+      "M RAC_HRP_Phase2_Audit_Bundle.md",
+      "A  outputs/prereg/RAC-HRP_Phase2_PreRegistration.txt",
+      "A  outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev2.txt",
+      "A  outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev3.txt",
+      "A  outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev4.txt",
+      "A  outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.txt",
+      " M scripts/build_reproducibility_manifest.py"
     ]
   },
   "environment": {
@@ -329,6 +332,31 @@
     }
   },
   "documents": {
+    "outputs/prereg/RAC-HRP_Phase2_PreRegistration.txt": {
+      "sha256": "b6558c572a0fac8f2780eb7f0aac84ba24f797df39c4732d40d0d547051a42fe",
+      "bytes": 10224,
+      "present": true
+    },
+    "outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev2.txt": {
+      "sha256": "6f08e6e00f8327aa8d905e44fc101d8a440f6751ba438f9e3e32c23e915c88e0",
+      "bytes": 9439,
+      "present": true
+    },
+    "outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev3.txt": {
+      "sha256": "09611989f6d4cdb1ec2810dc396b013c378e3013aab9ac932ebef251fb7d1717",
+      "bytes": 6992,
+      "present": true
+    },
+    "outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev4.txt": {
+      "sha256": "faf42f3aad3367f40ed0a80ce1b616fe5f361cf6eb98c9975e63e7127c9572ca",
+      "bytes": 7271,
+      "present": true
+    },
+    "outputs/prereg/RAC-HRP_Phase2_PreRegistration_rev5_FREEZE.txt": {
+      "sha256": "80c4d9fb2e6e3a74203a0eaa7a029feb16d66ef6bd8f02f2c1efae4250b72bfa",
+      "bytes": 6745,
+      "present": true
+    },
     "RAC_HRP_Phase2_Gate_Result_Memo_v3.md": {
       "sha256": "f3a0cd64e6db99a5569037cfdb4f829a18be6ec4e4efc5347fc5eaa324a35294",
       "bytes": 10650,
@@ -370,8 +398,8 @@
       "present": true
     },
     "RAC_HRP_Phase2_Audit_Bundle.md": {
-      "sha256": "cb1f2074bbba8b7fd73f99a755a54c66b01c021a41769630d560e4319833df88",
-      "bytes": 8025,
+      "sha256": "06cc55998172078103f991887dc554605df9bafd82eafa7ecbbfc5a54aee75ab",
+      "bytes": 8277,
       "present": true
     },
     "docs/PRE_REGISTRATION.md": {
