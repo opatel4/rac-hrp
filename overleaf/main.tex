@@ -671,7 +671,7 @@ a description of the events as unusual.
 
 \paragraph{Timing variation fails everywhere, on modal-gap share alone.} Every CV
 clears its floor comfortably ($1.116$--$1.823$); the failure is that modal-gap share
-($0.763$--$0.824$) never approaches the $0.50$ ceiling. Section~\ref{sec:mechanism}
+($0.763$--$0.824$) never approaches the $0.50$ ceiling. Section~\ref{sec:postmortem}
 examines this.
 
 \paragraph{Cluster informativeness fails everywhere.} $D_{VI}$ is positive at every
@@ -701,7 +701,6 @@ portfolio was constructed and no performance quantity was computed.}
 
 \subsection{Post-mortem: is the burstiness an artefact of the pipeline?}
 \label{sec:postmortem}
-\label{sec:mechanism}
 
 The timing failure has a specific character: high CV \emph{and} high modal-gap share
 together mean most inter-event gaps are one rebalance with occasional long quiescent
@@ -877,20 +876,23 @@ change in the absorption ratio, while the gate's cluster-informativeness criteri
 measures change in the clustering between consecutive rebalances. The two are sampled at
 different horizons. We recompute $D_{VI}$ with variation of information taken between the
 clustering at $t$ and at $t-5$, on the intersection of the corresponding universes, using
-the frozen statistic and the frozen inference unchanged.
+the frozen statistic and the frozen inference unchanged. Table~\ref{tab:horizon}
+reports the result.
 
 \begin{table}[h]
 \centering
 \caption{Horizon-matched cluster informativeness. Post-gate, non-gating.}
+\label{tab:horizon}
+\small
 \begin{tabular}{lrrrrrrr}
-\hline
+\toprule
 $\gamma$ & events & $D_{VI}^{(5)}$ & $p$ raw & $p$ Holm & block & med fired & med not \\
-\hline
+\midrule
 0.5 & 149 & $+0.0662$ & 0.043 & 0.086 & 13 & 0.8226 & 0.7564 \\
 1.0 & 111 & $+0.0600$ & 0.045 & 0.086 & 13 & 0.8215 & 0.7616 \\
 1.5 &  81 & $+0.0814$ & 0.005 & 0.018 & 13 & 0.8382 & 0.7567 \\
 2.0 &  58 & $+0.1038$ & 0.014 & 0.042 & 13 & 0.8620 & 0.7582 \\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
@@ -904,8 +906,7 @@ below the measured size and carry essentially no evidence. We apply this correct
 the positive result because we apply it to the null in Section~\ref{sec:size}, and
 applying it in only one direction would be the asymmetry this paper exists to criticise.
 
-At
-the gate's horizon no threshold cleared. The point estimates are larger at every
+At the gate's horizon no threshold cleared. The point estimates are larger at every
 threshold and the ordering with selectivity is preserved.
 
 \paragraph{Detectable effect size.}
@@ -916,7 +917,7 @@ frozen trigger masks, and plants an effect $\delta$ at the positions designated 
 target threshold, leaving the other three null. All four candidate tests are computed and
 Holm-adjusted exactly as the gate does, and rejection of the target is recorded. Two
 placement conditions are used: the realised trigger positions, and an equal number drawn
-uniformly.
+uniformly. Table~\ref{tab:mde} reports the result.
 
 Empirical size at $\delta = 0$ is $0.0730$ (Monte Carlo standard error $0.0058$), against
 the $0.0660$ previously measured on independent data. The procedure is mildly
@@ -926,15 +927,17 @@ figure indicated.
 \begin{table}[h]
 \centering
 \caption{Detectable effect size. Post-gate, non-gating.}
+\label{tab:mde}
+\small
 \begin{tabular}{lrrl}
-\hline
+\toprule
 $\gamma$ & observed $D_{VI}$ & power at that effect & MDE$_{80}$ \\
-\hline
+\midrule
 0.5 & $+0.033$ & $\approx 0.13$ & $(0.15, 0.20]$ \\
 1.0 & $+0.022$ & $\approx 0.11$ & $(0.15, 0.20]$ \\
 1.5 & $+0.080$ & $\approx 0.28$ & $(0.15, 0.20]$ \\
 2.0 & $+0.096$ & $\approx 0.33$ & $(0.20, 0.30]$ \\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
