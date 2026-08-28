@@ -198,7 +198,8 @@ def main() -> int:
     except PW.PowerAbort as e:
         print(f"\n  *** ABORTED -- {e}")
         return 3
-    print(f"  base path            : E = {inp.E}, VI median {inp.base_median:.4f}, centred")
+    print(f"  base path            : E = {inp.E}, VI median {inp.base_median:.4f}, "
+          f"block-resampled per replication at L = {inp.block_length}")
     print(f"  event counts         : "
           + ", ".join(f"g={g}:{inp.n_events[g]}" for g in PW.GAMMA_CANDIDATES))
     print()
@@ -227,9 +228,10 @@ def main() -> int:
     res = _aggregate(rows, n_rep)
     res.base_median = inp.base_median
 
-    if res.size_cell.power > PW.SIZE_ABORT:
-        print(f"\n  *** ABORTED -- delta=0 rejection rate {res.size_cell.power:.3f} "
-              f"exceeds the frozen threshold {PW.SIZE_ABORT}")
+    lo, hi = PW.SIZE_BAND
+    if not (lo <= res.size_cell.power <= hi):
+        print(f"\n  *** ABORTED -- delta=0 rejection rate {res.size_cell.power:.4f} "
+              f"falls outside the frozen pass band [{lo}, {hi}]")
         return 3
 
     print()
@@ -251,7 +253,7 @@ def main() -> int:
         "alpha": PW.ALPHA,
         "base_seed": PW.BASE_SEED,
         "delta_grid": list(PW.DELTA_GRID),
-        "base_path": "observed one-step VI at the 233 eligible rebalances, median-centred",
+        "base_path": "per-replication circular block resample of the observed one-step VI at the 233 eligible rebalances",
         "base_median": res.base_median,
         "mde_is_conditional_on_observed_dependence_realisation": True,
         "power_r_minus_u_includes_block_length_response": True,

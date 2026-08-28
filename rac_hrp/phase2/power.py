@@ -17,14 +17,21 @@ actually faced.
 NON-GATING. Nothing here can render any gamma admissible or alter any frozen
 value. The Phase 2A verdict stands regardless of what this returns.
 
-BASE PATH (PreSpec rev.7 section 2.2)
+BASE PATH (PreSpec rev.8 section 2.2)
 -------------------------------------
-The observed one-step VI series at the 233 eligible rebalances, median-centred so
-the base path carries no clustering-change effect. Dependence and ordering are
-preserved exactly. This is NOT a synthetic generator: rev.6 replaced the original
-i.i.d. generator because it had no serial dependence and no burst structure, which
-made condition R undefined and would have made every power number an upper bound
-under conditions strictly easier than the gate's.
+Each replication draws a circular block resample of the observed one-step VI series
+at the 233 eligible rebalances, at the block length selected on that series, so
+the base path carries no clustering-change effect. Resampling breaks the association
+between the path and the frozen masks, so the null holds by construction; blocks
+preserve serial dependence approximately; ordering is deliberately not preserved,
+which is what nulls the statistic.
+
+This is not a synthetic generator. rev.6 replaced the original i.i.d. generator
+because it had no serial dependence and no burst structure, which made condition R
+undefined and would have made every power number an upper bound under conditions
+strictly easier than the gate's. rev.8 then replaced rev.7's median-centring, which
+could not null a difference of subgroup medians and, being a fixed path, supplied no
+sampling variation.
 
 Consequence, stated in the reporting: the MDE is conditional on the observed
 dependence realisation. It answers what this design could have detected on this

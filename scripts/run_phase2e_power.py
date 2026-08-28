@@ -150,7 +150,7 @@ def main() -> int:
         print(f"\n  *** ABORTED -- {e}")
         return 3
     print(f"  base path            : E = {inp.E}, observed VI median "
-          f"{inp.base_median:.4f}, centred")
+          f"{inp.base_median:.4f}, block-resampled per replication")
     print(f"  event counts         : "
           + ", ".join(f"g={g}:{inp.n_events[g]}" for g in PW.GAMMA_CANDIDATES))
     print()
@@ -201,7 +201,7 @@ def main() -> int:
         "alpha": PW.ALPHA,
         "base_seed": PW.BASE_SEED,
         "delta_grid": list(PW.DELTA_GRID),
-        "base_path": "observed one-step VI at the 233 eligible rebalances, median-centred",
+        "base_path": "per-replication circular block resample of the observed one-step VI at the 233 eligible rebalances",
         "base_median": res.base_median,
         "mde_is_conditional_on_observed_dependence_realisation": True,
         "power_r_minus_u_includes_block_length_response": True,
