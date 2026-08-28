@@ -668,13 +668,13 @@ that is the most common failure mode for signals of this kind.
 $\geq 3$).
 
 \paragraph{Informativeness fails only at $\gamma \in \{0.5, 1.0\}$}, where firing
-rates of $0.639$ and $0.476$ exceed the $0.40$ ceiling. The inherited $\gamma = 1.0$
+rates of $0.6395$ and $0.4764$ exceed the $0.40$ ceiling. The inherited $\gamma = 1.0$
 fires on nearly half of all eligible rebalances, which is difficult to reconcile with
 a description of the events as unusual.
 
 \paragraph{Timing variation fails everywhere, on modal-gap share alone.} Every CV
-clears its floor comfortably ($1.116$--$1.823$); the failure is that modal-gap share
-($0.763$--$0.824$) never approaches the $0.50$ ceiling. Section~\ref{sec:postmortem}
+clears its floor comfortably ($1.1162$--$1.8228$); the failure is that modal-gap share
+($0.7625$--$0.8243$) never approaches the $0.50$ ceiling. Section~\ref{sec:postmortem}
 examines this.
 
 \paragraph{Cluster informativeness fails everywhere.} $D_{VI}$ is positive at every
@@ -934,10 +934,10 @@ figure indicated.
 \toprule
 $\gamma$ & observed $D_{VI}$ & power at that effect & MDE$_{80}$ \\
 \midrule
-0.5 & $+0.033$ & $\approx 0.13$ & $(0.15, 0.20]$ \\
-1.0 & $+0.022$ & $\approx 0.11$ & $(0.15, 0.20]$ \\
-1.5 & $+0.080$ & $\approx 0.28$ & $(0.15, 0.20]$ \\
-2.0 & $+0.096$ & $\approx 0.33$ & $(0.20, 0.30]$ \\
+0.5 & $+0.0326$ & $\approx 0.13$ & $(0.15, 0.20]$ \\
+1.0 & $+0.0217$ & $\approx 0.11$ & $(0.15, 0.20]$ \\
+1.5 & $+0.0796$ & $\approx 0.28$ & $(0.15, 0.20]$ \\
+2.0 & $+0.0961$ & $\approx 0.33$ & $(0.20, 0.30]$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1277,7 +1277,7 @@ zero.
 The gate's power against the effect sizes present in the data was measured after the
 fact and found to be between $11\%$ and $33\%$ (Section~\ref{sec:postgate}). The minimum
 effect detectable at $80\%$ power was in the interval $(0.15, 0.20]$ at three thresholds
-and $(0.20, 0.30]$ at the fourth, against observed effects of $+0.022$ to $+0.096$.
+and $(0.20, 0.30]$ at the fourth, against observed effects of $+0.0217$ to $+0.0961$.
 
 This is a design failure, not a sampling accident. With 233 eligible rebalances, strong
 serial dependence in the variation-of-information series---lag-1 autocorrelation near
