@@ -261,16 +261,24 @@ def run_horizon_sweep(lp, sp, verbose=True) -> List[dict]:
     masks = fired_masks(sp)
     rows = []
     for h in H_GRID:
-        vi_h = vi_at_lag(lp, h)[elig]
+        vi_h_full = vi_at_lag(lp, h)[elig]
+        # d_vi takes medians without filtering, so a single NaN inside the
+        # eligible slice poisons both arms. Drop non-finite positions from the
+        # series AND the masks together, and report the retained count.
+        ok = np.isfinite(vi_h_full)
+        vi_h = vi_h_full[ok]
+        n_used = int(ok.sum())
         raw, cells = {}, []
         for gi, g in enumerate(GAMMAS):
-            dv = d_vi(vi_h, masks[g])
-            b = circular_block_bootstrap_p(vi_h, masks[g],
+            m = masks[g][ok]
+            dv = d_vi(vi_h, m)
+            b = circular_block_bootstrap_p(vi_h, m,
                                            seed=SEED_HORIZON + 1000 * h + gi,
                                            replicates=BOOT)
             raw[g] = b.p_value
             cells.append({"gamma": g, "d_vi": dv, "p_raw": b.p_value,
-                          "block_length": int(b.block_length)})
+                          "block_length": int(b.block_length),
+                          "n_used": n_used, "n_dropped": int((~ok).sum())})
         adj = holm_adjust(raw)
         for c in cells:
             c["p_holm"] = adj[c["gamma"]]
