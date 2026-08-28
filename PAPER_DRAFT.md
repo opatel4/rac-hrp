@@ -796,8 +796,20 @@ verdict, frozen and hashed before implementation, and run once. As with the
 diagnostics in Section 5.5, none can render a threshold admissible. The
 specification also fixed in advance that no result here would cause the confirmatory
 analysis to be re-specified: the gate remains *k* = 15, difference-of-medians, and a
-one-rebalance horizon whatever these show. Each diagnostic contains a cell required
-to reproduce a frozen result exactly, and all three reproduced.
+one-rebalance horizon whatever these show. Each diagnostic contains a cell required to reproduce a frozen result, and all three
+reproduced.
+
+One clarification about what that check covers. Each diagnostic draws its bootstrap
+replicates from its own seed, deliberately: reusing the gate's seeds would make the
+diagnostics statistically dependent on the result they are examining. The reproduction
+checks therefore verify the *statistic* — event counts and *D_VI* to four decimals —
+and not the *p*-value, which cannot match across independent draws and does not. At
+γ = 2.0 the frozen gate reports Holm *p* = 0.221, the k = 15 cell 0.195 and the h = 1
+cell 0.185; eight further seeds span 0.180 to 0.202, with the Politis–White block length
+equal to 19 in every case. The frozen gate reproduces exactly from its recorded
+configuration (seed base 20262817, 10,000 replicates), and its value sits at the
+conservative end of that spread. Readers comparing Tables 4, 10 and 11 should expect
+agreement in *D_VI* and Monte Carlo variation of roughly ±0.02 in Holm *p*.
 
 **Sensitivity to the retained-component count.** The absorption ratio is the share of
 variance in the leading *k* components, and *k* = 15 was fixed at the

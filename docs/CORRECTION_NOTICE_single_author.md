@@ -80,3 +80,16 @@ calibration path freeze k identically, so the absorption-ratio series is constru
 every phase. `engine.py` and `calibration.py` are hashed in released manifests and are therefore not
 edited; the naming is corrected in this notice rather than in the source, consistent with the policy
 above.
+
+## Bootstrap parameters absent from the calibration manifest
+
+`outputs/phase2/calibration_manifest.json` records the Politis–White block lengths and the
+degenerate-replicate counts, but not the bootstrap seed base or the replicate count. Both are
+fixed in `rac_hrp/phase2/config.py` (`BOOTSTRAP_SEED_BASE = PLACEBO_SEED + 2000 = 20262817`,
+`BOOTSTRAP_REPLICATES = 10000`) and in the frozen pre-registration, and the gate's reported
+Holm-adjusted p-values reproduce exactly from them: 0.5555, 0.5555, 0.2538, 0.2208 against the
+0.556, 0.556, 0.254, 0.221 in the manuscript.
+
+The result is therefore reproducible, but the manifest a replicator reads first does not pin the
+randomness. The manifest is hashed and is not edited; this notice is the correction of record. Any
+future manifest should include both fields.
