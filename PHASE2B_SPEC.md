@@ -47,12 +47,19 @@ belongs to the criterion and any mechanism evaluated against it inherits it.
 criteria. A regime trigger should fire on structural breaks, not routinely;
 fewer events also means less turnover into Phase 3.
 
-> Disclosure: I checked which γ this selects before locking the rule. From
-> Table 6 event counts and `|E| = 233`, `f = 0.639, 0.476, 0.348, 0.249`; the
-> first two exceed the band, so the rule picks **γ = 2.0** — not the γ = 1.5
-> that resolved at matched horizon. That the rule misses the known winner is
-> the evidence it wasn't reverse-engineered, but the check happened. Verify the
-> four `f_γ` values against artefacts before relying on this.
+> Disclosure: I checked which γ this selects before locking the rule.
+> Firing rates are `f = 0.6395, 0.4764, 0.3476, 0.2489`; the first two exceed
+> the band, so the rule picks **γ = 2.0** — not the γ = 1.5 that resolved at
+> matched horizon. That the rule misses the known winner is the evidence it
+> wasn't reverse-engineered, but the check happened.
+>
+> Verified 2026-09-01 against `outputs/phase2/calibration_table.csv`, pinned in
+> `REPRODUCIBILITY_MANIFEST.json` at sha256 `aff949fe…37656`, recomputed hash
+> matching; `|E| = 233` corroborated by `calibration_manifest.json`
+> (`n_rebalances: 240`, `n_eligible: 233`). Retained criteria confirmed on the
+> same source: γ = 0.5 and 1.0 fail the band, event sufficiency passes
+> everywhere (35/26/18/11 ≥ 3), `J* ≤` threshold at every γ. Surviving set
+> {1.5, 2.0}; largest-γ selects 2.0.
 
 **Ordering.** Test gates threshold selection; both gate performance. No
 performance quantity is computable in Phase 2B.
@@ -118,12 +125,28 @@ instruction.
 
 ## 4. Before this is used
 
-- Verify the four `f_γ` values against released artefacts — derived above from
-  Table 6, not recomputed.
+- ~~Verify the four `f_γ` values against released artefacts.~~ Done 2026-09-01;
+  all four verify exactly. See the D4 disclosure.
 - Confirm `n` for `VI(t, t−5)`; 233 is the trigger-series count and the `h = 5`
-  count may differ at the boundary.
+  count may differ at the boundary. **Still open.**
 - Commit and push this file. The Phase 2 pre-registration revisions being
   gitignored is an open disclosure item; don't repeat it.
 
-Manuscript note, unrelated to 2B: §3.3 records placebo seed `20260817`, §4.7
-records gate seed base `20262817`. One digit apart, one is likely a typo.
+**Citation convention.** Cite manuscript floats by label (`tab:gateresult`),
+never by compiled number. Numbers are assigned at compile time and diverge
+across `main.tex`, `2_0.tex`, and `PAPER_DRAFT.md`. A number that is wrong in
+one file can silently point at a real but different table in another — this
+already happened once in this document.
+
+**Seed provenance, resolved.** `calibration_manifest.json` records
+`placebo_seed: 20260817` and `bootstrap_seed_base: 20262817`. Both are what the
+frozen code executed, so §3.3 and §4.7 of the manuscript report faithfully and
+neither is a manuscript typo. `20262817` is not a valid date, so the error is
+upstream in the frozen configuration. That file is hash-frozen and was
+executed; per CLAUDE.md it stays. **Record as a disclosure item, do not fix.**
+Phase 2B's `20260901` is independent of both.
+
+**Known stale numbering in `PAPER_DRAFT.md`:** two tables both labelled Table 5;
+horizon, MDE and k-sweep tables uncaptioned; a body reference to "Table 12"
+carrying a compiled-paper number. `main.tex` is internally consistent. Not a
+Phase 2B blocker.
