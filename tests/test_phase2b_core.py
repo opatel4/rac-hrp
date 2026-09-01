@@ -184,6 +184,72 @@ def test_bootstrap_test_strong_signal_is_significant():
 
 
 # --------------------------------------------------------------------------
+# bootstrap_test -- p saturates at its floor once rho_hat > 0.5
+#
+# The exceedance condition is rho* >= 2*rho_hat and Spearman is bounded by 1,
+# so above rho_hat = 0.5 no replicate can satisfy it and p is pinned at
+# 1/(B_kept+1) by arithmetic. See bootstrap_test's docstring: a p on the floor
+# means "rho_hat exceeds 0.5", NOT "overwhelming evidence at this precision".
+# --------------------------------------------------------------------------
+def _mix(w: float, n: int = 150, seed: int = 11):
+    """A pair whose Spearman rho rises with w. Deterministic given the seed."""
+    rng = np.random.default_rng(seed)
+    x = rng.normal(size=n)
+    return x, w * x + (1.0 - w) * rng.normal(size=n)
+
+
+@pytest.mark.parametrize("w", [0.40, 0.50, 0.70, 0.90])
+def test_p_is_exactly_the_floor_above_rho_half(w):
+    s, vi = _mix(w)
+    out = bootstrap_test(s, vi, seed=5, replicates=200)
+
+    assert out["rho"] > 0.5, "fixture no longer clears the bound"
+    assert 2.0 * out["rho"] > 1.0                       # the arithmetic reason
+    assert out["p"] == out["p_floor"]                   # exact, not approximate
+    assert out["p"] == pytest.approx(1.0 / (out["replicates_kept"] + 1))
+
+
+def test_saturation_is_invariant_to_replicate_count():
+    """More replicates lower the floor and add nothing.
+
+    This is the practical trap: p falls from 5e-3 to 1e-4 purely because B grew,
+    and reads as ten times the evidence while being exactly the same finding.
+    """
+    s, vi = _mix(0.70)
+    seen = []
+    for B in (200, 500, 1000):
+        out = bootstrap_test(s, vi, seed=5, replicates=B)
+        assert out["p"] == out["p_floor"]
+        seen.append(out["p"])
+
+    assert seen[0] > seen[1] > seen[2], "floor should fall as B grows"
+
+
+def test_floor_does_not_imply_rho_above_half():
+    """The converse fails: p on the floor does NOT establish rho_hat > 0.5.
+
+    Below the bound, saturation is a sampling accident rather than arithmetic --
+    it just means no replicate reached 2*rho_hat. So p == p_floor cannot be
+    inverted into any statement about rho_hat.
+    """
+    s, vi = _mix(0.20)
+    out = bootstrap_test(s, vi, seed=5, replicates=1000)
+
+    assert out["rho"] < 0.5                             # below the bound
+    assert out["p"] == out["p_floor"]                   # yet still on the floor
+
+
+def test_p_exceeds_floor_when_rho_is_small():
+    """The floor is not always hit, so p is informative in the low-rho regime."""
+    s, vi = _mix(0.0)
+    out = bootstrap_test(s, vi, seed=5, replicates=1000)
+
+    assert out["rho"] < 0.2
+    assert out["p"] > out["p_floor"]
+    assert out["p"] > 0.05
+
+
+# --------------------------------------------------------------------------
 # mde80
 # --------------------------------------------------------------------------
 def _curve(rhos, powers):

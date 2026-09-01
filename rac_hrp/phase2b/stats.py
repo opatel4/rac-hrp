@@ -205,6 +205,40 @@ def bootstrap_test(
         p = (1 + #{rho* - rho_hat >= rho_hat}) / (B_kept + 1)
 
     which is the Phase 2A convention.
+
+    P SATURATES AT ITS FLOOR ONCE rho_hat > 0.5 -- READ RHO, NOT P
+    ---------------------------------------------------------------
+    The exceedance condition rearranges to rho* >= 2 * rho_hat. Spearman is
+    bounded above by 1, so the centred statistic rho* - rho_hat cannot exceed
+    1 - rho_hat, and an exceedance is possible at all only when
+
+        1 - rho_hat >= rho_hat,  i.e.  rho_hat <= 0.5.
+
+    For any rho_hat > 0.5 the count is exactly zero by arithmetic, and
+
+        p == p_floor == 1 / (B_kept + 1)
+
+    identically. This is not evidence accumulating until it exhausts the
+    resolution B provides -- it is the statistic running out of room. Raising B
+    lowers p_floor and adds no information whatsoever. A p of 1e-4 at B = 10,000
+    means "rho_hat > 0.5" and nothing more precise, and it would read the same
+    at rho_hat = 0.51 and rho_hat = 0.99.
+
+    The implication is asymmetric, and the weaker direction is the one that
+    matters in practice:
+
+        rho_hat > 0.5   ==>  p == p_floor          (guaranteed, by the bound)
+        p == p_floor    =/=> rho_hat > 0.5         (it can also just mean that
+                                                    no replicate happened to
+                                                    reach 2 * rho_hat)
+
+    Empirically, at B = 1,000 on n = 150 the floor is already reached by
+    rho_hat ~ 0.30, well below the guaranteed point. So p == p_floor cannot be
+    inverted into any statement about rho_hat at all. Report rho alongside p
+    whenever p sits on its floor; the p-value alone is uninformative there.
+
+    The centring convention is frozen (spec section 1, Phase 2A inheritance) and
+    is NOT changed here. This is documentation of a property, not a repair.
     """
     s = np.asarray(s, dtype=float)
     vi = np.asarray(vi, dtype=float)

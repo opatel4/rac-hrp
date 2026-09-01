@@ -39,8 +39,9 @@ if str(ROOT) not in sys.path:
 # silently failing to import (which pytest reports as a collection error but which
 # is easy to miss in a long log) or a suite being dropped. Raise deliberately when
 # tests are added; never lower it to make a run pass.
-MIN_COLLECTED = 80      # +5: tests/test_phase2b_blindness.py (Phase 2B section 2)
+MIN_COLLECTED = 87      # +5: tests/test_phase2b_blindness.py (Phase 2B section 2)
                         # +25: tests/test_phase2b_core.py (statistical core)
+                        # +7: p-floor saturation above rho_hat = 0.5
 
 
 def pytest_collection_modifyitems(session, config, items):
