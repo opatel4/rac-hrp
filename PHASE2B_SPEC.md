@@ -100,6 +100,28 @@ measuring the pipeline.
 **Blindness.** Test asserting no return-performance symbol or risk-free series
 is reachable from the Phase 2B module. Runs in CI.
 
+> Standard, made precise 2026-09-01. The test asserts (a) no module in the 2B
+> transitive closure imports `rac_hrp.backtest` or any submodule, checked both
+> statically by AST walk — which descends into function bodies, covering lazy
+> imports — and dynamically via `sys.modules`; and (b) no module in the closure
+> references `rf` as attribute, name, or subscript key, with `data/panel.py`
+> allowlisted since it constructs the field.
+>
+> This is deliberately the weaker of two readings and the choice should be
+> visible. `Panels.rf` is a dataclass field and `load_series` takes `Panels`,
+> so `P.rf` is reachable by attribute access. A literal reachability assertion
+> would fail on it — and would fail identically for the frozen Phase 2A gate,
+> which cannot be changed, and cannot be engineered around since `load_series`
+> passes `Panels` down to `structural_pass`. What blindness protects against is
+> code that uses performance data, not a field sitting one dot away in a
+> dataclass that is never read. A reader who wants the stronger standard should
+> note it would require rewriting frozen code and would reclassify Phase 2A as
+> non-blind.
+>
+> An object-graph BFS is not an acceptable substitute for either check: because
+> the module uses `from x import y`, no submodule objects are bound in the
+> namespace and the walk terminates at one module, proving nothing.
+
 If size, power, or falsification fails, Phase 2B does not run. That result is
 worth knowing and costs days rather than months.
 
@@ -138,13 +160,14 @@ across `main.tex`, `2_0.tex`, and `PAPER_DRAFT.md`. A number that is wrong in
 one file can silently point at a real but different table in another — this
 already happened once in this document.
 
-**Seed provenance, resolved.** `calibration_manifest.json` records
-`placebo_seed: 20260817` and `bootstrap_seed_base: 20262817`. Both are what the
-frozen code executed, so §3.3 and §4.7 of the manuscript report faithfully and
-neither is a manuscript typo. `20262817` is not a valid date, so the error is
-upstream in the frozen configuration. That file is hash-frozen and was
-executed; per CLAUDE.md it stays. **Record as a disclosure item, do not fix.**
-Phase 2B's `20260901` is independent of both.
+**Seed provenance, closed.** `phase2/config.py:57` defines
+`BOOTSTRAP_SEED_BASE = PLACEBO_SEED + 2000`, so `20260817 + 2000 = 20262817`.
+Neither value is a typo and there is nothing to disclose: the gate seed base is
+derived from the placebo seed by construction, and §3.3 and §4.7 of the
+manuscript both report faithfully. Earlier drafts of this spec called it a
+manuscript typo, then an upstream config typo. Both were wrong, and both were
+guesses made without reading `config.py`. Phase 2B's `20260901` is independent
+of both.
 
 **Known stale numbering in `PAPER_DRAFT.md`:** two tables both labelled Table 5;
 horizon, MDE and k-sweep tables uncaptioned; a body reference to "Table 12"
